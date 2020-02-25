@@ -6,3 +6,5 @@ I'm making an edit
 I'm making an edit, too.
 
 It's good.
+
+It's bad.
