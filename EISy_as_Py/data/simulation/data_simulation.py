@@ -69,6 +69,7 @@ def sim_rc_file_writer(f_start, f_stop, decades, R, C, i,
         df.to_csv(data_file, mode='a')
         data_file.close()
 
+
 def randles(f_start, f_stop, decades, Rs, R, n, sigma, Q):
     """
     """
@@ -85,13 +86,15 @@ def randles(f_start, f_stop, decades, Rs, R, n, sigma, Q):
     sim_data = to_dataframe(f_range, real_z, imag_z, total_z, phase)
     return sim_data
 
-def sim_randles_file_writer(f_start, f_stop, decades, Rs, R, n, sigma, Q, alteration=None):
+
+def sim_randles_file_writer(f_start, f_stop, decades, Rs, R, n, sigma,
+                            Q, alteration=None):
     """
     """
     # Save the simulated data in a csv file to be exported in a database
     # the format will be in the form of :
     # yymmdd-serial#_sim_classifier.csv
-    i=1
+    i = 1
     date = time.strftime('%y%m%d', time.localtime())
     save_location = 'sim_data/'
     if not os.path.exists(save_location):
@@ -99,7 +102,8 @@ def sim_randles_file_writer(f_start, f_stop, decades, Rs, R, n, sigma, Q, altera
     while i < 9999:
         number = str(i).zfill(4)
         if alteration:
-            filename = str('{}-{}_sim_tail-{}'.format(date, number, alteration))
+            filename = str('{}-{}_sim_tail-{}'.format(date, number,
+                                                      alteration))
         else:
             filename = str('{}-{}_sim_tail'.format(date, number))
         if os.path.exists(save_location + filename + '.csv'):
@@ -112,7 +116,8 @@ def sim_randles_file_writer(f_start, f_stop, decades, Rs, R, n, sigma, Q, altera
         data_file.write('Serial number:, {}'.format(number)+'\n')
         data_file.write('Data Source:, simulation'+'\n')
         data_file.write('Circuit type:, rc'+'\n')
-        data_file.write('Circuit elements:, [R={} ohm Rs ={} ohm sigma = {} ohm Q = {} F]'.format(R, Rs, sigma, Q) +
+        data_file.write('Circuit elements:, [R={} ohm Rs ={} ohm sigma = {} \
+                         ohm Q = {} F]'.format(R, Rs, sigma, Q) +
                         '\n')
         data_file.write('---'+'\n')
         df = randles(f_start, f_stop, decades, Rs, R, n, sigma, Q)
