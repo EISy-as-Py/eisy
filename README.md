@@ -49,6 +49,9 @@ __**Readme Contents:**__
      * Another Later test-item will be to aquire or synthesize "Bad Data" which in various ways we want to catch and either flag or reject.
      
  * __Neural Network Classifying__: Branch "Classify" :
+     * Current Milestone: establish a pseudo code on importing image file using pillow and makesure we have ongoing image library.
+     * Create a pseudo code on image processing/training using library. 
+     
      * Mihyun and Jo are doing the massive research work of setting up a Neural Network Framework, which we can then use to train a model to distinguish or classify the incoming NewData. This will be a big task that once they're set up, they'll teach us to help them and we'll probably make this into NEW branches! 
      * First classify task is to identify Noisy or other failed test (AKA: Researcher Must Re-Do - Possibly with Feedback re WHY)
      * Second classify task is to identify the "Type" of data/test (AKA: Resistor? Simple RC? Battery? FuelCell?)
