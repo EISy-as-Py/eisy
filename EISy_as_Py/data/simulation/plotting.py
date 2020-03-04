@@ -1,11 +1,14 @@
 import matplotlib.pyplot as plt
 
-def plot_nyquist(response):
+def plot_nyquist(response, save_image='None'):
     """
     """
     fig = plt.figure()
     plt.plot(response['Re_Z [Ohm]'], -response['Im_Z [Ohm]'], 'o')
-    plt.ticklabel_format(style = 'sci', scilimits=(0,0))
+    plt.ticklabel_format(style='sci', scilimits=(0, 0))
     plt.xlabel('Z$_{real}$ [$\Omega$]')
     plt.ylabel('-Z$_{imag}$ [$\Omega$]')
     plt.show()
+
+    if save_image == True:
+        plt.savefig('image_name.jpeg')
