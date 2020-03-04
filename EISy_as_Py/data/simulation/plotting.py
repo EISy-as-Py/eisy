@@ -10,5 +10,5 @@ def plot_nyquist(response, save_image='None'):
     plt.ylabel('-Z$_{imag}$ [$\Omega$]')
     plt.show()
 
-    if save_image == True:
-        plt.savefig('image_name.jpeg')
+    if save_image:
+        plt.savefig('image_name.png')
