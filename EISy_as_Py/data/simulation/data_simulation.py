@@ -4,6 +4,7 @@ import time
 
 import numpy as np
 import pandas as pd
+import circuits
 
 from PyEIS import *
 
@@ -76,7 +77,7 @@ def randles(f_start, f_stop, decades, Rs, R, n, sigma, Q):
     # Define the frequency range to be simulated
     f_range = freq_gen(f_start, f_stop, decades)
     # Obtain the impedance of the RC circuit
-    Randles = cir_Randles_simplified(f_range[1], Rs, R, n, sigma, Q)
+    Randles = circuits.cir_Randles_simplified(f_range[1], Rs, R, n, sigma, Q)
     # Separate the impedance into its real and imaginary components
     real_z = Randles.real
     imag_z = Randles.imag
