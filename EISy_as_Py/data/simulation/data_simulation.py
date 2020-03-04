@@ -25,7 +25,7 @@ def rc_simulation(f_start, f_stop, decades, R, C, i):
     # Define the frequency range to be simulated
     f_range = freq_gen(f_start, f_stop, decades)
     # Obtain the impedance of the RC circuit
-    circuit = cir_RC(f_range[1], R, C)
+    circuit = circuits.cir_RC(f_range[1], R, C)
     # Separate the impedance into its real and imaginary components
     real_z = circuit.real
     imag_z = circuit.imag
