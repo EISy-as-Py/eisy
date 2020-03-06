@@ -7,6 +7,7 @@ import pandas as pd
 import circuits
 
 from PyEIS import *
+from plotting import plot_nyquist
 
 
 def to_dataframe(f_range, real_z, imag_z, total_z, phase):
@@ -37,7 +38,7 @@ def rc_simulation(f_start, f_stop, decades, R, C, i):
 
 
 def sim_rc_file_writer(f_start, f_stop, decades, R, C, i,
-                       alteration=None):
+                       alteration=None, save_image=None):
     """
     """
     # Save the simulated data in a csv file to be exported in a database
@@ -69,6 +70,10 @@ def sim_rc_file_writer(f_start, f_stop, decades, R, C, i,
         df = rc_simulation(f_start, f_stop, decades, R, C, i)
         df.to_csv(data_file, mode='a')
         data_file.close()
+    if save_image:
+        plot_nyquist(df, filename, save_image=True)
+
+    return
 
 
 def randles(f_start, f_stop, decades, Rs, R, n, sigma, Q):

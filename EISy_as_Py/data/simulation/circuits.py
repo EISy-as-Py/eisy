@@ -1,12 +1,36 @@
 import numpy as np
 
 
-def cir_RC(w, C='none', R='none', fs='none'):
+def freq_gen(f_start, f_stop, pts_decade=7):
+    '''
+    Frequency Generator with logspaced freqencies
+
+    Inputs
+    ----------
+    f_start = frequency start [Hz]
+    f_stop = frequency stop [Hz]
+    pts_decade = Points/decade, default 7 [-]
+
+    Output
+    ----------
+    [0] = frequency range [Hz]
+    [1] = Angular frequency range [1/s]
+    '''
+    f_decades = np.log10(f_start) - np.log10(f_stop)
+    f_range = np.logspace(np.log10(f_start), np.log10(f_stop),
+                          num=np.around(pts_decade*f_decades), endpoint=True)
+    w_range = 2 * np.pi * f_range
+    return f_range, w_range
+
+
+def cir_RC(w, R='none', C='none', fs='none'):
     '''
     Simulation Function: -RC-
     Returns the impedance of an RC circuit, using RQ definations where n=1.
     see cir_RQ() for details
-    Kristian B. Knudsen (kknu@berkeley.edu || kristianbknudsen@gmail.com)
+    Author:Kristian B. Knudsen (kknu@berkeley.edu ||
+                                kristianbknudsen@gmail.com)
+    Modified: Abdul Moeez (add email)
     Inputs
     ----------
     w = Angular frequency [1/s]
@@ -14,8 +38,21 @@ def cir_RC(w, C='none', R='none', fs='none'):
     C = Capacitance [F]
     fs = Summit frequency of RC circuit [Hz]
     '''
+    if R == 'none':
+        R = (1/(C*(2*np.pi*fs)))
+    elif C == 'none':
+        C = (1/(R*(2*np.pi*fs)))
+    return (R/(1+R*C*(w*1j)))
 
-    return cir_RQ(w, R=R, Q=C, n=1, fs=fs)
+
+def cir_RC_series(w, R, C, fs=fs):
+    '''
+    '''
+    if R == 'none':
+        R = (1/(C*(2*np.pi*fs)))
+    elif C == 'none':
+        C = (1/(R*(2*np.pi*fs)))
+    return R+1/(C*(w*1j))
 
 
 def cir_RQ(w, R='none', Q='none', n='none', fs='none'):
@@ -41,12 +78,30 @@ def cir_RQ(w, R='none', Q='none', n='none', fs='none'):
     return (R/(1+R*Q*(w*1j)**n))
 
 
+def cir_RsRC(w, Rs, R, C):
+    ''''
+    Simulation Function: -Rs-RC-
+
+    Author: Maria Politi
+
+    Inputs
+    ----------
+    Rs = Series resistance [Ohm]
+    R = Resistance [Ohm]
+    C = Capacitance [F]
+    '''
+    return Rs + (R/(1+R*C*(w*1j)))
+
+
 def cir_Randles_simplified(w, Rs, R, n, sigma, Q='none', fs='none'):
     '''
     Simulation Function: Randles -Rs-(Q-(RW)-)-
     Return the impedance of a Randles circuit with a simplified
     NOTE: This Randles circuit is only meant for semi-infinate linear diffusion
-    Kristian B. Knudsen (kknu@berkeley.edu / kristianbknudsen@gmail.com)
+
+    Author:Kristian B. Knudsen (kknu@berkeley.edu ||
+                                kristianbknudsen@gmail.com)
+    Modified: Maria Politi (politm@uw.edu)
     '''
     if R == 'none':
         R = (1/(Q*(2*np.pi*fs)**n))
@@ -67,10 +122,11 @@ def cir_RsRQRQ(w, Rs, R='none', Q='none', n='none', fs='none', R2='none',
     '''
 
     Simulation Function: -Rs-RQ-RQ-
-    Return the impedance of an Rs-RQ circuit. See details for RQ under
-    cir_RQ_fit()
-    Kristian B. Knudsen (kknu@berkeley.edu || kristianbknudsen@gmail.com)
+    Return the impedance of an Rs-RQ-RQ circuit.
 
+    Author:Kristian B. Knudsen (kknu@berkeley.edu ||
+                                kristianbknudsen@gmail.com)
+    Modified: Maria Politi (politm@uw.edu)
     Inputs
     ----------
     w = Angular frequency [1/s]
