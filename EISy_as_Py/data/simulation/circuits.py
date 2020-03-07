@@ -1,88 +1,190 @@
 import numpy as np
 
 
-def freq_gen(f_start, f_stop, pts_decade=7):
+def freq_gen(high_freq, low_freq, decades=7):
     '''
-    Frequency Generator with logspaced freqencies
+    Function that generates the frequency range used to investigate the
+    impedance response of an electrical circuit Frequency Generator with
+    logspaced freqencies
 
-    Inputs
+    Parameters
     ----------
-    f_start = frequency start [Hz]
-    f_stop = frequency stop [Hz]
-    pts_decade = Points/decade, default 7 [-]
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
 
     Output
     ----------
     [0] = frequency range [Hz]
     [1] = Angular frequency range [1/s]
     '''
-    f_decades = np.log10(f_start) - np.log10(f_stop)
-    f_range = np.logspace(np.log10(f_start), np.log10(f_stop),
-                          num=np.around(pts_decade*f_decades), endpoint=True)
+    f_decades = np.log10(high_freq) - np.log10(low_freq)
+    f_range = np.logspace(np.log10(high_freq), np.log10(low_freq),
+                          np.around(decades*f_decades), endpoint=True)
     w_range = 2 * np.pi * f_range
     return f_range, w_range
 
 
-def cir_RC(w, R='none', C='none', fs='none'):
+def cir_RC_parallel(angular_freq, resistance='none', capacitance='none',
+                    peak_frequency='none'):
     '''
-    Simulation Function: -RC-
-    Returns the impedance of an RC circuit, using RQ definations where n=1.
-    see cir_RQ() for details
-    Author:Kristian B. Knudsen (kknu@berkeley.edu ||
-                                kristianbknudsen@gmail.com)
-    Modified: Abdul Moeez (add email)
-    Inputs
+    Function that simulates the impedance response of a resistor and a
+    capacitor in a parallel configuration.
+    String representation for this circuit: -R/C-
+
+    Parameters
     ----------
-    w = Angular frequency [1/s]
-    R = Resistance [Ohm]
-    C = Capacitance [F]
-    fs = Summit frequency of RC circuit [Hz]
+    angular_freq : array-like
+                   Angular frequency [1/s]
+    resistance : single value (int or float)
+                 Solution resistance [Ohm]
+    capacitance : single value (int or float)
+                  Electrode capacitance [F]
+    peak_frequency : single value (int or float)
+                     Peak frequency of RC circuit [Hz]
+
+    Output
+    ---------
+    Z_complex : array-like
+                impedance response of the circuit under investigation [Ohm]
     '''
-    if R == 'none':
-        R = (1/(C*(2*np.pi*fs)))
-    elif C == 'none':
-        C = (1/(R*(2*np.pi*fs)))
-    return (R/(1+R*C*(w*1j)))
+    circuit = '-R/C-'
+    if resistance == 'none':
+        resistance = (1/(capacitance*(2*np.pi*peak_frequency)))
+    elif capacitance == 'none':
+        capacitance = (1/(resistance*(2*np.pi*peak_frequency)))
+    # compute the impedance response as a complex array
+    Z_complex = (resistance/(1+resistance*capacitance*(angular_freq*1j)))
+    return Z_complex
 
 
-def cir_RC_series(w, R, C, fs=fs):
+def cir_RC_series(angular_freq, resistance='none', capacitance='none',
+                  peak_frequency='none'):
     '''
-    '''
-    if R == 'none':
-        R = (1/(C*(2*np.pi*fs)))
-    elif C == 'none':
-        C = (1/(R*(2*np.pi*fs)))
-    return R+1/(C*(w*1j))
+    Function that simulates the impedance response of a resistor and a
+    capacitor in a series configuration.
+    This circuit configuration is used to simulate the response of an ideally
+    polarizable electrode, also known as a blocking electrode.
+    String representation for this circuit: -RC-
 
-
-def cir_RQ(w, R='none', Q='none', n='none', fs='none'):
-    '''
-    Simulation Function: -RQ-
-    Return the impedance of an Rs-RQ circuit. See details for RQ under
-    cir_RQ_fit()
-    Kristian B. Knudsen (kknu@berkeley.edu / kristianbknudsen@gmail.com)
-    Inputs
+    Parameters
     ----------
-    w = Angular frequency [1/s]
-    R = Resistance [Ohm]
-    Q = Constant phase element [s^n/ohm]
-    n = Constant phase elelment exponent [-]
-    fs = Summit frequency of RQ circuit [Hz]
+    angular_freq : array-like
+                   Angular frequency [1/s]
+    resistance : single value (int or float)
+                 Solution resistance [ohm]
+    capacitance : single value (int or float)
+                  Capacitance of an electrode surface [F]
+    peak_frequency : single value (int or float)
+                     Peak frequency of RC circuit [Hz]
+
+    Output
+    ---------
+    Z_complex : array-like
+                impedance response of the circuit under investigation [Ohm]
     '''
-    if R == 'none':
-        R = (1/(Q*(2*np.pi*fs)**n))
-    elif Q == 'none':
-        Q = (1/(R*(2*np.pi*fs)**n))
+    circuit = '-RC-'
+    if (resistance, capacitance, peak_frequency) == 'none':
+        raise AssertionError('No circuit element value was provided. Cannot\
+                              compute the impedance response')
+    elif (resistance, capacitance) == 'none':
+        raise AssertionError('Not enough circuit element valuea were provided.\
+                              Cannot compute the impedance response')
+    elif resistance == 'none':
+        resistance = (1/(capacitance*(2*np.pi*peak_frequency)))
+    elif capacitance == 'none':
+        capacitance = (1/(resistance*(2*np.pi*peak_frequency)))
+    # compute the impedance response as a complex array
+    Z_complex = resistance + 1/(capacitance*(angular_freq*1j))
+    return Z_complex
+
+
+def cir_RQ_parallel(angular_freq, resistance='none',
+                    constant_phase_element='none', alpha='none',
+                    peak_frequency='none'):
+    '''
+    Function that simulates the impedance response of a resistor and a
+    constant phase element in a parallel configuration.
+    String representation for this circuit: -R/Q-
+    Parameters
+    ----------
+    angular_freq : array-like
+                   Angular frequency [1/s]
+    resistance : single value (int or float)
+                 Solution resistance [Ohm]
+    constant_phase_element : single value (int or float)
+                             Constant phase angle [s^n/ohm]
+    alpha : single value -float
+            Exponent of the constant phase element. Should be a value between
+            0 and 1 [-]
+    peak_frequency : single value (int or float)
+                     Peak frequency of RC circuit [Hz]
+
+    Output
+    ---------
+    Z_complex : array-like
+                impedance response of the circuit under investigation [Ohm]
+    '''
+    if resistor == 'none':
+        resistor = (1/(constant_phase_element*(2*np.pi*peak_frequency)**alpha))
+    elif constant_phase_element == 'none':
+        constant_phase_element = (1/(resistor*(2*np.pi*peak_frequency)**alpha))
     elif n == 'none':
-        n = np.log(Q*R)/np.log(1/(2*np.pi*fs))
-    return (R/(1+R*Q*(w*1j)**n))
+        n = np.log(constant_phase_element*resistor)/np.log(1/(2*np.pi *
+                                                              peak_frequency))
+    Z_complex = (resistor/(1+resistor*constant_phase_element*(
+                 angular_freq*1j)**alpha))
+    return Z_complex
+
+
+def cir_RQ_series(angular_freq, resistance='none',
+                  constant_phase_element='none', alpha='none',
+                  peak_frequency='none'):
+    '''
+    Function that simulates the impedance response of a resistor and a
+    constant phase element in a series configuration.
+    This circuit configuration is used to simulate the response of a
+    blocking electrode with distribution of reactivity.
+    String representation for this circuit: -RQ-
+
+    Parameters
+    ----------
+    angular_freq : array-like
+                   Angular frequency [1/s]
+    resistance : single value (int or float)
+                 Solution resistance [Ohm]
+    constant_phase_element : single value (int or float)
+                             Constant phas angle [s^n/ohm]
+    alpha : single value -float
+            Exponent of the constant phase element. Should be a value between
+            0 and 1 [-]
+    peak_frequency : single value (int or float)
+                     Peak frequency of RC circuit [Hz]
+
+    Output
+    ---------
+    Z_complex : array-like
+                impedance response of the circuit under investigation [Ohm]
+    '''
+    circuit = '-RC-'
+    if resistance == 'none':
+        resistance = (1/(capacitance*(2*np.pi*peak_frequency)))
+    elif capacitance == 'none':
+        capacitance = (1/(resistance*(2*np.pi*peak_frequency)))
+    # compute the impedance response as a complex array
+    Z_complex = resistance + 1/(capacitance*(angular_freq*1j))
+    return Z_complex
 
 
 def cir_RsRC(w, Rs, R, C):
     ''''
     Simulation Function: -Rs-RC-
 
-    Author: Maria Politi
+    Author: Maria Politi [politim@uw.edu]
 
     Inputs
     ----------

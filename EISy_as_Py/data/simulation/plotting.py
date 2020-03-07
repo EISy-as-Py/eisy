@@ -17,7 +17,8 @@ def nyquist_plot(response, axis_limits=None, filename=None, save_image=None,
     # ax.xticks(np.arange(min(),
     #                     max(response['Re_Z [Ohm]'])+1, 10))
     # if save_image:
-    plt.savefig('{}.png'.format(filename), layout='tight')
+    plt.savefig('{}.png'.format(filename), layout='tight',
+                bbox_inches='tight')
     if axis_limits:
         plt.xlim(axis_limits[0])
         plt.ylim(axis_limits[1])
