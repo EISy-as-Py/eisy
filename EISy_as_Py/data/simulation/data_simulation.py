@@ -73,7 +73,7 @@ def impedance_array(complex_impedance):
 
 
 def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
-                  circuit_configuration, i):
+                  circuit_configuration):
     """
     Function that takes imputs parameters to simulated the impedance response
     of a circuit composed by a resistor and a capacitor in series over the
@@ -92,9 +92,9 @@ def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
                  Resistance [Ohm]
     capacitance : single value (int or float)
                   Capacitance [F]
-    circuit_configuration :
-
-    i :
+    circuit_configuration : str
+                            string indicating the configuration of the RC
+                            circuit to be simulated
 
     Output
     ----------
@@ -119,7 +119,7 @@ def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
 
 
 def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
-                   circuit_configuration, i, alteration=None, save_image=None,
+                   circuit_configuration, alteration=None, save_image=None,
                    save_location='simulation_data/'):
     """
     Parameters
@@ -133,6 +133,7 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
     date = time.strftime('%y%m%d', time.localtime())
     if not os.path.exists(save_location):
         os.makedirs(save_location)
+    i = 1
     while i < 9999:
         number = str(i).zfill(4)
         if alteration:
@@ -149,17 +150,22 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
         data_file.write('Serial number:, {}'.format(number)+'\n')
         data_file.write('Data Source:, simulation'+'\n')
         data_file.write('Circuit type:, rc'+'\n')
-        data_file.write('Circuit elements:, [R={} ohm C={} F]'.format(R, C) +
-                        '\n')
+        data_file.write('Circuit configuration:, {}'
+                        .format(circuit_configuration)+'\n')
+        data_file.write('Circuit elements:, [R={} ohm C={} F]'
+                        .format(resistance, capacitance) + '\n')
         data_file.write('---'+'\n')
+        freq_range = freq_gen(high_freq, low_freq, decades)
         if circuit_configuration == 'series':
-            df = circuits.cir_RC_series(freq_range[1], resistance,
-                                        capacitance)
+            circuit = circuits.cir_RC_series(freq_range[1], resistance,
+                                             capacitance)
         elif circuit_configuration == 'parallel':
-            df = circuits.cir_RC_parallel(freq_range[1], resistance,
-                                          capacitance)
+            circuit = circuits.cir_RC_parallel(freq_range[1], resistance,
+                                               capacitance)
         else:
             raise AssertionError('The inputted configuration is not supported')
+        df = RC_simulation(high_freq, low_freq, decades, resistance,
+                           capacitance, circuit_configuration, i)
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
@@ -222,6 +228,7 @@ def sim_randles_file_writer(f_start, f_stop, decades, Rs, R, n, sigma,
         data_file.write('Serial number:, {}'.format(number)+'\n')
         data_file.write('Data Source:, simulation'+'\n')
         data_file.write('Circuit type:, rc'+'\n')
+        data_file.write('Circuit configuration:, N/A' + '\n')
         data_file.write('Circuit elements:, [R={} ohm Rs ={} ohm sigma = {} \
                          ohm Q = {} F]'.format(R, Rs, sigma, Q) +
                         '\n')

@@ -11,8 +11,8 @@ def nyquist_plot(response, axis_limits=None, filename=None, save_image=None,
     # plt.ticklabel_format(style='sci', scilimits=(0, 0))
     ax.xlabel(r'Z$_{real}$ [$\Omega$]')
     ax.ylabel(r'-Z$_{imag}$ [$\Omega$]')
-    ax.set_xlim([0, 500])
-    ax.set_ylim([0, 200])
+    ax.set_xlim([0, 200])
+    ax.set_ylim([0, 100])
     ax.set_aspect('equal')
     # ax.xticks(np.arange(min(),
     #                     max(response['Re_Z [Ohm]'])+1, 10))
