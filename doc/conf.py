@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'eisy.py'
-copyright = '2020, Maria Politi, Abdul Moeez, David Hurt, Mihyun Kim, Yao-yu Li\x1b[D\x1b[D\x1b[D\x1b[Y'
-author = 'Maria Politi, Abdul Moeez, David Hurt, Mihyun Kim, Yao-yu Li\x1b[D\x1b[D\x1b[D\x1b[Y'
+copyright = '2020, Maria Politi, Abdul Moeez, David Hurt, Mihyun Kim, Yao-Yu Li\x1b[D\x1b[D\x1b[D\x1b[Y'
+author = 'Maria Politi, Abdul Moeez, David Hurt, Mihyun Kim, Yao-Yu Li\x1b[D\x1b[D\x1b[D\x1b[Y'
 
 
 # -- General configuration ---------------------------------------------------
