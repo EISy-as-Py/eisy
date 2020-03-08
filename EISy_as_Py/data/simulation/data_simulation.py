@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 import circuits
 
-from PyEIS import *
 from plotting import nyquist_plot
 
 
@@ -103,7 +102,7 @@ def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
                            data.
     """
     # Define the frequency range to be simulated
-    freq_range = freq_gen(high_freq, low_freq, decades)
+    freq_range = circuits.freq_gen(high_freq, low_freq, decades)
     # Obtain the impedance of the RC circuit
     if circuit_configuration == 'series':
         complex_impedance = circuits.cir_RC_series(freq_range[1], resistance,
@@ -155,7 +154,8 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
         data_file.write('Circuit elements:, [R={} ohm C={} F]'
                         .format(resistance, capacitance) + '\n')
         data_file.write('---'+'\n')
-        freq_range = freq_gen(high_freq, low_freq, decades)
+
+        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
         if circuit_configuration == 'series':
             circuit = circuits.cir_RC_series(freq_range[1], resistance,
                                              capacitance)
@@ -165,13 +165,381 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
         else:
             raise AssertionError('The inputted configuration is not supported')
         df = RC_simulation(high_freq, low_freq, decades, resistance,
-                           capacitance, circuit_configuration, i)
+                           capacitance, circuit_configuration)
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
-        plot_nyquist(df, filename, save_image=True)
+        nyquist_plot(df, filename, save_location, save_image=True)
 
     return
+
+
+def RQ_simulation(high_freq, low_freq, decades, resistance,
+                  constant_phase_element, alpha, circuit_configuration):
+    """
+    Function that takes imputs parameters to simulated the impedance response
+    of a circuit composed by a resistor and a capacitor in series over the
+    indicated frequency range.
+
+    Parameters
+    ----------
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
+    resistance : single value (int or float)
+                 Resistance [Ohm]
+    constant_phase_element : single value (int or float)
+                             Constant phase angle [s^(alpha-1)/ohm]
+    alpha : single value -float
+            Exponent of the constant phase element. Should be a value between
+            0 and 1 [-]
+    circuit_configuration : str
+                            string indicating the configuration of the RC
+                            circuit to be simulated
+
+    Output
+    ----------
+    impedance_data_df: pandas.DataFrame
+                           pandas dataframe containing frequency and imepedance
+                           data.
+    """
+    # Define the frequency range to be simulated
+    freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+    # Obtain the impedance of the RC circuit
+    if circuit_configuration == 'series':
+        complex_impedance = circuits.cir_RQ_series(freq_range[1], resistance,
+                                                   constant_phase_element,
+                                                   alpha)
+    elif circuit_configuration == 'parallel':
+        complex_impedance = circuits.cir_RQ_parallel(freq_range[1], resistance,
+                                                     constant_phase_element,
+                                                     alpha)
+    else:
+        raise AssertionError('The inputted configuration is not supported')
+    impedance_data = impedance_array(complex_impedance)
+    impedance_data_df = to_dataframe(freq_range, impedance_data)
+    return impedance_data_df
+
+
+def RQ_file_writer(high_freq, low_freq, decades, resistance,
+                   constant_phase_element, alpha, circuit_configuration,
+                   alteration=None, save_image=None,
+                   save_location='simulation_data/'):
+    """
+    Parameters
+    ----------
+    Output
+    ----------
+    """
+    # Save the simulated data in a csv file to be exported in a database
+    # the format will be in the form of :
+    # yymmdd-serial#_sim_classifier.csv
+    date = time.strftime('%y%m%d', time.localtime())
+    if not os.path.exists(save_location):
+        os.makedirs(save_location)
+    i = 1
+    while i < 9999:
+        number = str(i).zfill(4)
+        if alteration:
+            filename = str('{}-{}_sim_one-{}'.format(date, number, alteration))
+        else:
+            filename = str('{}-{}_sim_one'.format(date, number))
+        if os.path.exists(save_location + filename + '.csv'):
+            i += 1
+        else:
+            break
+    with open(save_location + filename + ".csv", mode='a',
+              newline='') as data_file:
+        data_file.write('Date:, {}'.format(date)+'\n')
+        data_file.write('Serial number:, {}'.format(number)+'\n')
+        data_file.write('Data Source:, simulation'+'\n')
+        data_file.write('Circuit type:, rc'+'\n')
+        data_file.write('Circuit configuration:, {}'
+                        .format(circuit_configuration)+'\n')
+        data_file.write('Circuit elements:, [R={} ohm Q={} [s^(alpha-1)/ohm]\
+                        alpha={}]'.format(resistance,
+                                          constant_phase_element, alpha)
+                        + '\n')
+        data_file.write('---'+'\n')
+
+        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+        if circuit_configuration == 'series':
+            circuit = circuits.cir_RQ_series(freq_range[1], resistance,
+                                             constant_phase_element,
+                                             alpha)
+        elif circuit_configuration == 'parallel':
+            circuit = circuits.cir_RQ_parallel(freq_range[1], resistance,
+                                               constant_phase_element,
+                                               alpha)
+        else:
+            raise AssertionError('The inputted configuration is not supported')
+        df = RQ_simulation(high_freq, low_freq, decades, resistance,
+                           constant_phase_element, alpha,
+                           circuit_configuration)
+        df.to_csv(data_file, mode='a')
+        data_file.close()
+    if save_image:
+        nyquist_plot(df, filename, save_location, save_image=True)
+
+    return
+
+
+def RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
+                      parallel_resistance_1, capacitance_1,
+                      parallel_resistance_2, capacitance_2):
+    """
+    Function that takes imputs parameters to simulated the impedance response
+    of a circuit composed by a resistor and a capacitor in series over the
+    indicated frequency range.
+
+    Parameters
+    ----------
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
+    solution_resistance : single value (int or float)
+                          Solution resistance [ohm]
+    parallel_resistance_1 : single value (int or float)
+                            first combination of resistor in parallel with
+                            capacitor [ohm]
+    capacitance_1 : single value (int or float)
+                    Capacitance of an electrode surface whichi is part of the
+                    first combination of RC in parallel [F]
+    parallel_resistance_2 : single value (int or float)
+                            second combination of resistor in parallel with
+                            capacitor [ohm]
+    capacitance_2 : single value (int or float)
+                    Capacitance of an electrode surface whichi is part of the
+                    second combination of RC in parallel [F]
+
+    Output
+    ----------
+    impedance_data_df: pandas.DataFrame
+                           pandas dataframe containing frequency and imepedance
+                           data.
+    """
+    # Define the frequency range to be simulated
+    freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+    # Obtain the impedance of the RsRCRC circuit
+    complex_impedance = circuits.cir_RsRCRC(freq_range[1],
+                                            sol_resistance,
+                                            parallel_resistance_1,
+                                            capacitance_1,
+                                            parallel_resistance_2,
+                                            capacitance_2)
+    impedance_data = impedance_array(complex_impedance)
+    impedance_data_df = to_dataframe(freq_range, impedance_data)
+    return impedance_data_df
+
+
+def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
+                       parallel_resistance_1, capacitance_1,
+                       parallel_resistance_2, capacitance_2,
+                       alteration=None, save_image=None,
+                       save_location='simulation_data/'):
+    """
+    Parameters
+    ----------
+    solution_resistance : single value (int or float)
+                          Solution resistance [ohm]
+    parallel_resistance_1 : single value (int or float)
+                            first combination of resistor in parallel with
+                            capacitor [ohm]
+    capacitance_1 : single value (int or float)
+                    Capacitance of an electrode surface whichi is part of the
+                    first combination of RC in parallel [F]
+    parallel_resistance_2 : single value (int or float)
+                            second combination of resistor in parallel with
+                            capacitor [ohm]
+    capacitance_2 : single value (int or float)
+                    Capacitance of an electrode surface whichi is part of the
+                    second combination of RC in parallel [F]
+    Output
+    ----------
+    """
+    # Save the simulated data in a csv file to be exported in a database
+    # the format will be in the form of :
+    # yymmdd-serial#_sim_classifier.csv
+    date = time.strftime('%y%m%d', time.localtime())
+    if not os.path.exists(save_location):
+        os.makedirs(save_location)
+    i = 1
+    while i < 9999:
+        number = str(i).zfill(4)
+        if alteration:
+            filename = str('{}-{}_sim_two-{}'.format(date, number, alteration))
+        else:
+            filename = str('{}-{}_sim_two'.format(date, number))
+        if os.path.exists(save_location + filename + '.csv'):
+            i += 1
+        else:
+            break
+    with open(save_location + filename + ".csv", mode='a',
+              newline='') as data_file:
+        data_file.write('Date:, {}'.format(date)+'\n')
+        data_file.write('Serial number:, {}'.format(number)+'\n')
+        data_file.write('Data Source:, simulation'+'\n')
+        data_file.write('Circuit type:, -Rs-(RC)-(RC)-'+'\n')
+        data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm C1={} F\
+                         R2={} ohm C2={} F]'
+                        .format(sol_resistance, parallel_resistace_1,
+                                capacitance_1, parallel_resistace_2,
+                                capacitance_2) + '\n')
+        data_file.write('---'+'\n')
+
+        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+
+        df = RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
+                               parallel_resistace_1, capacitance_1,
+                               parallel_resistace_2, capacitance_2)
+        df.to_csv(data_file, mode='a')
+        data_file.close()
+    if save_image:
+        nyquist_plot(df, filename, save_location, save_image=True)
+
+    return
+
+
+def RsRQRQ_simulation(high_freq, low_freq, decades, solution_resistance,
+                      parallel_resistance_1, constant_phase_element_1,
+                      alpha_1, parallel_resistance_2,
+                      constant_phase_element_2, alpha_2):
+    """
+    Function that takes imputs parameters to simulated the impedance response
+    of a circuit composed by a resistor and a capacitor in series over the
+    indicated frequency range.
+
+    Parameters
+    ----------
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
+    solution_resistance : single value (int or float)
+                          Solution resistance [ohm]
+    parallel_resistance_1 : single value (int or float)
+                            first combination of resistor in parallel with
+                            capacitor [ohm]
+    capacitance_1 : single value (int or float)
+                    Capacitance of an electrode surface whichi is part of the
+                    first combination of RC in parallel [F]
+    parallel_resistance_2 : single value (int or float)
+                            second combination of resistor in parallel with
+                            capacitor [ohm]
+    capacitance_2 : single value (int or float)
+                    Capacitance of an electrode surface whichi is part of the
+                    second combination of RC in parallel [F]
+
+    Output
+    ----------
+    impedance_data_df: pandas.DataFrame
+                           pandas dataframe containing frequency and imepedance
+                           data.
+    """
+    # Define the frequency range to be simulated
+    freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+    # Obtain the impedance of the RsRCRC circuit
+    complex_impedance = circuits.cir_RsRQRQ(freq_range[1],
+                                            solution_resistance,
+                                            parallel_resistance_1,
+                                            constant_phase_element_1,
+                                            alpha_1,
+                                            parallel_resistance_2,
+                                            constant_phase_element_2,
+                                            alpha_2)
+    impedance_data = impedance_array(complex_impedance)
+    impedance_data_df = to_dataframe(freq_range, impedance_data)
+    return impedance_data_df
+
+
+def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
+                       parallel_resistance_1, constant_phase_element_1,
+                       alpha_1, parallel_resistance_2,
+                       constant_phase_element_2, alpha_2,
+                       alteration=None, save_image=None,
+                       save_location='simulation_data/'):
+    """
+    Parameters
+    ----------
+    solution_resistance : single value (int or float)
+                          Solution resistance [ohm]
+    parallel_resistance_1 : single value (int or float)
+                            first combination of resistor in parallel with
+                            constant phase element [ohm]
+    constant_phase_element_1 : single value (int or float)
+                               First constant phas angle [s^(alpha-1)/ohm]
+    alpha_1 : single value -float
+              Exponent of the first constant phase element.
+              Should be a value between 0 and 1 [-]
+    parallel_resistance_2 : single value (int or float)
+                            Second combination of resistor in parallel with
+                            constant phase element [ohm]
+    constant_phase_element_2 : single value (int or float)
+                               Second Constant phas angle [s^(alpha-1)/ohm]
+    alpha_2 : single value -float
+              Exponent of the second constant phase element.
+              Should be a value between 0 and 1 [-]
+    Output
+    ----------
+    """
+    # Save the simulated data in a csv file to be exported in a database
+    # the format will be in the form of :
+    # yymmdd-serial#_sim_classifier.csv
+    date = time.strftime('%y%m%d', time.localtime())
+    if not os.path.exists(save_location):
+        os.makedirs(save_location)
+    i = 1
+    while i < 9999:
+        number = str(i).zfill(4)
+        if alteration:
+            filename = str('{}-{}_sim_two-{}'.format(date, number, alteration))
+        else:
+            filename = str('{}-{}_sim_two'.format(date, number))
+        if os.path.exists(save_location + filename + '.csv'):
+            i += 1
+        else:
+            break
+    with open(save_location + filename + ".csv", mode='a',
+              newline='') as data_file:
+        data_file.write('Date:, {}'.format(date)+'\n')
+        data_file.write('Serial number:, {}'.format(number)+'\n')
+        data_file.write('Data Source:, simulation'+'\n')
+        data_file.write('Circuit type:, -Rs-(RQ)-(RQ)-'+'\n')
+        data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm Q1={}\
+                         [s^(alpha-1)/ohm] alpha_1={} R2={} ohm Q2={}\
+                         [s^(alpha-1)/ohm] alpha_2={}]'
+                        .format(solution_resistance, parallel_resistance_1,
+                                constant_phase_element_1, alpha_1,
+                                parallel_resistance_2,
+                                constant_phase_element_1, alpha_2) + '\n')
+        data_file.write('---'+'\n')
+
+        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+
+        df = RsRQRQ_simulation(high_freq, low_freq, decades,
+                               solution_resistance,
+                               parallel_resistance_1, constant_phase_element_1,
+                               alpha_1, parallel_resistance_2,
+                               constant_phase_element_2, alpha_2)
+        df.to_csv(data_file, mode='a')
+        data_file.close()
+    if save_image:
+        nyquist_plot(df, filename, save_location, save_image=True)
+
+    return
+
+# Need to fix the following  functions before using them
 
 
 def randles(f_start, f_stop, decades, Rs, R, n, sigma, Q):
@@ -182,7 +550,7 @@ def randles(f_start, f_stop, decades, Rs, R, n, sigma, Q):
     ----------
     """
     # Define the frequency range to be simulated
-    f_range = freq_gen(f_start, f_stop, decades)
+    f_range = circuits.freq_gen(f_start, f_stop, decades)
     # Obtain the impedance of the RC circuit
     Randles = circuits.cir_Randles_simplified(f_range[1], Rs, R, n, sigma, Q)
     # Separate the impedance into its real and imaginary components
@@ -233,6 +601,6 @@ def sim_randles_file_writer(f_start, f_stop, decades, Rs, R, n, sigma,
                          ohm Q = {} F]'.format(R, Rs, sigma, Q) +
                         '\n')
         data_file.write('---'+'\n')
-        df = randles(f_start, f_stop, decades, Rs, R, n, sigma, Q)
+        df = circuits.randles(f_start, f_stop, decades, Rs, R, n, sigma, Q)
         df.to_csv(data_file, mode='a')
         data_file.close()

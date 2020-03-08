@@ -133,17 +133,19 @@ def cir_RQ_parallel(angular_freq, resistance='none',
     if (resistance, constant_phase_element, alpha, peak_frequency) == 'none':
         raise AssertionError('No circuit element value was provided. Cannot\
                               compute the impedance response')
-    elif (resistance, capacitance, constant_phase_element, alpha) == 'none':
+    elif (resistance, constant_phase_element, alpha) == 'none':
         raise AssertionError('Not enough circuit element values were provided.\
                               Cannot compute the impedance response')
-    elif resistor == 'none':
-        resistor = (1/(constant_phase_element*(2*np.pi*peak_frequency)**alpha))
+    elif resistance == 'none':
+        resistance = (1/(constant_phase_element*(2*np.pi*peak_frequency
+                                                 ) ** alpha))
     elif constant_phase_element == 'none':
-        constant_phase_element = (1/(resistor*(2*np.pi*peak_frequency)**alpha))
+        constant_phase_element = (1/(resistance*(2*np.pi*peak_frequency
+                                                 ) ** alpha))
     elif alpha == 'none':
         alpha = np.log(constant_phase_element *
-                       resistor)/np.log(1/(2*np.pi * peak_frequency))
-    Z_complex = (resistor/(1+resistor*constant_phase_element*(
+                       resistance)/np.log(1/(2*np.pi * peak_frequency))
+    Z_complex = (resistance/(1+resistance*constant_phase_element*(
                  angular_freq*1j)**alpha))
     return Z_complex
 
@@ -243,52 +245,11 @@ def cir_RsRC(angular_freq, solution_resistance,
     return Z_complex
 
 
-def cir_Randles_simplified(angular_freq, solution_resistance,
-                           parallel_resistance, alpha, sigma,
-                           Q='none', fs='none'):
-    '''
-    Return the impedance of a Randles circuit with a simplified Warburg element
-    This form of the Randles circuit is only meant for to simulate
-    semi-infinate linear diffusion
-    String representation for this circuit: -Rs-(Q-(RW)-)-
-
-    Parameters
-    ----------
-    angular_freq : array-like
-                   Angular frequency [1/s]
-    solution_resistance : single value (int or float)
-                          Solution resistance [ohm]
-    parallel_resistance : single value (int or float)
-                          resistance of the element in parallel with
-                          the capacitor [ohm]
-    capacitance : single value (int or float)
-                  Capacitance of an electrode surface [F]
-    [[Need to add new parameters!!!!]]
-    Output
-    ---------
-    Z_complex : array-like
-                impedance response of the circuit under investigation [Ohm]
-    '''
-    circuit = '-Rs-(Q-(RW)-)-'
-    if R == 'none':
-        R = (1/(Q*(2*np.pi*fs)**n))
-    elif Q == 'none':
-        Q = (1/(R*(2*np.pi*fs)**n))
-    elif n == 'none':
-        n = np.log(Q*R)/np.log(1/(2*np.pi*fs))
-
-    Z_Q = 1/(Q*(w*1j)**n)
-    Z_R = R
-    Z_w = sigma*(w**(-0.5))-1j*sigma*(w**(-0.5))
-
-    return Rs + 1/(1/Z_Q + 1/(Z_R+Z_w))
-
-
 def cir_RsRQRQ(angular_freq, solution_resistance='none',
-               paralle_resistance_1='none', constant_phase_element_1='none',
-               alpha_1='none', peak_frequency_1='none',
-               paralle_resistance_2='none', constant_phase_element_2='none',
-               alpha_2='none', peak_frequency_2='none'):
+               parallel_resistance_1='none', constant_phase_element_1='none',
+               alpha_1='none', parallel_resistance_2='none',
+               constant_phase_element_2='none', alpha_2='none',
+               peak_frequency_1='none', peak_frequency_2='none'):
     '''
     Function that simulates the impedance response of a solution resistor in
     series with two sets of a resistor in parallel with a constant phase
@@ -328,13 +289,13 @@ def cir_RsRQRQ(angular_freq, solution_resistance='none',
     '''
     circuit = '-Rs-(RQ)-(RQ)-'
 
-    if (parallel_resistance_1, constant_phase_element_1, peak_frequency_1) or \
-       (parallel_resistance_2, constant_phase_element_2,
+    if (parallel_resistance_1, constant_phase_element_1, peak_frequency_1,
+       parallel_resistance_2, constant_phase_element_2,
        peak_frequency_2) == 'none':
         raise AssertionError('No circuit element value was provided. Cannot\
                               compute the impedance response')
-    elif (parallel_resistance_1, constant_phase_element_1) or \
-         (parallel_resistance_2, constant_phase_element_2) == 'none':
+    elif (parallel_resistance_1, constant_phase_element_1,
+          parallel_resistance_2, constant_phase_element_2) == 'none':
         raise AssertionError('Not enough circuit element values were provided.\
                               Cannot compute the impedance response')
 
@@ -352,10 +313,10 @@ def cir_RsRQRQ(angular_freq, solution_resistance='none',
                                     (2*np.pi*peak_frequency_2)**alpha_2))
 
     Z_parallel_1 = (parallel_resistance_1 /
-                    (1 + parallel_resistance_1*constant_phase_element_1
+                    (1+parallel_resistance_1*constant_phase_element_1
                      * (angular_freq*1j)**alpha_1))
-    Z_parallel_1 = (parallel_resistance_2 /
-                    (1 + parallel_resistance_2*constant_phase_element_2
+    Z_parallel_2 = (parallel_resistance_2 /
+                    (1+parallel_resistance_2*constant_phase_element_2
                      * (angular_freq*1j)**alpha_2))
     Z_complex = solution_resistance + Z_parallel_1 + Z_parallel_2
 
@@ -364,8 +325,8 @@ def cir_RsRQRQ(angular_freq, solution_resistance='none',
 
 def cir_RsRCRC(angular_freq, solution_resistance,
                parallel_resistance_1='none', capacitance_1='none',
-               peak_frequency_1='none', parallel_resistance_2='none',
-               capacitance_1='none', peak_frequency_2='none'):
+               parallel_resistance_2='none', capacitance_2='none',
+               peak_frequency_1='none', peak_frequency_2='none'):
     '''
     Function that simulates the impedance response of a solution resistor in
     series with two sets of a resistor in parallel with a capacitor.
@@ -384,16 +345,16 @@ def cir_RsRCRC(angular_freq, solution_resistance,
     capacitance_1 : single value (int or float)
                     Capacitance of an electrode surface whichi is part of the
                     first combination of RC in parallel [F]
-    peak_frequency_1 : single value (int or float)
-                     Peak frequency of the first parallel RC circuit [Hz]
     parallel_resistance_2 : single value (int or float)
                             second combination of resistor in parallel with
                             capacitor [ohm]
     capacitance_2 : single value (int or float)
                     Capacitance of an electrode surface whichi is part of the
                     second combination of RC in parallel [F]
+    peak_frequency_1 : single value (int or float)
+                       Peak frequency of the first parallel RC circuit [Hz]
     peak_frequency_2 : single value (int or float)
-                     Peak frequency of the second parallel RC circuit [Hz]
+                       Peak frequency of the second parallel RC circuit [Hz]
     Output
     ---------
     Z_complex : array-like
@@ -401,14 +362,14 @@ def cir_RsRCRC(angular_freq, solution_resistance,
     '''
     circuit = '-Rs-(RC)-(RC)-'
 
-    if (parallel_resistance_1, capacitance_1, peak_frequency_1) or \
-       (parallel_resistance_2, capacitance_2, peak_frequency_2) == 'none':
+    if (parallel_resistance_1, capacitance_1, peak_frequency_1,
+       parallel_resistance_2, capacitance_2, peak_frequency_2) == 'none':
         raise AssertionError('No circuit element value was provided. Cannot\
                               compute the impedance response')
-    elif (parallel_resistance_1, capacitance_1) or \
-         (parallel_resistance_2, capacitance_2) == 'none':
+    elif (parallel_resistance_1, capacitance_1,
+          parallel_resistance_2, capacitance_2) == 'none':
         raise AssertionError('Not enough circuit element values were provided.\
-                              Cannot compute the impedance response')
+Cannot compute the impedance response')
 
     if parallel_resistance_1 == 'none':
         parallel_resistance_1 = (1/(capacitance_1*(2*np.pi *
@@ -423,9 +384,50 @@ def cir_RsRCRC(angular_freq, solution_resistance,
         capacitance_2 = (1/(parallel_resistance_2*(2*np.pi *
                                                    peak_frequency_2)))
 
-    Z_parallel_1 = parallel_resistance_1/(1 + parallel_resistance_1 *
-                                          capacitance_1*(angular_freq*1j))
-    Z_parallel_2 = parallel_resistance_2/(1 + parallel_resistance_2 *
-                                          capacitance_2*(angular_freq*1j))
+    Z_parallel_1 = (parallel_resistance_1/(1 + parallel_resistance_1 *
+                                           capacitance_1*(angular_freq*1j)))
+    Z_parallel_2 = (parallel_resistance_2/(1 + parallel_resistance_2 *
+                                           capacitance_2*(angular_freq*1j)))
     Z_complex = solution_resistance + Z_parallel_1 + Z_parallel_2
     return Z_complex
+
+
+def cir_Randles_simplified(angular_freq, solution_resistance,
+                           parallel_resistance, alpha, sigma,
+                           Q='none', fs='none'):
+    '''
+    Return the impedance of a Randles circuit with a simplified Warburg element
+    This form of the Randles circuit is only meant for to simulate
+    semi-infinate linear diffusion
+    String representation for this circuit: -Rs-(Q-(RW)-)-
+
+    Parameters
+    ----------
+    angular_freq : array-like
+                   Angular frequency [1/s]
+    solution_resistance : single value (int or float)
+                          Solution resistance [ohm]
+    parallel_resistance : single value (int or float)
+                          resistance of the element in parallel with
+                          the capacitor [ohm]
+    capacitance : single value (int or float)
+                  Capacitance of an electrode surface [F]
+    [[Need to add new parameters!!!!]]
+    Output
+    ---------
+    Z_complex : array-like
+                impedance response of the circuit under investigation [Ohm]
+    '''
+    circuit = '-Rs-(Q-(RW)-)-'
+    if R == 'none':
+        R = (1/(Q*(2*np.pi*fs)**n))
+    elif Q == 'none':
+        Q = (1/(R*(2*np.pi*fs)**n))
+    elif n == 'none':
+        n = np.log(Q*R)/np.log(1/(2*np.pi*fs))
+
+    Z_Q = 1/(Q*(w*1j)**n)
+    Z_R = R
+    Z_w = sigma*(w**(-0.5))-1j*sigma*(w**(-0.5))
+
+    return Rs + 1/(1/Z_Q + 1/(Z_R+Z_w))
