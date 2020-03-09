@@ -714,7 +714,6 @@ def randles(f_start, f_stop, decades, Rs, R, n, sigma, Q):
     # Separate the impedance into its real and imaginary components
     impedance_data = impedance_array(complex_impedance)
     impedance_data_df = to_dataframe(freq_range, impedance_data)
-    
     return impedance_data_df
 
 
