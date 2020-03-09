@@ -23,4 +23,5 @@ def added_noise(dataframe, noisescale=0.4):
     return dataframe
 
 
-def noise_to_dataframe(dataframe, noisescale=0.4)
+def noise_to_dataframe(dataframe, noisescale=0.4):
+    return
