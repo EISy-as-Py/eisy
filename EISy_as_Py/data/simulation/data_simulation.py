@@ -745,7 +745,9 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
 # Need to fix the following  functions before using them
 
 
-def randles_simulation(f_start, f_stop, decades, Rs, R, n, sigma, Q):
+def randles_simulation(high_freq, low_freq, decades, solution_resistance,
+                       parallel_resistace_1, alpha='none',
+                       sigma='none', constant_phase_element='none'):
     """
     Parameters
     ----------
@@ -753,9 +755,13 @@ def randles_simulation(f_start, f_stop, decades, Rs, R, n, sigma, Q):
     ----------
     """
     # Define the frequency range to be simulated
-    freq_range = circuits.freq_gen(f_start, f_stop, decades)
+    freq_range = circuits.freq_gen(high_freq, low_freq, decades)
     # Obtain the impedance of the RC circuit
-    complex_impedance = circuits.cir_Randles_simplified(freq_range[1], Rs, R, n, sigma, Q)
+    complex_impedance = circuits.cir_Randles_simplified(freq_range[1],
+                                                        solution_resistance,
+                                                        parallel_resistace_1,
+                                                        alpha, sigma,
+                                                        constant_phase_element)
     # Separate the impedance into its real and imaginary components
     impedance_data = impedance_array(complex_impedance)
     impedance_data_df = to_dataframe(freq_range, impedance_data)
@@ -763,9 +769,9 @@ def randles_simulation(f_start, f_stop, decades, Rs, R, n, sigma, Q):
 
 
 def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
-                            parallel_resistance_1, constant_phase_element_1,
-                            alpha_1, sigma_1, alteration=None, save_image=None,
-                            save_location='simulation_data/'):
+                            parallel_resistance, alpha=1, sigma='none',
+                            constant_phase_element='none', alteration=None,
+                            save_image=None, save_location='simulation_data/'):
     """
     Function that returns a .csv file containing metadata and simulated data
     of a resistor in series wihta two parallel circuits.
@@ -852,9 +858,9 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
         data_file.write('Circuit type:, -Rs-(Cdl-(Rct-Zw))-'+'\n')
         data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm Q1={}\
 [s^(alpha-1)/ohm] alpha_1={} ohm sigma={}'
-                        .format(solution_resistance, parallel_resistance_1,
-                                constant_phase_element_1, alpha_1,
-                                sigma_1) + '\n')
+                        .format(solution_resistance, parallel_resistance,
+                                constant_phase_element, alpha,
+                                sigma) + '\n')
         if alteration:
             data_file.write('Alteration :, {}'.format(alteration))
         else:
@@ -865,9 +871,8 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
 
         df = randles_simulation(high_freq, low_freq, decades,
                                 solution_resistance,
-                                parallel_resistance_1,
-                                constant_phase_element_1,
-                                alpha_1, sigma_1)
+                                parallel_resistance,
+                                alpha, sigma, constant_phase_element)
 
         if alteration:
             df = alterations.added_noise(df, 0.4)
