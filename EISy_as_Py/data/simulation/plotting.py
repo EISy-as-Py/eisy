@@ -28,7 +28,7 @@ rcParams['lines.markersize'] = 4
 rcParams['axes.unicode_minus'] = True
 
 
-def nyquist_plot(response, filename=None, alteration=None, save_location=None,
+def nyquist_plot(response, filename=None, save_location=None, alteration=None, 
                  save_image=None, **kwargs):
     """
     Funciton that returns the nyquist plot of an impedance response.

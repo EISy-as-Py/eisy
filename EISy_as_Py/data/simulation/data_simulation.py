@@ -2,7 +2,7 @@ import csv
 import os
 import time
 
-import alteration
+import alterations
 import numpy as np
 import pandas as pd
 import circuits
@@ -213,7 +213,7 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
         df = RC_simulation(high_freq, low_freq, decades, resistance,
                            capacitance, circuit_configuration)
         if alteration:
-            df = alteration.added_noise(df, 0.4)
+            df = alterations.added_noise(df, 0.4)
         else:
             df = df
         df.to_csv(data_file, mode='a')
@@ -378,7 +378,7 @@ alpha={}]'.format(resistance, constant_phase_element, alpha)
                            constant_phase_element, alpha,
                            circuit_configuration)
         if alteration:
-            df = alteration.added_noise(df, 0.4)
+            df = alterations.added_noise(df, 0.4)
         else:
             df = df
         df.to_csv(data_file, mode='a')
@@ -547,7 +547,7 @@ R2={} ohm C2={} F]'
                                parallel_resistace_1, capacitance_1,
                                parallel_resistace_2, capacitance_2)
         if alteration:
-            df = alteration.added_noise(df, 0.4)
+            df = alterations.added_noise(df, 0.4)
         else:
             df = df
         df.to_csv(data_file, mode='a')
@@ -729,9 +729,9 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                                alpha_1, parallel_resistance_2,
                                constant_phase_element_2, alpha_2)
         if alteration:
-            df = alteration.added_noise(df, 0.4)
+            df = alterations.added_noise(df, 0.4)
         else:
-            df =df
+            df = df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
@@ -870,7 +870,7 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
                                 alpha_1, sigma_1)
 
         if alteration:
-            df = alteration.added_noise(df, 0.4)
+            df = alterations.added_noise(df, 0.4)
         else:
             df = df
         df.to_csv(data_file, mode='a')
