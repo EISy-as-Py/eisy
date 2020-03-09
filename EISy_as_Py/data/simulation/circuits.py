@@ -270,8 +270,6 @@ def cir_RsRQRQ(angular_freq, solution_resistance='none',
     alpha_1 : single value -float
               Exponent of the first constant phase element.
               Should be a value between 0 and 1 [-]
-    peak_frequency_1 : single value (int or float)
-                     Peak frequency of the first parallel RQ circuit [Hz]
     parallel_resistance_2 : single value (int or float)
                             Second combination of resistor in parallel with
                             constant phase element [ohm]
@@ -280,6 +278,8 @@ def cir_RsRQRQ(angular_freq, solution_resistance='none',
     alpha_2 : single value -float
               Exponent of the second constant phase element.
               Should be a value between 0 and 1 [-]
+    peak_frequency_1 : single value (int or float)
+                     Peak frequency of the first parallel RQ circuit [Hz]
     peak_frequency_2 : single value (int or float)
                        Peak frequency of the second parallel RQ circuit [Hz]
     Output

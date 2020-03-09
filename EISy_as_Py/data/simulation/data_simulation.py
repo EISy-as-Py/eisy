@@ -121,10 +121,52 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
                    circuit_configuration, alteration=None, save_image=None,
                    save_location='simulation_data/'):
     """
+    Function that returns a .csv file containing metadata and simulated data
+    of a resistor and a capacitor in two possible configuration: series or
+    parallel.
+    The filename contains a serial number composed by the date the funciton was
+    run and the number of simuation for that day. If a file containing the
+    output plot of the simulation is created, it will have the same filename
+    to allow for fast matching of the visual and table representation of the
+    same dataset.
+
     Parameters
     ----------
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
+    resistance : single value (int or float)
+                 Solution resistance [ohm]
+    capacitance : single value (int or float)
+                  Electrode capacitance [F]
+    circuit_configuration : str
+                            string containing the circuit configuration to be
+                            simulated. Allowed configurations are 'series'or
+                            'parallel'. [-]
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    save_image : True/False
+                 Option to save the output of the simuation as a plot in a .png
+                 file format. The filename used for the file will be the same
+                 as the raw data file created in this function.
+    save_location : str
+                    String containing the path of the forlder to use when
+                    saving the data and the image. Default option is a
+                    folder called  'simulation_data' which will be created
+                    in the current working directory.
     Output
     ----------
+    *.csv : a .csv file containing metadata and raw data of the RC simulation.
+    *.png : a .png file containing the plot of the simuated data. Default
+            plot is a nyquist plot.
+
     """
     # Save the simulated data in a csv file to be exported in a database
     # the format will be in the form of :
@@ -148,7 +190,7 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
         data_file.write('Date:, {}'.format(date)+'\n')
         data_file.write('Serial number:, {}'.format(number)+'\n')
         data_file.write('Data Source:, simulation'+'\n')
-        data_file.write('Circuit type:, rc'+'\n')
+        data_file.write('Circuit type:, -RC-'+'\n')
         data_file.write('Circuit configuration:, {}'
                         .format(circuit_configuration)+'\n')
         data_file.write('Circuit elements:, [R={} ohm C={} F]'
@@ -230,10 +272,50 @@ def RQ_file_writer(high_freq, low_freq, decades, resistance,
                    alteration=None, save_image=None,
                    save_location='simulation_data/'):
     """
+    Function that returns a .csv file containing metadata and simulated data
+    of a resistor and a constant phase element in two possible configuration:
+    series or parallel.
+    The filename contains a serial number composed by the date the funciton was
+    run and the number of simuation for that day. If a file containing the
+    output plot of the simulation is created, it will have the same filename
+    to allow for fast matching of the visual and table representation of the
+    same dataset.
+
     Parameters
     ----------
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
+    resistance : single value (int or float)
+                 Solution resistance [Ohm]
+    constant_phase_element : single value (int or float)
+                             Constant phase angle [s^(alpha-1)/ohm]
+    alpha : single value -float
+            Exponent of the constant phase element. Should be a value between
+            0 and 1 [-]
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    save_image : True/False
+                 Option to save the output of the simuation as a plot in a .png
+                 file format. The filename used for the file will be the same
+                 as the raw data file created in this function.
+    save_location : str
+                    String containing the path of the forlder to use when
+                    saving the data and the image. Default option is a
+                    folder called  'simulation_data' which will be created
+                    in the current working directory.
     Output
     ----------
+    *.csv : a .csv file containing metadata and raw data of the RC simulation.
+    *.png : a .png file containing the plot of the simuated data. Default
+            plot is a nyquist plot.
     """
     # Save the simulated data in a csv file to be exported in a database
     # the format will be in the form of :
@@ -261,8 +343,7 @@ def RQ_file_writer(high_freq, low_freq, decades, resistance,
         data_file.write('Circuit configuration:, {}'
                         .format(circuit_configuration)+'\n')
         data_file.write('Circuit elements:, [R={} ohm Q={} [s^(alpha-1)/ohm]\
-                        alpha={}]'.format(resistance,
-                                          constant_phase_element, alpha)
+alpha={}]'.format(resistance, constant_phase_element, alpha)
                         + '\n')
         data_file.write('---'+'\n')
 
@@ -293,8 +374,10 @@ def RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
                       parallel_resistance_2, capacitance_2):
     """
     Function that takes imputs parameters to simulated the impedance response
-    of a circuit composed by a resistor and a capacitor in series over the
-    indicated frequency range.
+    of a circuit composed by a resistor in series wihta two parallel circuits.
+    Each circuit is composed by a resistor and a capacitor. The impedance
+    response of the overall circuit is investigated over the indicated
+    frequency range.
 
     Parameters
     ----------
@@ -346,8 +429,26 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
                        alteration=None, save_image=None,
                        save_location='simulation_data/'):
     """
+    Function that returns a .csv file containing metadata and simulated data
+    of a resistor in series wihta two parallel circuits.
+    Each circuit is composed by a resistor and a capacitor. The impedance
+    response of the overall circuit is investigated over the indicated
+    frequency range.
+    The filename contains a serial number composed by the date the funciton was
+    run and the number of simuation for that day. If a file containing the
+    output plot of the simulation is created, it will have the same filename
+    to allow for fast matching of the visual and table representation of the
+    same dataset.
+
     Parameters
     ----------
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
     solution_resistance : single value (int or float)
                           Solution resistance [ohm]
     parallel_resistance_1 : single value (int or float)
@@ -362,8 +463,25 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
     capacitance_2 : single value (int or float)
                     Capacitance of an electrode surface whichi is part of the
                     second combination of RC in parallel [F]
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    save_image : True/False
+                 Option to save the output of the simuation as a plot in a .png
+                 file format. The filename used for the file will be the same
+                 as the raw data file created in this function.
+    save_location : str
+                    String containing the path of the forlder to use when
+                    saving the data and the image. Default option is a
+                    folder called  'simulation_data' which will be created
+                    in the current working directory.
     Output
     ----------
+    *.csv : a .csv file containing metadata and raw data of the RC simulation.
+    *.png : a .png file containing the plot of the simuated data. Default
+            plot is a nyquist plot.
     """
     # Save the simulated data in a csv file to be exported in a database
     # the format will be in the form of :
@@ -375,9 +493,10 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
     while i < 9999:
         number = str(i).zfill(4)
         if alteration:
-            filename = str('{}-{}_sim_two-{}'.format(date, number, alteration))
+            filename = str('{}-{}_sim_spread-{}'.format(date,
+                                                        number, alteration))
         else:
-            filename = str('{}-{}_sim_two'.format(date, number))
+            filename = str('{}-{}_sim_spread'.format(date, number))
         if os.path.exists(save_location + filename + '.csv'):
             i += 1
         else:
@@ -389,7 +508,7 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
         data_file.write('Data Source:, simulation'+'\n')
         data_file.write('Circuit type:, -Rs-(RC)-(RC)-'+'\n')
         data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm C1={} F\
-                         R2={} ohm C2={} F]'
+R2={} ohm C2={} F]'
                         .format(sol_resistance, parallel_resistace_1,
                                 capacitance_1, parallel_resistace_2,
                                 capacitance_2) + '\n')
@@ -430,16 +549,20 @@ def RsRQRQ_simulation(high_freq, low_freq, decades, solution_resistance,
                           Solution resistance [ohm]
     parallel_resistance_1 : single value (int or float)
                             first combination of resistor in parallel with
-                            capacitor [ohm]
-    capacitance_1 : single value (int or float)
-                    Capacitance of an electrode surface whichi is part of the
-                    first combination of RC in parallel [F]
+                            constant phase element [ohm]
+    constant_phase_element_1 : single value (int or float)
+                               First constant phas angle [s^(alpha-1)/ohm]
+    alpha_1 : single value -float
+              Exponent of the first constant phase element.
+              Should be a value between 0 and 1 [-]
     parallel_resistance_2 : single value (int or float)
-                            second combination of resistor in parallel with
-                            capacitor [ohm]
-    capacitance_2 : single value (int or float)
-                    Capacitance of an electrode surface whichi is part of the
-                    second combination of RC in parallel [F]
+                            Second combination of resistor in parallel with
+                            constant phase element [ohm]
+    constant_phase_element_2 : single value (int or float)
+                               Second Constant phas angle [s^(alpha-1)/ohm]
+    alpha_2 : single value -float
+              Exponent of the second constant phase element.
+              Should be a value between 0 and 1 [-]
 
     Output
     ----------
@@ -470,8 +593,27 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                        alteration=None, save_image=None,
                        save_location='simulation_data/'):
     """
+    Function that returns a .csv file containing metadata and simulated data
+    of a resistor in series wihta two parallel circuits.
+    Each parallel circuit is composed by a resistor and a constant phase
+    element. The impedance response of the overall circuit is investigated
+    over the indicated frequency range.
+
+    The filename contains a serial number composed by the date the funciton was
+    run and the number of simuation for that day. If a file containing the
+    output plot of the simulation is created, it will have the same filename
+    to allow for fast matching of the visual and table representation of the
+    same dataset.
+
     Parameters
     ----------
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
     solution_resistance : single value (int or float)
                           Solution resistance [ohm]
     parallel_resistance_1 : single value (int or float)
@@ -490,8 +632,25 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
     alpha_2 : single value -float
               Exponent of the second constant phase element.
               Should be a value between 0 and 1 [-]
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    save_image : True/False
+                 Option to save the output of the simuation as a plot in a .png
+                 file format. The filename used for the file will be the same
+                 as the raw data file created in this function.
+    save_location : str
+                    String containing the path of the forlder to use when
+                    saving the data and the image. Default option is a
+                    folder called  'simulation_data' which will be created
+                    in the current working directory.
     Output
     ----------
+    *.csv : a .csv file containing metadata and raw data of the RC simulation.
+    *.png : a .png file containing the plot of the simuated data. Default
+            plot is a nyquist plot.
     """
     # Save the simulated data in a csv file to be exported in a database
     # the format will be in the form of :
@@ -517,8 +676,7 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
         data_file.write('Data Source:, simulation'+'\n')
         data_file.write('Circuit type:, -Rs-(RQ)-(RQ)-'+'\n')
         data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm Q1={}\
-                         [s^(alpha-1)/ohm] alpha_1={} R2={} ohm Q2={}\
-                         [s^(alpha-1)/ohm] alpha_2={}]'
+[s^(alpha-1)/ohm] alpha_1={} R2={} ohm Q2={} [s^(alpha-1)/ohm] alpha_2={}]'
                         .format(solution_resistance, parallel_resistance_1,
                                 constant_phase_element_1, alpha_1,
                                 parallel_resistance_2,
