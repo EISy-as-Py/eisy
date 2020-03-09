@@ -11,8 +11,9 @@ from plotting import nyquist_plot
 
 
 def to_dataframe(freq_range, impedance_array):
-    """
-    Gunction that creates a dataframe containing impedance data and the
+    """ Function returning a df with impedance and frequency data
+
+    Function that creates a dataframe containing impedance data and the
     frequency range used to determine the impedance respose.
 
     Parameters
@@ -23,7 +24,7 @@ def to_dataframe(freq_range, impedance_array):
                 freq_range[0]- the frequency response [Hz]
                 freq_range[1]- the angualr frequncy [1/s]
 
-    Output
+    Returns
     ----------
     impedance_response_df: pandas.DataFrame
                            pandas dataframe containing frequency and imepedance
@@ -43,8 +44,9 @@ def to_dataframe(freq_range, impedance_array):
 
 
 def impedance_array(complex_impedance):
-    '''
-    Function that breaks the complex impedance in its rela and Imaginary
+    ''' Function that breaks the impedance in its real and imaginary parts
+
+    Function that breaks the complex impedance in its real and imaginary
     components. It also calculates the magnitude of the impedance, as well
     as its phase angle.
 
@@ -53,7 +55,7 @@ def impedance_array(complex_impedance):
     complez_impedance: array-like
                        the impedance in its complex form [ohm]
 
-    Output
+    Returns
     ----------
     impedance[0] : The complex form of the impedance (input)[ohm]
     impedance[1] : Real part of the impedance [ohm]
@@ -74,7 +76,8 @@ def impedance_array(complex_impedance):
 
 def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
                   circuit_configuration):
-    """
+    """ Function that returns a df containing simualated impedance data
+
     Function that takes imputs parameters to simulated the impedance response
     of a circuit composed by a resistor and a capacitor in series over the
     indicated frequency range.
@@ -96,7 +99,7 @@ def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
                             string indicating the configuration of the RC
                             circuit to be simulated
 
-    Output
+    Returns
     ----------
     impedance_data_df: pandas.DataFrame
                            pandas dataframe containing frequency and imepedance
@@ -121,13 +124,14 @@ def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
 def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
                    circuit_configuration, alteration=None, save_image=None,
                    save_location='simulation_data/'):
-    """
+    """ Function that returns a .csv file with metadata and simulated data
+
     Function that returns a .csv file containing metadata and simulated data
     of a resistor and a capacitor in two possible configuration: series or
     parallel.
     The filename contains a serial number composed by the date the funciton was
     run and the number of simuation for that day. If a file containing the
-    output plot of the simulation is created, it will have the same filename
+    Output plot of the simulation is created, it will have the same filename
     to allow for fast matching of the visual and table representation of the
     same dataset.
 
@@ -162,7 +166,7 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
                     saving the data and the image. Default option is a
                     folder called  'simulation_data' which will be created
                     in the current working directory.
-    Output
+    Returns
     ----------
     *.csv : a .csv file containing metadata and raw data of the RC simulation.
     *.png : a .png file containing the plot of the simuated data. Default
@@ -230,7 +234,8 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
 
 def RQ_simulation(high_freq, low_freq, decades, resistance,
                   constant_phase_element, alpha, circuit_configuration):
-    """
+    """ Function that returns a df containing simualated impedance data
+
     Function that takes imputs parameters to simulated the impedance response
     of a circuit composed by a resistor and a capacitor in series over the
     indicated frequency range.
@@ -255,7 +260,7 @@ def RQ_simulation(high_freq, low_freq, decades, resistance,
                             string indicating the configuration of the RC
                             circuit to be simulated
 
-    Output
+    Returns
     ----------
     impedance_data_df: pandas.DataFrame
                            pandas dataframe containing frequency and imepedance
@@ -283,7 +288,8 @@ def RQ_file_writer(high_freq, low_freq, decades, resistance,
                    constant_phase_element, alpha, circuit_configuration,
                    alteration=None, save_image=None,
                    save_location='simulation_data/'):
-    """
+    """ Function that returns a .csv file with metadata and simulated data
+
     Function that returns a .csv file containing metadata and simulated data
     of a resistor and a constant phase element in two possible configuration:
     series or parallel.
@@ -323,7 +329,7 @@ def RQ_file_writer(high_freq, low_freq, decades, resistance,
                     saving the data and the image. Default option is a
                     folder called  'simulation_data' which will be created
                     in the current working directory.
-    Output
+    Returns
     ----------
     *.csv : a .csv file containing metadata and raw data of the RC simulation.
     *.png : a .png file containing the plot of the simuated data. Default
@@ -395,7 +401,8 @@ alpha={}]'.format(resistance, constant_phase_element, alpha)
 def RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
                       parallel_resistance_1, capacitance_1,
                       parallel_resistance_2, capacitance_2):
-    """
+    """ Function that returns a df containing simualated impedance data
+
     Function that takes imputs parameters to simulated the impedance response
     of a circuit composed by a resistor in series wihta two parallel circuits.
     Each circuit is composed by a resistor and a capacitor. The impedance
@@ -426,7 +433,7 @@ def RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
                     Capacitance of an electrode surface whichi is part of the
                     second combination of RC in parallel [F]
 
-    Output
+    Returns
     ----------
     impedance_data_df: pandas.DataFrame
                            pandas dataframe containing frequency and imepedance
@@ -451,7 +458,8 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
                        parallel_resistance_2, capacitance_2,
                        alteration=None, save_image=None,
                        save_location='simulation_data/'):
-    """
+    """ Function that returns a .csv file with metadata and simulated data
+
     Function that returns a .csv file containing metadata and simulated data
     of a resistor in series wihta two parallel circuits.
     Each circuit is composed by a resistor and a capacitor. The impedance
@@ -500,7 +508,7 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
                     saving the data and the image. Default option is a
                     folder called  'simulation_data' which will be created
                     in the current working directory.
-    Output
+    Returns
     ----------
     *.csv : a .csv file containing metadata and raw data of the RC simulation.
     *.png : a .png file containing the plot of the simuated data. Default
@@ -565,7 +573,8 @@ def RsRQRQ_simulation(high_freq, low_freq, decades, solution_resistance,
                       parallel_resistance_1, constant_phase_element_1,
                       alpha_1, parallel_resistance_2,
                       constant_phase_element_2, alpha_2):
-    """
+    """ Function that returns a df containing simualated impedance data
+
     Function that takes imputs parameters to simulated the impedance response
     of a circuit composed by a resistor and a capacitor in series over the
     indicated frequency range.
@@ -598,7 +607,7 @@ def RsRQRQ_simulation(high_freq, low_freq, decades, solution_resistance,
               Exponent of the second constant phase element.
               Should be a value between 0 and 1 [-]
 
-    Output
+    Returns
     ----------
     impedance_data_df: pandas.DataFrame
                            pandas dataframe containing frequency and imepedance
@@ -626,7 +635,8 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                        constant_phase_element_2, alpha_2,
                        alteration=None, save_image=None,
                        save_location='simulation_data/'):
-    """
+    """ Function that returns a .csv file with metadata and simulated data
+
     Function that returns a .csv file containing metadata and simulated data
     of a resistor in series wihta two parallel circuits.
     Each parallel circuit is composed by a resistor and a constant phase
@@ -680,7 +690,7 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                     saving the data and the image. Default option is a
                     folder called  'simulation_data' which will be created
                     in the current working directory.
-    Output
+    Returns
     ----------
     *.csv : a .csv file containing metadata and raw data of the RC simulation.
     *.png : a .png file containing the plot of the simuated data. Default
@@ -746,10 +756,12 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
 
 
 def randles_simulation(f_start, f_stop, decades, Rs, R, n, sigma, Q):
-    """
+    """ Function that returns a df containing simualated impedance data
+
+     Add a paragraph with a description of the function.
     Parameters
     ----------
-    Output
+    Returns
     ----------
     """
     # Define the frequency range to be simulated
@@ -766,7 +778,8 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
                             parallel_resistance_1, constant_phase_element_1,
                             alpha_1, sigma_1, alteration=None, save_image=None,
                             save_location='simulation_data/'):
-    """
+    """ Function that returns a .csv file with metadata and simulated data
+
     Function that returns a .csv file containing metadata and simulated data
     of a resistor in series wihta two parallel circuits.
     Each parallel circuit is composed by a resistor and a constant phase
@@ -820,7 +833,7 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
                     saving the data and the image. Default option is a
                     folder called  'simulation_data' which will be created
                     in the current working directory.
-    Output
+
     ----------
     *.csv : a .csv file containing metadata and raw data of the RC simulation.
     *.png : a .png file containing the plot of the simuated data. Default
