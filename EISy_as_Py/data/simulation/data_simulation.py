@@ -745,7 +745,7 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
 # Need to fix the following  functions before using them
 
 
-def randles(f_start, f_stop, decades, Rs, R, n, sigma, Q):
+def randles_simulation(f_start, f_stop, decades, Rs, R, n, sigma, Q):
     """
     Parameters
     ----------
@@ -762,44 +762,123 @@ def randles(f_start, f_stop, decades, Rs, R, n, sigma, Q):
     return impedance_data_df
 
 
-def sim_randles_file_writer(f_start, f_stop, decades, Rs, R, n, sigma,
-                            Q, alteration=None):
+def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
+                            parallel_resistance_1, constant_phase_element_1,
+                            alpha_1, sigma_1, alteration=None, save_image=None,
+                            save_location='simulation_data/'):
     """
+    Function that returns a .csv file containing metadata and simulated data
+    of a resistor in series wihta two parallel circuits.
+    Each parallel circuit is composed by a resistor and a constant phase
+    element. The impedance response of the overall circuit is investigated
+    over the indicated frequency range.
+
+    The filename contains a serial number composed by the date the funciton was
+    run and the number of simuation for that day. If a file containing the
+    output plot of the simulation is created, it will have the same filename
+    to allow for fast matching of the visual and table representation of the
+    same dataset.
+
     Parameters
     ----------
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
+    solution_resistance : single value (int or float)
+                          Solution resistance [ohm]
+    parallel_resistance_1 : single value (int or float)
+                            first combination of resistor in parallel with
+                            constant phase element [ohm]
+    constant_phase_element_1 : single value (int or float)
+                               First constant phas angle [s^(alpha-1)/ohm]
+    alpha_1 : single value -float
+              Exponent of the first constant phase element.
+              Should be a value between 0 and 1 [-]
+    parallel_resistance_2 : single value (int or float)
+                            Second combination of resistor in parallel with
+                            constant phase element [ohm]
+    constant_phase_element_2 : single value (int or float)
+                               Second Constant phas angle [s^(alpha-1)/ohm]
+    alpha_2 : single value -float
+              Exponent of the second constant phase element.
+              Should be a value between 0 and 1 [-]
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    save_image : True/False
+                 Option to save the output of the simuation as a plot in a .png
+                 file format. The filename used for the file will be the same
+                 as the raw data file created in this function.
+    save_location : str
+                    String containing the path of the forlder to use when
+                    saving the data and the image. Default option is a
+                    folder called  'simulation_data' which will be created
+                    in the current working directory.
     Output
     ----------
+    *.csv : a .csv file containing metadata and raw data of the RC simulation.
+    *.png : a .png file containing the plot of the simuated data. Default
+            plot is a nyquist plot.
     """
     # Save the simulated data in a csv file to be exported in a database
     # the format will be in the form of :
     # yymmdd-serial#_sim_classifier.csv
-    i = 1
     date = time.strftime('%y%m%d', time.localtime())
-    save_location = 'sim_data/'
     if not os.path.exists(save_location):
         os.makedirs(save_location)
+    i = 1
     while i < 9999:
         number = str(i).zfill(4)
         if alteration:
-            filename = str('{}-{}_sim_tail-{}'.format(date, number,
-                                                      alteration))
+            filename = str('{}-{}_randles_simp-{}'.format(date, number,
+                                                          alteration))
         else:
-            filename = str('{}-{}_sim_tail'.format(date, number))
+            filename = str('{}-{}_randles_simp'.format(date, number))
         if os.path.exists(save_location + filename + '.csv'):
             i += 1
         else:
-            return
+            break
     with open(save_location + filename + ".csv", mode='a',
               newline='') as data_file:
         data_file.write('Date:, {}'.format(date)+'\n')
         data_file.write('Serial number:, {}'.format(number)+'\n')
         data_file.write('Data Source:, simulation'+'\n')
-        data_file.write('Circuit type:, rc'+'\n')
-        data_file.write('Circuit configuration:, N/A' + '\n')
-        data_file.write('Circuit elements:, [R={} ohm Rs ={} ohm sigma = {} \
-                         ohm Q = {} F]'.format(R, Rs, sigma, Q) +
-                        '\n')
+        data_file.write('Circuit type:, -Rs-(Cdl-(Rct-Zw))-'+'\n')
+        data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm Q1={}\
+[s^(alpha-1)/ohm] alpha_1={} ohm sigma={}'
+                        .format(solution_resistance, parallel_resistance_1,
+                                constant_phase_element_1, alpha_1,
+                                sigma_1) + '\n')
+        if alteration:
+            data_file.write('Alteration :, {}'.format(alteration))
+        else:
+            return
         data_file.write('---'+'\n')
-        df = circuits.randles(f_start, f_stop, decades, Rs, R, n, sigma, Q)
+
+        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+
+        df = randles_simulation(high_freq, low_freq, decades,
+                                solution_resistance,
+                                parallel_resistance_1,
+                                constant_phase_element_1,
+                                alpha_1, sigma_1)
+
+        if alteration:
+            df = alteration.added_noise(df, 0.4)
+        else:
+            return
         df.to_csv(data_file, mode='a')
         data_file.close()
+    if save_image:
+        if alteration:
+            nyquist_plot(df, filename, save_location, alteration=True,
+                         save_image=True)
+        else:
+            nyquist_plot(df, filename, save_location, save_image=True)
+    return
