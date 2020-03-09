@@ -419,15 +419,15 @@ def cir_Randles_simplified(angular_freq, solution_resistance,
                 impedance response of the circuit under investigation [Ohm]
     '''
     circuit = '-Rs-(Q-(RW)-)-'
-    if R == 'none':
-        R = (1/(Q*(2*np.pi*fs)**n))
-    elif Q == 'none':
-        Q = (1/(R*(2*np.pi*fs)**n))
-    elif n == 'none':
-        n = np.log(Q*R)/np.log(1/(2*np.pi*fs))
+    if parallel_resistance == 'none':
+        parallel_resistance = (1/(Q*(2*np.pi*fs)**alpha))
+    elif sigma == 'none':
+        sigma = (1/(parallel_resistance*(2*np.pi*fs)**alpha))
+    elif alpha == 'none':
+        alpha = np.log(Q*parallel_resistance)/np.log(1/(2*np.pi*fs))
 
-    Z_Q = 1/(Q*(w*1j)**n)
-    Z_R = R
-    Z_w = sigma*(w**(-0.5))-1j*sigma*(w**(-0.5))
+    Z_Q = 1/(Q*(angular_freq*1j)**alpha)
+    Z_R = parallel_resistance
+    Z_w = sigma*(angular_freq**(-0.5))-1j*sigma*(angular_freq**(-0.5))
 
-    return Rs + 1/(1/Z_Q + 1/(Z_R+Z_w))
+    return solution_resistance + 1/(1/Z_Q + 1/(Z_R+Z_w))
