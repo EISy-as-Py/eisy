@@ -199,7 +199,7 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
         if alteration:
             data_file.write('Alteration :, {}'.format(alteration))
         else:
-            return
+            data_file.write('Alteration :, None')
         data_file.write('---'+'\n')
         freq_range = circuits.freq_gen(high_freq, low_freq, decades)
         if circuit_configuration == 'series':
@@ -215,7 +215,7 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
         if alteration:
             df = alteration.added_noise(df, 0.4)
         else:
-            return
+            df = df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
@@ -360,7 +360,7 @@ alpha={}]'.format(resistance, constant_phase_element, alpha)
         if alteration:
             data_file.write('Alteration :, {}'.format(alteration))
         else:
-            return
+            data_file.write('Alteration :, None')
         data_file.write('---'+'\n')
 
         freq_range = circuits.freq_gen(high_freq, low_freq, decades)
@@ -380,7 +380,7 @@ alpha={}]'.format(resistance, constant_phase_element, alpha)
         if alteration:
             df = alteration.added_noise(df, 0.4)
         else:
-            return
+            df = df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
@@ -538,7 +538,7 @@ R2={} ohm C2={} F]'
         if alteration:
             data_file.write('Alteration :, {}'.format(alteration))
         else:
-            return
+            data_file.write('Alteration :, None')
         data_file.write('---'+'\n')
 
         freq_range = circuits.freq_gen(high_freq, low_freq, decades)
@@ -549,7 +549,7 @@ R2={} ohm C2={} F]'
         if alteration:
             df = alteration.added_noise(df, 0.4)
         else:
-            return
+            df = df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
@@ -718,7 +718,7 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
         if alteration:
             data_file.write('Alteration :, {}'.format(alteration))
         else:
-            return
+            data_file.write('Alteration :, None')
         data_file.write('---'+'\n')
 
         freq_range = circuits.freq_gen(high_freq, low_freq, decades)
@@ -731,7 +731,7 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
         if alteration:
             df = alteration.added_noise(df, 0.4)
         else:
-            return
+            df =df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
