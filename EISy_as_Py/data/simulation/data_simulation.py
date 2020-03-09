@@ -858,7 +858,7 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
         if alteration:
             data_file.write('Alteration :, {}'.format(alteration))
         else:
-            return
+            data_file.write('Alteration :, None')
         data_file.write('---'+'\n')
 
         freq_range = circuits.freq_gen(high_freq, low_freq, decades)
@@ -872,7 +872,7 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
         if alteration:
             df = alteration.added_noise(df, 0.4)
         else:
-            return
+            df = df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
