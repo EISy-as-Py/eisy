@@ -2,6 +2,7 @@ import csv
 import os
 import time
 
+import alteration
 import numpy as np
 import pandas as pd
 import circuits
