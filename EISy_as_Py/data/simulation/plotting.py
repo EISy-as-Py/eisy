@@ -31,6 +31,33 @@ rcParams['axes.unicode_minus'] = True
 def nyquist_plot(response, filename=None, save_location=None,
                  save_image=None, **kwargs):
     """
+    Funciton that returns the nyquist plot of an impedance response.
+
+    Parameters
+    ----------
+    response : pandas.DataFrame
+               a dataframe containing the impedance response to be plotted.
+    filename : st
+               The filename contains a serial number composed by the date
+               the funciton was run and the number of simuation for that day.
+               The filename will be the same as the .csv file created from the
+               impedance response used to create this plot.
+    save_location : str
+                       String containing the path of the forlder to use when
+                       saving the data and the image. Default option is a
+                       folder called  'simulation_data' which will be created
+                       in the current working directory.
+    save_image : True/False
+                 Option to save the output of the simuation as a plot
+                 in a .png file format.
+                 The filename used for the file will be the same
+                 as the raw data file created in this function.
+
+    **kwargs : optional arguments supported by matplotlib.pyplot
+
+    Output
+    ----------
+    The nyquist plot of the impedance response to be investigated.
     """
     fig, ax = plt.subplots()
     ax.plot(response['Re_Z [ohm]'], -response['Im_Z [ohm]'], 'o--', **kwargs)
