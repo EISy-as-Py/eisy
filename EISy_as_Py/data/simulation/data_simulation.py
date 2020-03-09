@@ -2,6 +2,7 @@ import csv
 import os
 import time
 
+import alteration
 import numpy as np
 import pandas as pd
 import circuits
@@ -195,8 +196,11 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
                         .format(circuit_configuration)+'\n')
         data_file.write('Circuit elements:, [R={} ohm C={} F]'
                         .format(resistance, capacitance) + '\n')
+        if alteration:
+            data_file.write('Alteration :, {}'.format(alteration))
+        else:
+            break
         data_file.write('---'+'\n')
-
         freq_range = circuits.freq_gen(high_freq, low_freq, decades)
         if circuit_configuration == 'series':
             circuit = circuits.cir_RC_series(freq_range[1], resistance,
@@ -208,10 +212,18 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
             raise AssertionError('The inputted configuration is not supported')
         df = RC_simulation(high_freq, low_freq, decades, resistance,
                            capacitance, circuit_configuration)
+        if alteration:
+            df = alteration.added_noise(df, 0.4)
+        else:
+            break
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
-        nyquist_plot(df, filename, save_location, save_image=True)
+        if alteration:
+            nyquist_plot(df, filename, save_location, alteration=True,
+                         save_image=True)
+        else:
+            nyquist_plot(df, filename, save_location, save_image=True)
 
     return
 
@@ -345,6 +357,10 @@ def RQ_file_writer(high_freq, low_freq, decades, resistance,
         data_file.write('Circuit elements:, [R={} ohm Q={} [s^(alpha-1)/ohm]\
 alpha={}]'.format(resistance, constant_phase_element, alpha)
                         + '\n')
+        if alteration:
+            data_file.write('Alteration :, {}'.format(alteration))
+        else:
+            break
         data_file.write('---'+'\n')
 
         freq_range = circuits.freq_gen(high_freq, low_freq, decades)
@@ -361,11 +377,18 @@ alpha={}]'.format(resistance, constant_phase_element, alpha)
         df = RQ_simulation(high_freq, low_freq, decades, resistance,
                            constant_phase_element, alpha,
                            circuit_configuration)
+        if alteration:
+            df = alteration.added_noise(df, 0.4)
+        else:
+            break
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
-        nyquist_plot(df, filename, save_location, save_image=True)
-
+        if alteration:
+            nyquist_plot(df, filename, save_location, alteration=True,
+                         save_image=True)
+        else:
+            nyquist_plot(df, filename, save_location, save_image=True)
     return
 
 
@@ -512,6 +535,10 @@ R2={} ohm C2={} F]'
                         .format(sol_resistance, parallel_resistace_1,
                                 capacitance_1, parallel_resistace_2,
                                 capacitance_2) + '\n')
+        if alteration:
+            data_file.write('Alteration :, {}'.format(alteration))
+        else:
+            break
         data_file.write('---'+'\n')
 
         freq_range = circuits.freq_gen(high_freq, low_freq, decades)
@@ -519,11 +546,18 @@ R2={} ohm C2={} F]'
         df = RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
                                parallel_resistace_1, capacitance_1,
                                parallel_resistace_2, capacitance_2)
+        if alteration:
+            df = alteration.added_noise(df, 0.4)
+        else:
+            break
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
-        nyquist_plot(df, filename, save_location, save_image=True)
-
+        if alteration:
+            nyquist_plot(df, filename, save_location, alteration=True,
+                         save_image=True)
+        else:
+            nyquist_plot(df, filename, save_location, save_image=True)
     return
 
 
@@ -681,6 +715,10 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                                 constant_phase_element_1, alpha_1,
                                 parallel_resistance_2,
                                 constant_phase_element_1, alpha_2) + '\n')
+        if alteration:
+            data_file.write('Alteration :, {}'.format(alteration))
+        else:
+            break
         data_file.write('---'+'\n')
 
         freq_range = circuits.freq_gen(high_freq, low_freq, decades)
@@ -690,11 +728,18 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                                parallel_resistance_1, constant_phase_element_1,
                                alpha_1, parallel_resistance_2,
                                constant_phase_element_2, alpha_2)
+        if alteration:
+            df = alteration.added_noise(df, 0.4)
+        else:
+            break
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
-        nyquist_plot(df, filename, save_location, save_image=True)
-
+        if alteration:
+            nyquist_plot(df, filename, save_location, alteration=True,
+                         save_image=True)
+        else:
+            nyquist_plot(df, filename, save_location, save_image=True)
     return
 
 # Need to fix the following  functions before using them

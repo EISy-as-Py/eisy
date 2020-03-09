@@ -28,7 +28,7 @@ rcParams['lines.markersize'] = 4
 rcParams['axes.unicode_minus'] = True
 
 
-def nyquist_plot(response, filename=None, save_location=None,
+def nyquist_plot(response, filename=None, alteration=None, save_location=None,
                  save_image=None, **kwargs):
     """
     Funciton that returns the nyquist plot of an impedance response.
@@ -60,7 +60,12 @@ def nyquist_plot(response, filename=None, save_location=None,
     The nyquist plot of the impedance response to be investigated.
     """
     fig, ax = plt.subplots()
-    ax.plot(response['Re_Z [ohm]'], -response['Im_Z [ohm]'], 'o--', **kwargs)
+    if alteration:
+        ax.plot(response['Re_Z [ohm]'], -response['Im_Z_noise [ohm]'],
+                'o--', **kwargs)
+    else:
+        ax.plot(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
+                'o--', **kwargs)
     # plt.ticklabel_format(style='sci', scilimits=(0, 0))
     ax.set_xlabel(r'Z$_{real}$ [$\Omega$]')
     ax.set_ylabel(r'-Z$_{imag}$ [$\Omega$]')
