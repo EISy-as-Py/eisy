@@ -19,7 +19,7 @@ def added_noise(dataframe, noisescale=0.4):
                            (dataframe['Im_Z [ohm]'][i]) *
                            math.sin(dataframe['Im_Z [ohm]'][i]))
 
-    dataframe['Im_Z_noise'] = y_noise
+    dataframe['Im_Z_noise [ohm]'] = y_noise
     return dataframe
 
 
