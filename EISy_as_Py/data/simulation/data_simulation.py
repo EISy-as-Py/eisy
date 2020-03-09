@@ -708,17 +708,14 @@ def randles(f_start, f_stop, decades, Rs, R, n, sigma, Q):
     ----------
     """
     # Define the frequency range to be simulated
-    f_range = circuits.freq_gen(f_start, f_stop, decades)
+    freq_range = circuits.freq_gen(f_start, f_stop, decades)
     # Obtain the impedance of the RC circuit
-    Randles = circuits.cir_Randles_simplified(f_range[1], Rs, R, n, sigma, Q)
+    complex_impedance = circuits.cir_Randles_simplified(freq_range[1], Rs, R, n, sigma, Q)
     # Separate the impedance into its real and imaginary components
-    real_z = Randles.real
-    imag_z = Randles.imag
-    # Calcuate the magnitude and phase angle of the impedance
-    phase = np.arctan(imag_z/real_z)
-    total_z = np.sqrt((real_z**2) + (imag_z**2))
-    sim_data = to_dataframe(f_range, real_z, imag_z, total_z, phase)
-    return sim_data
+    impedance_data = impedance_array(complex_impedance)
+    impedance_data_df = to_dataframe(freq_range, impedance_data)
+    
+    return impedance_data_df
 
 
 def sim_randles_file_writer(f_start, f_stop, decades, Rs, R, n, sigma,
