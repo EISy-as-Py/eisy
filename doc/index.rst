@@ -40,7 +40,7 @@ Other Section
 
    Circuits
    Simulation
-   alterations
+   Alterations
    Plotting
    Neural Network
    SQL Database
