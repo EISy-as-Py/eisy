@@ -20,9 +20,9 @@ sys.path.insert(0, os.path.abspath('.'))
 
 project = 'eisy.py'
 copyright = '2020, Maria Politi, Abdul Moeez, \
-             David Hurt, Mihyun Kim, Yao-Yu Li\x1b[D\x1b[D\x1b[D\x1b[Y'
+             David Hurt, Mihyun Kim, Yao-Yu Li'
 author = 'Maria Politi, Abdul Moeez, David Hurt,\
-          Mihyun Kim, Yao-Yu Li\x1b[D\x1b[D\x1b[D\x1b[Y'
+          Mihyun Kim, Yao-Yu Li'
 
 
 # -- General configuration ---------------------------------------------------
