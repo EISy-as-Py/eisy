@@ -55,4 +55,20 @@ Section 2: Import F-Series Data Files (and Process Meta-Data)
 
 """
 
+import os
+import unittest
+
 import eisy_as_py
+
+
+data_path = os.path.join(eisy_as_py.__path__[0], 'data')
+
+
+class test_File_Management(unittest.TestCase):
+
+    def test_file_management(self):
+        """
+        Testing the stuff being tested
+        """
+        print("look mom, I ran a test")
+        print(data_path)
