@@ -17,7 +17,7 @@ frequency domain. The impedance response is  presented both in its complex form,
 .. note::
   :code:`eisy.py` is a new Python model and will be continuously updated as more feature are developed.
 
-For any suggestions or request for specific features, plese visit the `eisy.py` issue page <https://github.com/EISy-as-Py/EISy_as_Py/issues.>
+For any suggestions or request for specific features, plese visit the `eisy.py` `issue page <https://github.com/EISy-as-Py/EISy_as_Py/issues.>`_
 
 How to install `eisy.py`
 -----------------------
