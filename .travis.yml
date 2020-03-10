@@ -32,13 +32,11 @@ install:
 
 # a list of commands to run before the main script
 before_script:
-    - flake8 EISy_as_Py
+    - flake8 eisy_as_py
 
 # the actual commands to run
 script:
     - coverage run -m unittest discover
-    - cd EIsy_as_Py
-    - EISy_as_Py.py 
  
 # generate a coverage report to send to back to user
 after_success:
