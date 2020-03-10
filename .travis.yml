@@ -37,7 +37,9 @@ before_script:
 # the actual commands to run
 script:
     - coverage run -m unittest discover
-
+    - cd EIsy_as_Py
+    - EISy_as_Py.py 
+ 
 # generate a coverage report to send to back to user
 after_success:
     - coverage report
