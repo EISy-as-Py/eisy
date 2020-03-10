@@ -756,7 +756,7 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
 
 
 def randles_simulation(high_freq, low_freq, decades, solution_resistance,
-                       parallel_resistace_1, alpha='none',
+                       parallel_resistace, alpha='none',
                        sigma='none', constant_phase_element='none'):
     """
      Add a paragraph with a description of the function.
@@ -770,7 +770,7 @@ def randles_simulation(high_freq, low_freq, decades, solution_resistance,
     # Obtain the impedance of the RC circuit
     complex_impedance = circuits.cir_Randles_simplified(freq_range[1],
                                                         solution_resistance,
-                                                        parallel_resistace_1,
+                                                        parallel_resistace,
                                                         alpha, sigma,
                                                         constant_phase_element)
     # Separate the impedance into its real and imaginary components
@@ -787,7 +787,7 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
     """ Function that returns a .csv file with metadata and simulated data
 
     Function that returns a .csv file containing metadata and simulated data
-    of a resistor in series wihta two parallel circuits.
+    of a resistor in series with a two parallel circuits.
     Each parallel circuit is composed by a resistor and a constant phase
     element. The impedance response of the overall circuit is investigated
     over the indicated frequency range.
@@ -809,21 +809,13 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
               is set to be 7 [-]
     solution_resistance : single value (int or float)
                           Solution resistance [ohm]
-    parallel_resistance_1 : single value (int or float)
+    parallel_resistance : single value (int or float)
                             first combination of resistor in parallel with
                             constant phase element [ohm]
-    constant_phase_element_1 : single value (int or float)
+    constant_phase_element : single value (int or float)
                                First constant phas angle [s^(alpha-1)/ohm]
-    alpha_1 : single value -float
+    alpha : single value -float
               Exponent of the first constant phase element.
-              Should be a value between 0 and 1 [-]
-    parallel_resistance_2 : single value (int or float)
-                            Second combination of resistor in parallel with
-                            constant phase element [ohm]
-    constant_phase_element_2 : single value (int or float)
-                               Second Constant phas angle [s^(alpha-1)/ohm]
-    alpha_2 : single value -float
-              Exponent of the second constant phase element.
               Should be a value between 0 and 1 [-]
     alteration : str
                  string indicating if the data simulated has been modified to
@@ -835,10 +827,10 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
                  file format. The filename used for the file will be the same
                  as the raw data file created in this function.
     save_location : str
-                    String containing the path of the forlder to use when
-                    saving the data and the image. Default option is a
-                    folder called  'simulation_data' which will be created
-                    in the current working directory.
+                 String containing the path of the forlder to use when
+                 saving the data and the image. Default option is a
+                 folder called  'simulation_data' which will be created
+                 in the current working directory.
 
     ----------
     *.csv : a .csv file containing metadata and raw data of the RC simulation.
@@ -879,8 +871,6 @@ def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
         else:
             data_file.write('Alteration :, None')
         data_file.write('---'+'\n')
-
-        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
 
         df = randles_simulation(high_freq, low_freq, decades,
                                 solution_resistance,
