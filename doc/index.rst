@@ -38,7 +38,10 @@ Other Section
    :maxdepth: 2
    :caption: Contents:
 
-   Data Simulation
+   Circuits
+   Simulation
+   alterations
+   Plotting
    Neural Network
    SQL Database
 
