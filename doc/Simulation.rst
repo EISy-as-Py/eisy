@@ -1,5 +1,5 @@
 Simulation
 ========
 
-.. automodule:: EISy_as_Py.data.simulation.data_simulation
+.. automodule:: eisy_as_py.data.simulation.data_simulation
    :members:
