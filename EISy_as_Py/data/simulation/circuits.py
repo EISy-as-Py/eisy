@@ -183,16 +183,18 @@ def cir_RQ_series(angular_freq, resistance='none',
     if (resistance, constant_phase_element, alpha, peak_frequency) == 'none':
         raise AssertionError('No circuit element value was provided. Cannot\
                               compute the impedance response')
-    elif (resistance, capacitance, constant_phase_element, alpha) == 'none':
+    elif (resistance, constant_phase_element, alpha) == 'none':
         raise AssertionError('Not enough circuit element values were provided.\
                               Cannot compute the impedance response')
-    elif resistor == 'none':
-        resistor = (1/(constant_phase_element*(2*np.pi*peak_frequency)**alpha))
+    elif resistance == 'none':
+        resistance = (1/(constant_phase_element*(2*np.pi*peak_frequency) **
+                      alpha))
     elif constant_phase_element == 'none':
-        constant_phase_element = (1/(resistor*(2*np.pi*peak_frequency)**alpha))
+        constant_phase_element = (1/(resistance*(2*np.pi*peak_frequency) **
+                                  alpha))
     elif alpha == 'none':
         alpha = np.log(constant_phase_element *
-                       resistor)/np.log(1/(2*np.pi * peak_frequency))
+                       resistance)/np.log(1/(2*np.pi * peak_frequency))
     # compute the impedance response as a complex array
     Z_complex = resistance + 1/(constant_phase_element*(
                                 angular_freq*1j)**alpha)
@@ -393,7 +395,7 @@ Cannot compute the impedance response')
 
 
 def cir_Randles_simplified(angular_freq, solution_resistance,
-                           parallel_resistance, alpha, sigma,
+                           parallel_resistance, alpha='none', sigma='none',
                            Q='none', fs='none'):
     '''
     Return the impedance of a Randles circuit with a simplified Warburg element
