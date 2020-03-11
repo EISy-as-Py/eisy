@@ -29,10 +29,10 @@ author = 'Maria Politi, Abdul Moeez, David Hurt,\
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-# The short X.Y version.
-version = u'0.1'
-# The full version, including alpha/beta/rc tags.
-release = u'0.1.0'
+# # The short X.Y version.
+# version = u'0.1'
+# # The full version, including alpha/beta/rc tags.
+# release = u'0.1.0'
 
 # -- General configuration ---------------------------------------------------
 
