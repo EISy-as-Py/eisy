@@ -10,7 +10,7 @@ PACKAGES = find_packages()
 
 # Get version and release info, which is all stored in shablona/version.py
 
-ver_file = os.path.join('EISy_as_Py', 'version.py')
+ver_file = os.path.join('eisy', 'version.py')
 
 with open(ver_file) as f:
 
@@ -32,7 +32,7 @@ SETUP_REQUIRES += ['wheel'] if 'bdist_wheel' in sys.argv else []
 
 
 
-opts = dict(name=NAME,
+opts = dict(name=eisy,
 
             maintainer=MAINTAINER,
 
