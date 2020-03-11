@@ -11,13 +11,24 @@ Subpackages
 Submodules
 ----------
 
-eisy.eisy\_file\_mgmt module
+eisy.data
 ----------------------------
 
-.. automodule:: eisy.eisy_file_mgmt
+.. automodule:: eisy.data.simuation.circuits
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. automodule:: eisy.data.simuation.plotting
+  :members:
+  :undoc-members:
+  :show-inheritance:
+
+.. automodule:: eisy.data.simuation.data_simulation
+ :members:
+ :undoc-members:
+ :show-inheritance:
+
 
 
 Module contents
