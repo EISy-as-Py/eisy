@@ -1,0 +1,18 @@
+config_created: '2020-03-10 09:56:02.378083'
+config_updated: '2020-03-10 10:42:24.517979'
+data_dir: data/simulation/sim_data
+fdata_delim: ','
+fdata_head:
+  freq_hz: freq [Hz]
+  imag_ohm: Im_Z [Ohm]
+  phase_rad: phase_angle [rad]
+  real_ohm: Re_Z [Ohm]
+  totl_ohm: '|Z| [Ohm]'
+file_type: .csv
+header_end_str: '---'
+header_meta:
+  circuit_detail: 'Circuit elements:'
+  circuit_str: 'Cirucit type:'
+  d_source: 'Data Source:'
+  date_run: 'Date:'
+  serial_n: 'Serial number:'
