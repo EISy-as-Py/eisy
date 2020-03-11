@@ -1,12 +1,23 @@
+<<<<<<< HEAD
 .. eisy_as_py documentation master file, created by
+=======
+.. eisydocumentation master file, created by
+>>>>>>> 2eb9f0892ca270ec7408e38b39f3a9074eade433
    sphinx-quickstart on Thu Mar  5 20:22:20 2020.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+<<<<<<< HEAD
 eisy_as_py
 ===================================
 
 :code:`eisy_as_py` is a Python module for simulating and classifying impedance data.
+=======
+eisy
+===================================
+
+:code:`eisy` is a Python module for simulating and classifying impedance data.
+>>>>>>> 2eb9f0892ca270ec7408e38b39f3a9074eade433
 
 
 Using circuit elements, the simulation module is able to reproduce the impedance response of the selected circuit.
@@ -15,11 +26,19 @@ The :code:`data_simulation.py` module allows to simulate the response and saves 
 frequency domain. The impedance response is  presented both in its complex form, as well as separated in its real and imaginary parts.
 
 .. note::
+<<<<<<< HEAD
   :code:`eisy_as_py` is a new Python model and will be continuously updated as more feature are developed.
 
 For any suggestions or request for specific features, plese visit the `eisy_as_py` `issue page <https://github.com/EISy-as-Py/EISy_as_Py/issues.>`_
 
 How to install `eisy_as_py`
+=======
+  :code:`eisy` is a new Python model and will be continuously updated as more feature are developed.
+
+For any suggestions or request for specific features, plese visit the `eisy` `issue page <https://github.com/EISy-as-Py/EISy_as_Py/issues.>`_
+
+How to install `eisy`
+>>>>>>> 2eb9f0892ca270ec7408e38b39f3a9074eade433
 -----------------------
 
 Add instructions on how to install : conda? or PyPI?
