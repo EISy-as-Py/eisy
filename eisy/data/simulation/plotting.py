@@ -76,7 +76,8 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
     #                     max(response['Re_Z [Ohm]'])+1, 10))
     if save_image:
         filename = str(save_location+filename)
-        plt.savefig('{}.png'.format(filename), dpi=100, layout='tight',
-                    bbox_inches='tight')
+        plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight')
+        # layout='tight',
+        #            bbox_inches='tight')
     plt.show()
     return
