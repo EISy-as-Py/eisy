@@ -43,9 +43,57 @@ Section 2: Import F-Series Data Files (and Process Meta-Data)
 * parse_fname_meta()    Takes a file name and separates out any/all metadata
                         of interest (Serial ID, Source, NN Tags)
 
-* read_fseries_data()   Takes a file name, expected metadata information, and
-                        some interaction parameters (?)
-                        Reads the file,
+* fseries_read_data()   Takes a file name, expected metadata config, and
+                        some interaction parameters (?).
+                        Reads the file, separates the metadata from the series
+                        data, and calls fix_fseries on the headers.
+                        (may call some smart s#!t if the parsing is difficult.)
+                        Returns dfs of raw data, and 2x meta data, for the file
+
+* fseries_fix_head()    IF the headers in the data frame are not named/ordered
+                        correctly, we need to fix that.
+                        Identify the columns by their headers and/or data types
+                        and then rename and re-order the columns according
+                        to a specific configuration. (in SQL Config doc?)
+                        Returns RAW_DATA
+
+* fseries_process_data()Takes the Raw Data, and makes some quick notes about
+                        the results. Currently Work in Progress - Not sure
+                        how much of this the team wants.
+                        Either way, outputs this as our third type of Meta-data
+                        Returns PROCESSED_DATA
+
+* fseries_metadata()    Takes up to two meta-data dataframes
+                        (One from file name, other from header), and reconciles
+                        any overlap based on some configuration and sorta-smart
+                        manipulation.
+                        Returns EXPERIMENT_METADATA
+
+* fseries_combinedata() Uses a Configuration file (See SQL_get_config???)
+                        to combine all the data for one file into a single line
+                        of a Pandas DataFrame.
+
+                        Format such as:
+                        |Serial_ID|Experiment_Metadata|raw_data|processed_data|
+                        + empty spots for:
+                        |noise_classify|shape_classify|experimental_feedback|
+
+
+Section 3: Export All Data into SQL Database as configured
+----------------------------------------------------------
+
+
+* SQL_get_config()      Reads a configuration file that demonstrates how
+                        the SQL server is to be set up.
+                        SHOULD (?) FOLLOW STANDARD SCHEMA DESIGN RULES (?)
+
+
+* SQL_setup()           Takes in instructions/configurations, and initiates
+                        a new SQL database to interact with using
+                        SQL Alchemy...
+
+* SQL_dataframe()
+
 
 
 
