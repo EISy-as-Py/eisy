@@ -1,5 +1,5 @@
 Alterations
 ===========
 
-.. automodule:: eisy_as_py.data.simulation.alterations
+.. automodule::  EISy_as_Py.eisy_as_py.data.simulation.alterations
    :members:
