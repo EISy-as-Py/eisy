@@ -549,8 +549,6 @@ R2={} ohm C2={} F]'
             data_file.write('Alteration :, None')
         data_file.write('---'+'\n')
 
-        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
-
         df = RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
                                parallel_resistace_1, capacitance_1,
                                parallel_resistace_2, capacitance_2)
@@ -731,8 +729,6 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
             data_file.write('Alteration :, None')
         data_file.write('---'+'\n')
 
-        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
-
         df = RsRQRQ_simulation(high_freq, low_freq, decades,
                                solution_resistance,
                                parallel_resistance_1, constant_phase_element_1,
@@ -779,10 +775,10 @@ def randles_simulation(high_freq, low_freq, decades, solution_resistance,
     return impedance_data_df
 
 
-def sim_randles_file_writer(high_freq, low_freq, decades, solution_resistance,
-                            parallel_resistance, alpha=1, sigma='none',
-                            constant_phase_element='none', alteration=None,
-                            save_image=None, save_location='simulation_data/'):
+def randles_file_writer(high_freq, low_freq, decades, solution_resistance,
+                        parallel_resistance, alpha=1, sigma='none',
+                        constant_phase_element='none', alteration=None,
+                        save_image=None, save_location='simulation_data/'):
 
     """ Function that returns a .csv file with metadata and simulated data
 
