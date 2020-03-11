@@ -10,7 +10,7 @@
 
 * __Chalie (they/them)__, a ChemE Undergrad working in the lab three days a week. Pretty competent, but doesn't have a background in either programming or Electrochemistry, and has never really seen an EIS before. They doesn't want to screw up, because he needs Grad School recs from Alice and Dave, and is afraid of Bob.
 
-* __Dave (Your Heighness)__, a stern old Professor who's lab they all work in. Your Heighness is not a micro-manager, but simply expects results to be delivered on time. Dave is skeptical of the error and quality of high-throughput data, so needs to be convinced that all the results have well defined error explainations. The last programming Dave did was in Visual Basic in 1998.
+* __Dave (Your Highness)__, a stern old Professor who's lab they all work in. Your Highness is not a micro-manager, but simply expects results to be delivered on time. Dave is skeptical of the error and quality of high-throughput data, so needs to be convinced that all the results have well defined error explainations. The last programming Dave did was in Visual Basic in 1998.
 
 * __Ernest (Important to Be)__, A Test-Engineer at a mid-stage startup who has to do all four of their jobs all at once. He doesn't complain about grant proposals or publish-or-perish, it's called do-your-job. Ernie works from 9 to 5 and goes home to his kids as soon as the day is over. And he makes what they all do combined. 
 
