@@ -167,7 +167,7 @@ def cir_RQ_series(angular_freq, resistance='none',
     resistance : single value (int or float)
                  Solution resistance [ohm]
     constant_phase_element : single value (int or float)
-                             Constant phas angle [s^(alpha-1)/ohm]
+                             Constant phase angle [s^(alpha-1)/ohm]
     alpha : single value -float
             Exponent of the constant phase element. Should be a value between
             0 and 1 [-]

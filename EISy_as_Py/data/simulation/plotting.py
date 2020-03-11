@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import rcParams
 
 rcParams['figure.figsize'] = (8, 6)
-rcParams['savefig.dpi'] = 300
+rcParams['savefig.dpi'] = 100
 rcParams['font.family'] = 'serif'
 rcParams['font.size'] = 12
 # rcParams['font.serif'] = 'Times New Roman'
@@ -69,14 +69,14 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
     # plt.ticklabel_format(style='sci', scilimits=(0, 0))
     ax.set_xlabel(r'Z$_{real}$ [$\Omega$]')
     ax.set_ylabel(r'-Z$_{imag}$ [$\Omega$]')
-    ax.set_xlim([0, 600])
-    ax.set_ylim([0, 200])
-    ax.set_aspect('equal')
+    # ax.set_xlim([0, 600])
+    # ax.set_ylim([0, 200])
+    # ax.set_aspect('equal')
     # ax.xticks(np.arange(min(),
     #                     max(response['Re_Z [Ohm]'])+1, 10))
     if save_image:
         filename = str(save_location+filename)
-        plt.savefig('{}.png'.format(filename), layout='tight',
+        plt.savefig('{}.png'.format(filename), dpi=100, layout='tight',
                     bbox_inches='tight')
     plt.show()
     return
