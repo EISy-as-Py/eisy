@@ -20,14 +20,14 @@ eisy.data
    :show-inheritance:
 
 .. automodule:: eisy.data.simuation.plotting
-  :members:
-  :undoc-members:
-  :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 .. automodule:: eisy.data.simuation.data_simulation
- :members:
- :undoc-members:
- :show-inheritance:
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 
 
