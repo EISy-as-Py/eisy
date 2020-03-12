@@ -1,5 +1,5 @@
 Circuits
 ========
 
-.. automodule:: circuits
+.. automodule:: simulation.circuits
    :members:
