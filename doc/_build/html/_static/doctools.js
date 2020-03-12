@@ -4,7 +4,11 @@
  *
  * Sphinx JavaScript utilities for all documentation.
  *
+<<<<<<< HEAD
  * :copyright: Copyright 2007-2020 by the Sphinx team, see AUTHORS.
+=======
+ * :copyright: Copyright 2007-2019 by the Sphinx team, see AUTHORS.
+>>>>>>> 7d639eb1869502d1522d066f7fde810e05a4107f
  * :license: BSD, see LICENSE for details.
  *
  */
@@ -283,11 +287,18 @@ var Documentation = {
   },
 
   initOnKeyListeners: function() {
+<<<<<<< HEAD
     $(document).keydown(function(event) {
       var activeElementType = document.activeElement.tagName;
       // don't navigate when in search box or textarea
       if (activeElementType !== 'TEXTAREA' && activeElementType !== 'INPUT' && activeElementType !== 'SELECT'
           && !event.altKey && !event.ctrlKey && !event.metaKey && !event.shiftKey) {
+=======
+    $(document).keyup(function(event) {
+      var activeElementType = document.activeElement.tagName;
+      // don't navigate when in search box or textarea
+      if (activeElementType !== 'TEXTAREA' && activeElementType !== 'INPUT' && activeElementType !== 'SELECT') {
+>>>>>>> 7d639eb1869502d1522d066f7fde810e05a4107f
         switch (event.keyCode) {
           case 37: // left
             var prevHref = $('link[rel="prev"]').prop('href');
