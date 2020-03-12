@@ -1,5 +1,7 @@
-Plotting
+plotting
 ========
 
-.. automodule:: eisy.data.simulation.plotting
+.. automodule:: plotting
    :members:
+   :undoc-members:
+   :show-inheritance:

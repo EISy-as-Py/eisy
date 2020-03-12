@@ -40,12 +40,7 @@ Other Section
    :maxdepth: 2
    :caption: Contents:
 
-   Circuits
-   Simulation
-   Alterations
-   Plotting
-   Neural Network
-   SQL Database
+   modules
 
 Indices and tables
 ==================

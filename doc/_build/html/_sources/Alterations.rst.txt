@@ -1,5 +1,7 @@
-Alterations
+alterations
 ===========
 
-.. automodule:: eisy.data.simulation.alterations
+.. automodule:: alterations
    :members:
+   :undoc-members:
+   :show-inheritance:

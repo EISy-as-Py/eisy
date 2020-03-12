@@ -1,5 +1,7 @@
-Circuits
+circuits
 ========
 
-.. automodule:: eisy.data.simulation.circuits
+.. automodule:: circuits
    :members:
+   :undoc-members:
+   :show-inheritance:
