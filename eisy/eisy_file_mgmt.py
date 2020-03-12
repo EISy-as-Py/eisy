@@ -87,19 +87,13 @@ Section 3: Export All Data into SQL Database as configured
                         the SQL server is to be set up.
                         SHOULD (?) FOLLOW STANDARD SCHEMA DESIGN RULES (?)
 
-
 * SQL_setup()           Takes in instructions/configurations, and initiates
                         a new SQL database to interact with using
                         SQL Alchemy...
 
-* SQL_dataframe()
-
-
-
-
-
-
-
+* SQL_dataframe()       agvfgl;mlkjgfcvx bnm,,km
+                        (We're not here yet. no idea what this will actually
+                        need as inputs and outputs.)
 
 
 
@@ -107,12 +101,14 @@ Section 3: Export All Data into SQL Database as configured
 # ----------------------------------------------------------------------------
 # --- HARD - CODING SECTION --------------------------------------------------
 # ----------------------------------------------------------------------------
+
+
 config_file_location = "config/config_importer.yaml"
 
 
-
-
-
+# ----------------------------------------------------------------------------
+# --- OK. Now on to the Program!----------------------------------------------
+# ----------------------------------------------------------------------------
 
 
 """
@@ -124,7 +120,7 @@ config_file_location = "config/config_importer.yaml"
 """
 
 
-def new_config_import(config_file="config/config_importer.yaml",
+def new_config_import(config_file=config_file_location,
                       save=True, interact=False, popup=False, **change):
     """
     This function will set up a config file for data importing,
@@ -163,7 +159,7 @@ def new_config_import(config_file="config/config_importer.yaml",
     import os.path
     config_dir = os.path.dirname(config_file)
     config = {
-            "data_dir": "data/simulation/sim_data",
+            "data_dir": "data/simulation/simulation_data",
             "config_created": str(datetime.now()),
             "config_updated": None,
             "file_type": ".csv",  # just to check that the edit works
@@ -232,7 +228,7 @@ def new_config_import(config_file="config/config_importer.yaml",
     return config
 
 
-def get_config_import(config_file="config/config_importer.yaml",
+def get_config_import(config_file=config_file_location,
                       interact=False):
     """
     Simple import script, to load the YAML configuration file.
@@ -273,7 +269,7 @@ def get_config_import(config_file="config/config_importer.yaml",
     return config
 
 
-def set_config_import(config_file="config/config_importer.yaml",
+def set_config_import(config_file=config_file_location,
                       change={"file_type": ".csv"}, add_new=False):
     """
     Create or Modify configuration file, used to pass new defaults
@@ -335,6 +331,24 @@ def set_config_import(config_file="config/config_importer.yaml",
     f.close()
     return config
 
+# ----------------------------------------------------------------------------
+# --- END OF SECTION ZERO.----------------------------------------------------
+# ----------------------------------------------------------------------------
+# --- NOW, IMPORT THE CONFIG FILE AND USE IT FOR THE OTHER FUNCTIONS----------
+# ----------------------------------------------------------------------------
+
+# SET is actually the Omni-importer, because it will GET if possible and NEW
+#    If nothing can be found.
+
+
+config = set_config_import(change={})
+
+# We call the Config function here,
+# Because it doesn't work until you have defined all the functions above...
+# I think this is ok, because if there is an error and you call the edit-config
+#     function, then the next time you import this file it will run again
+#     with the new configuration.
+
 
 """
 -------------------------------------------------------------------------------
@@ -345,8 +359,9 @@ def set_config_import(config_file="config/config_importer.yaml",
 """
 
 
-def get_file_list(dir_path="data/simulation/sim_data/",
-                  str_has=['sim'], str_inc=['0001', '0002'], ftype='.csv',
+def get_file_list(dir_path=config["data_dir"],
+                  str_has=['sim'], str_inc=['0001', '0002'],
+                  ftype=config['file_type'],
                   interact=True):
     """
     Get a list of file paths to open, which fulfill certain criteria.
@@ -377,6 +392,8 @@ def get_file_list(dir_path="data/simulation/sim_data/",
         # If the "default" directory failed the check,
         # Either raise that error, or ask for a different directory!
         # (Will exit If you X out of the dialog, to avoid getting stuck)
+        print("Bad Folder: <" + dir_path + ">   -   " +
+              'Choose a new one, then Update your Config File!')
         if interact:
             root.lift()
             root.focus_force()
@@ -386,6 +403,9 @@ def get_file_list(dir_path="data/simulation/sim_data/",
         else:
             root.destroy
             raise AssertionError(err_msg)
+    else:
+        print("You found a good folder at: <" + dir_path + ">")
+
     if not len(dir_path):
         root.destroy()
         raise AssertionError("You Closed the Dialog Window Without a Folder!")
@@ -396,6 +416,9 @@ def get_file_list(dir_path="data/simulation/sim_data/",
     So now, we will filter the list based on the parameters given, and return
     the result as a file list to open.
     """
+    # NOTE: Add File Type to File_has, so we only select that type of file
+    str_has.append(ftype)
+
     full_dir = listdir(dir_path)
     files_wanted = []
     for file in full_dir:
@@ -490,4 +513,228 @@ def ask_file_list():
     root.destroy()
 
     return files_list, os.path.abspath(files_list[0])
+
+
+"""
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+---SECTION 2 : Frequency-Series Data Import -----------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+"""
+
+
+def parse_fname_meta(file):
+    """
+    Takes a file name and separates out any/all metadata of interest
+    (Serial ID, Source, NN Tags)
+    Decisions to be made: How strict to be on naming?
+    This should be in the config file...
+    FOR NOW: Only Impose 3 Rules:
+        * UNTIL FIRST "_" is Serial ID (Expect but don't force Date-Serial#)
+        * END to LAST "_" (except extension .) are CLASSIFY tags
+            (separated by '-' if multiple)
+        * ALL OTHERS are MetaData tags. Save these if/only/if we can match
+            them to any of several metadata setup config dictionaries?
+            (IGNORE FOR NOW? Just pass as a list of Meta-Tags)
+
+        INPUTS:
+            fname   :   file name to be parsed.
+                    :
+
+        RETURN:
+            serial_id : UNIQUE file ID. NEED OTHER FUCNTION TO CHECK UNIQUE??
+            meta_tags : All tags in the middle of the file. in Future will sort
+                        and separate as per config
+            class_tags: CLASSIFICATION Tags - Those used to train the model.
+                        Group Discussion on what to do with these for
+                        non-training data?? For now, this is then a mark
+                        of training (manually checked) data.
+                        BLIND files maybe should then always end with "_.csv"
+                        to identify them as un-observed! Suggest to group...
+    """
+    import os.path
+
+    fname = os.path.basename(file)
+
+    serial_id = ""
+    meta_tags = []
+    class_tags = []
+
+    # Now separate file based on "_" markers
+    a = 0  # Copy-paste placeholder
+    for b in range(len(fname)):           # Loop through the file name...
+        if a == 0 and fname[b] == "_":    # When you get to the first _
+            serial_id = fname[a:b]        # ----Copy the first chunk as the ID
+            a = b+1                       # ----(and reassign a)
+        elif fname[b] == "_":             # When you find any other mid-tag
+            meta_tags.append(fname[a:b])  # -----Add it to the Meta tag list
+            a = b+1                       # ----(and reassign a)
+        elif fname[b] == '.':             # When you get to the file extension
+            class_tags_all = fname[a:b]   # The final set is all class-tags
+        else:
+            pass
+
+    # Ok, same thing, now looping class_tags and separate based on "-"
+    a = 0  # Use same placeholders, to show it's the same process
+    for b in range(len(class_tags_all)):
+        if class_tags_all[b] == "-":      # Note this time, the "-"
+            class_tags.append(class_tags_all[a:b])
+            a = b+1
+        else:
+            pass
+    else:
+        # If you get to the end of string, that's one last tag
+        class_tags.append(class_tags_all[a:])  # Add it to the Classify list
+
+    # NOW for internal Unit-tags
+    if not len(serial_id):
+        raise AssertionError("File <" + fname + "> Has no Separators.\n" +
+                             "Expected <SerialID>_<tags>_<classify>.csv")
+    return serial_id, meta_tags, class_tags
+
+
+def fseries_read_data(file, data_head = config["fdata_head"],
+                      delim=config["fdata_delim"],
+                      header_end_str=config["header_end_str"],
+                      header_meta_key=config["header_meta"]):
+    """
+    Takes a file name, expected metadata config, and
+    some interaction parameters (?).
+    Reads the file, separates the metadata from the series
+    data, and calls fix_fseries on the headers.
+    (may call some smart s#!t if the parsing is difficult.)
+    Returns dfs of raw data, and 2x meta data, for the file
+
+        INPUTS:
+            file :
+            config-----
+
+        RETURN:
+            header_metadata
+
+            fseries_data
+
+
+    """
+    import os.path
+
+    import pandas as pd
+
+    # First things first, check that the file exists.
+    if not os.path.isfile(file):
+        raise AssertionError(file + "Is Not a Real File. Please Check...")
+    else:
+        pass
+    # Initialize Meta-Data dataframe
+    # header_meta = pd.DataFrame(columns=header_meta_key)
+    # ^^ THATS NOT FORMATTED RIGHT... RE-ASSESS CONFIG?
+    # ---For Now, simply copy each key,value into an empty dataframe
+    header_meta = {}
+
+    # Next: Try to separate Header and Raw via the "header_end_str":
+    h_size = 0     # Initialize header size
+    pos = 0        # Counter for looping through file
+    f = open(file, 'r')
+    while h_size == 0:
+        current_line = f.readline()
+        if current_line.startswith(header_end_str):
+            h_size = pos
+        else:
+            # Still in header (unless fail)
+            # ----Thus, check if it's in the expected header
+            # ---- IF so, enter it as the value in the header_meta dict/df
+            key, val = pd.read_csv(file, sep=delim, skiprows=pos, nrows=1)
+            # if key in header_expected
+            # ^^ NOT WORKING.
+            header_meta[key] = val  # Assign all key, value pairs
+            pos += 1
+    f.close()
+    #header_meta = pd.read_csv(file, sep=delim, nrows=h_size-1)
+    # header_meta.
+    fseries_raw = pd.read_csv(file, sep=delim, skiprows=h_size+1)
+    f.close()
+
+    return header_meta, fseries_raw
+
+
+header_meta, fseries_raw = fseries_read_data('data/simulation/simulation_data\\200308-0001_sim_one.csv')
+
+
+
+
+
+
+"""
+* fseries_fix_head()    IF the headers in the data frame are not named/ordered
+                        correctly, we need to fix that.
+                        Identify the columns by their headers and/or data types
+                        and then rename and re-order the columns according
+                        to a specific configuration. (in SQL Config doc?)
+                        Returns RAW_DATA
+
+* fseries_process_data()Takes the Raw Data, and makes some quick notes about
+                        the results. Currently Work in Progress - Not sure
+                        how much of this the team wants.
+                        Either way, outputs this as our third type of Meta-data
+                        Returns PROCESSED_DATA
+
+* fseries_metadata()    Takes up to two meta-data dataframes
+                        (One from file name, other from header), and reconciles
+                        any overlap based on some configuration and sorta-smart
+                        manipulation.
+                        Returns EXPERIMENT_METADATA
+
+* fseries_combinedata() Uses a Configuration file (See SQL_get_config???)
+                        to combine all the data for one file into a single line
+                        of a Pandas DataFrame.
+
+                        Format such as:
+                        |Serial_ID|Experiment_Metadata|raw_data|processed_data|
+                        + empty spots for:
+                        |noise_classify|shape_classify|experimental_feedback|
+
+"""
+
+
+"""
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+---SECTION 3 : Setup and Export SQL Files -------------------------------------
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+"""
+
+
+"""
+* SQL_get_config()      Reads a configuration file that demonstrates how
+                        the SQL server is to be set up.
+                        SHOULD (?) FOLLOW STANDARD SCHEMA DESIGN RULES (?)
+
+* SQL_setup()           Takes in instructions/configurations, and initiates
+                        a new SQL database to interact with using
+                        SQL Alchemy...
+
+* SQL_dataframe()       agvfgl;mlkjgfcvx bnm,,km
+                        (We're not here yet. no idea what this will actually
+                        need as inputs and outputs.)
+"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
