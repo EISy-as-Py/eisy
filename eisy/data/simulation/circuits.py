@@ -110,12 +110,13 @@ def cir_RQ_parallel(angular_freq, resistance='none',
     Function that simulates the impedance response of a resistor and a
     constant phase element in a parallel configuration.
     String representation for this circuit: -(RQ)-
+
     Parameters
     ----------
     angular_freq : array-like
                    Angular frequency [1/s]
     resistance : single value (int or float)
-                 Solution resistance [Ohm]
+                   Solution resistance [Ohm]
     constant_phase_element : single value (int or float)
                              Constant phase angle [s^(alpha-1)/ohm]
     alpha : single value -float
