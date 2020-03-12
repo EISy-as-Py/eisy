@@ -4,8 +4,12 @@ simulation
 .. toctree::
    :maxdepth: 4
 
+<<<<<<< HEAD
    alterations
    circuits
    data_simulation
    plotting
    version
+=======
+   simulation
+>>>>>>> be51b6566af4f6ed7848bfc994f4233be107c667
