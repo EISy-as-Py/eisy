@@ -4,7 +4,7 @@
  *
  * Sphinx JavaScript utilities for the full-text search.
  *
- * :copyright: Copyright 2007-2020 by the Sphinx team, see AUTHORS.
+ * :copyright: Copyright 2007-2019 by the Sphinx team, see AUTHORS.
  * :license: BSD, see LICENSE for details.
  *
  */
@@ -63,14 +63,6 @@ var Search = {
       htmlElement.innerHTML = htmlString;
       $(htmlElement).find('.headerlink').remove();
       docContent = $(htmlElement).find('[role=main]')[0];
-<<<<<<< HEAD
-=======
-      if(docContent === undefined) {
-          console.warn("Content block not found. Sphinx search tries to obtain it " +
-                       "via '[role=main]'. Could you check your theme or template.");
-          return "";
-      }
->>>>>>> be51b6566af4f6ed7848bfc994f4233be107c667
       return docContent.textContent || docContent.innerText;
   },
 
@@ -253,10 +245,6 @@ var Search = {
       if (results.length) {
         var item = results.pop();
         var listItem = $('<li style="display:none"></li>');
-<<<<<<< HEAD
-=======
-        var requestUrl = "";
->>>>>>> be51b6566af4f6ed7848bfc994f4233be107c667
         if (DOCUMENTATION_OPTIONS.BUILDER === 'dirhtml') {
           // dirhtml builder
           var dirname = item[0] + '/';
@@ -265,7 +253,6 @@ var Search = {
           } else if (dirname == 'index/') {
             dirname = '';
           }
-<<<<<<< HEAD
           listItem.append($('<a/>').attr('href',
             DOCUMENTATION_OPTIONS.URL_ROOT + dirname +
             highlightstring + item[2]).html(item[1]));
@@ -275,17 +262,6 @@ var Search = {
             item[0] + DOCUMENTATION_OPTIONS.FILE_SUFFIX +
             highlightstring + item[2]).html(item[1]));
         }
-=======
-          requestUrl = DOCUMENTATION_OPTIONS.URL_ROOT + dirname;
-
-        } else {
-          // normal html builders
-          requestUrl = DOCUMENTATION_OPTIONS.URL_ROOT + item[0] + DOCUMENTATION_OPTIONS.FILE_SUFFIX;
-        }
-        listItem.append($('<a/>').attr('href',
-            requestUrl +
-            highlightstring + item[2]).html(item[1]));
->>>>>>> be51b6566af4f6ed7848bfc994f4233be107c667
         if (item[3]) {
           listItem.append($('<span> (' + item[3] + ')</span>'));
           Search.output.append(listItem);
@@ -293,11 +269,7 @@ var Search = {
             displayNextItem();
           });
         } else if (DOCUMENTATION_OPTIONS.HAS_SOURCE) {
-<<<<<<< HEAD
           $.ajax({url: DOCUMENTATION_OPTIONS.URL_ROOT + item[0] + DOCUMENTATION_OPTIONS.FILE_SUFFIX,
-=======
-          $.ajax({url: requestUrl,
->>>>>>> be51b6566af4f6ed7848bfc994f4233be107c667
                   dataType: "text",
                   complete: function(jqxhr, textstatus) {
                     var data = jqxhr.responseText;
