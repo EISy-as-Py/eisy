@@ -433,3 +433,8 @@ def cir_Randles_simplified(angular_freq, solution_resistance,
     Z_w = sigma*(angular_freq**(-0.5))-1j*sigma*(angular_freq**(-0.5))
 
     return solution_resistance + 1/(1/Z_Q + 1/(Z_R+Z_w))
+
+
+if __name__ == '__main__':
+    import sys
+    freq_gen(int(sys.argv[1]))
