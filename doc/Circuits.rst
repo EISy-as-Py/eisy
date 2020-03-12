@@ -1,5 +1,5 @@
 Circuits
 ========
 
-.. automodule:: eisy.data.simulation.circuits
+.. automodule:: circuits
    :members:
