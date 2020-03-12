@@ -1,5 +1,5 @@
-plotting module
-===============
+plotting
+========
 
 .. automodule:: plotting
    :members:

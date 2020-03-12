@@ -1,5 +1,5 @@
-alterations module
-==================
+alterations
+===========
 
 .. automodule:: alterations
    :members:

@@ -1,7 +1,7 @@
-data\_simulation module
-=======================
+data\_simulation
+================
 
-.. automodule:: data_simulation
+.. autofunction:: data_simulation
    :members:
    :undoc-members:
    :show-inheritance:
