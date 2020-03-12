@@ -7,7 +7,6 @@ from setuptools import setup, find_packages
 PACKAGES = find_packages()
 
 
-
 # Get version and release info, which is all stored in shablona/version.py
 
 ver_file = os.path.join('eisy', 'version.py')
@@ -15,7 +14,6 @@ ver_file = os.path.join('eisy', 'version.py')
 with open(ver_file) as f:
 
     exec(f.read())
-
 
 
 # Give setuptools a hint to complain if it's too old a version
@@ -29,7 +27,6 @@ SETUP_REQUIRES = ['setuptools >= 24.2.0']
 # This enables setuptools to install wheel on-the-fly
 
 SETUP_REQUIRES += ['wheel'] if 'bdist_wheel' in sys.argv else []
-
 
 
 opts = dict(name=eisy,
@@ -71,11 +68,8 @@ opts = dict(name=eisy,
             requires=REQUIRES)
 
 
-
-
-
 if __name__ == '__main__':
 
     setup(**opts)
 
-#ask this from davebeck
+# ask this from davebeck
