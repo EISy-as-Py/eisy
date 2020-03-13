@@ -24,15 +24,13 @@ dependencies:
   - pillow
   - pip
   - python
-  - python-dateuti
   - pytorch
   - scipy
   - setuptools
   - sqlite
-  - sqalchemy
+  - sqlalchemy
   - testpath
   - tk
-  - tkinter
   - torchvision
   - pip:
     - contextlib2
