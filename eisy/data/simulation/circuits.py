@@ -22,7 +22,7 @@ def freq_gen(high_freq, low_freq, decades=7):
     [0] = frequency range [Hz]
     [1] = Angular frequency range [1/s]
     '''
-    f_decades = np.log10(high_freq) - np.log10(low_freq)
+    f_decades = np.log10(int(high_freq)) - np.log10(int(low_freq))
     f_range = np.logspace(np.log10(high_freq), np.log10(low_freq),
                           np.around(decades*f_decades), endpoint=True)
     w_range = 2 * np.pi * f_range
