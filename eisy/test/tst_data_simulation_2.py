@@ -168,3 +168,14 @@ the impedance response should be populated by complex numberes'
     assert isinstance(C, float), 'the capacitance should be a float,\
  not an integer'
     assert C <= 1, 'the capacitance value is probably too high.'
+
+
+def test_RC_file_writer():
+    assert isinstance(decades, int), 'the number of decades should be\
+    # an integer'
+    assert high_freq >= low_freq, 'the low frequency should be smaller than\
+ the high frequency limit value. Check again.'
+    np.testing.assert_almost_equal(len(f_range[1]),
+                                   impedance_data_p[0].shape[0],
+                                   decimal=18, err_msg='the impedance\
+is not correclty computed. The number of points in the array is not correct.')
