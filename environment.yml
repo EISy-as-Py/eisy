@@ -1,118 +1,39 @@
-name: EISy-as-Py
+name: eisy
 channels:
   - pytorch
   - conda-forge
   - defaults
 dependencies:
-  - attrs=19.1.0
-  - backcall=0.1.0
-  - blas=1.0
-  - bleach=3.1.0
-  - ca-certificates=2020.1.1
-  - certifi=2019.11.28
-  - cffi=1.12.3
-  - cycler=0.10.0
-  - dbus=1.13.6
-  - decorator=4.4.0
-  - defusedxml=0.6.0
-  - entrypoints=0.3
-  - expat=2.2.6
-  - fontconfig=2.13.0
-  - freetype=2.9.1
-  - glib=2.56.2
-  - gmp=6.1.2
-  - gst-plugins-base=1.14.0
-  - gstreamer=1.14.0
-  - icu=58.2
-  - intel-openmp=2020.0
-  - ipykernel=5.1.0
-  - ipython=7.5.0
-  - ipython_genutils=0.2.0
-  - ipywidgets=7.4.2
-  - jedi=0.13.3
-  - jinja2=2.10.1
-  - jpeg=9b
-  - jsonschema=3.0.1
-  - jupyter=1.0.0
-  - jupyter_client=5.2.4
-  - jupyter_console=6.0.0
-  - jupyter_core=4.4.0
-  - kiwisolver=1.1.0
-  - ld_impl_linux-64=2.33.1
-  - libedit=3.1.20181209
-  - libffi=3.2.1
-  - libgcc-ng=9.1.0
-  - libgfortran-ng=7.3.0
-  - libpng=1.6.37
-  - libsodium=1.0.16
-  - libstdcxx-ng=9.1.0
-  - libtiff=4.0.10
-  - libuuid=1.0.3
-  - libxcb=1.13
-  - libxml2=2.9.9
-  - markupsafe=1.1.1
-  - matplotlib=3.0.3
-  - mistune=0.8.4
-  - mkl=2020.0
-  - mkl-service=2.3.0
-  - mkl_fft=1.0.15
-  - mkl_random=1.1.0
-  - nbconvert=5.5.0
-  - nbformat=4.4.0
-  - ncurses=6.2
-  - ninja=1.9.0
-  - notebook=5.7.8
-  - numpy=1.18.1
-  - numpy-base=1.18.1
-  - olefile=0.46
-  - openssl=1.1.1d
-  - pandas=1.0.1
-  - pandoc=2.2.3.2
-  - pandocfilters=1.4.2
-  - parso=0.4.0
-  - pcre=8.43
-  - pexpect=4.7.0
-  - pickleshare=0.7.5
-  - pillow=6.0.0
-  - pip=20.0.2
-  - prometheus_client=0.6.0
-  - prompt_toolkit=2.0.9
-  - ptyprocess=0.6.0
-  - pycparser=2.19
-  - pygments=2.4.0
-  - pyparsing=2.4.0
-  - pyqt=5.9.2
-  - pyro4=4.75
-  - pyrsistent=0.14.11
-  - python=3.8.1
-  - python-dateutil=2.8.1
-  - pytorch=1.1.0
-  - pytz=2019.3
-  - pyzmq=18.0.0
-  - qt=5.9.7
-  - qtconsole=4.4.4
-  - readline=7.0
-  - scipy=1.2.1
-  - send2trash=1.5.0
-  - serpent=1.28
-  - setuptools=45.2.0
-  - sip=4.19.8
-  - six=1.14.0
-  - sqlite=3.31.1
-  - terminado=0.8.2
-  - testpath=0.4.2
-  - tk=8.6.8
-  - torchvision=0.3.0
-  - tornado=6.0.2
-  - traitlets=4.3.2
-  - wcwidth=0.1.7
-  - webencodings=0.5.1
-  - wheel=0.34.2
-  - widgetsnbextension=3.4.2
-  - xz=5.2.4
-  - zeromq=4.3.1
-  - zlib=1.2.11
-  - zstd=1.3.7
+  - ipython
+  - ipython_genutils
+  - ipywidgets
+  - jupyter
+  - jupyter_client
+  - jupyter_console
+  - jupyter_core
+  - matplotlib
+  - mkl
+  - mkl-service
+  - mkl_fft
+  - mkl_random
+  - notebook
+  - numpy
+  - numpy-base
+  - pandas
+  - pandoc
+  - pillow
+  - pip
+  - python
+  - python-dateuti
+  - pytorch
+  - scipy
+  - setuptools
+  - sqlite
+  - sqalchemy
+  - testpath
+  - tk
+  - tkinter
+  - torchvision
   - pip:
     - contextlib2
     - google-images-download
@@ -122,4 +43,3 @@ dependencies:
     - tqdm
     - urllib3
 prefix: /home/amoeez/anaconda3/envs/EISy-as-Py
-
