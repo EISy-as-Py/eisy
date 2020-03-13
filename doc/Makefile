@@ -5,8 +5,10 @@
 # from the environment for the first two.
 SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
-SOURCEDIR     = .
-BUILDDIR      = _build
+SPHINXPROJ	 = eisy
+SOURCEDIR    = .
+BUILDDIR     = _build
+PYTHON ?= python3.8
 
 # Put it first so that "make" without argument is like "make help".
 help:

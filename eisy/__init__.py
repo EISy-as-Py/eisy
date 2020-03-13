@@ -1,4 +1,7 @@
-from .version import __version
-from EISy_as_Py import *
+from .version import __version__
+from .eisy_file_mgmt import *
+# from eisy import *
 
-__all__= [__version__]
+__all__ = [__version__]
+
+name = 'eisy'
