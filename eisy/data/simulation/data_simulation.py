@@ -2,12 +2,13 @@ import csv
 import os
 import time
 
-import alterations
 import numpy as np
 import pandas as pd
-import circuits
 
-from plotting import nyquist_plot
+#import .alterations
+#import .circuits
+
+from .plotting import nyquist_plot
 
 
 def to_dataframe(freq_range, impedance_array):
