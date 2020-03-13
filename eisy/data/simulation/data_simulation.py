@@ -23,6 +23,11 @@ def to_dataframe(freq_range, impedance_array):
                 used to determine the corresponding impedance response.
                 freq_range[0]- the frequency response [Hz]
                 freq_range[1]- the angualr frequncy [1/s]
+    impedance_array: array-like
+                     an array containng the different parts of the impedance
+                     response just investigated. The expected content of the
+                     array should be: complex impedance, Re and Im parts,
+                     magnitude and phase angle of the complex impedance.
 
     Returns
     ----------
