@@ -3,11 +3,12 @@
 
 # You can set these variables from the command line, and also
 # from the environment for the first two.
-SPHINXOPTS   =
-SPHINXBUILD  = sphinx-build
+SPHINXOPTS    ?=
+SPHINXBUILD   ?= sphinx-build
 SPHINXPROJ	 = eisy
 SOURCEDIR    = .
 BUILDDIR     = _build
+PYTHON ?= python3.8
 
 # Put it first so that "make" without argument is like "make help".
 help:

@@ -63,7 +63,7 @@ def test_to_dataframe():
     assert dataframe['Im_Z [ohm]'][0] == circuit[0].imag, 'the fourth\
  column should contain the real impedance respose. Check again'
     assert isinstance(dataframe, pd.DataFrame), \
-        "The output should be a pandas.DataFrame"
+        'The output should be a pandas.DataFrame'
 
 #     assert isinstance(C, float), 'the capacitance should be a float,\
 # not an integer'
@@ -109,9 +109,28 @@ def test_RC_simuation():
     C = 10E-6  # F
     n_points = np.round(decades * np.log10(high_freq) - np.log10(low_freq))
     f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
-    circuit = circuits.cir_RC_parallel(f_range[1], R, C)
+    # Define the RC parallel simulation
+    circuit_parallel = circuits.cir_RC_parallel(f_range[1], R, C)
+    impedance_data_p = impedance_array(circuit_parallel)
+    impedance_data_p_df = to_dataframe(f_range, impedance_data)
+    # Define the RC series simulation
+    circuit_series = circuits.cir_RC_series(f_range[1], R, C)
+    impedance_data_s = impedance_array(circuit_parallel)
+    impedance_data_s_df = to_dataframe(f_range, impedance_data)
 
     assert isinstance(decades, int), 'the number of decades should be\
 an integer'
     assert high_freq >= low_freq, 'the low frequency should be smaller than\
 the high frequency limit value. Check again.'
+    np.testing.assert_almost_equal(len(f_range[1]),
+                                   impedance_data_p[0].shape[0],
+                                   decimal=18, err_msg='the impedance\
+is not correclty computed. The number of points in the array is not correct.')
+    np.testing.assert_almost_equal(len(f_range[1]),
+                                   impedance_data_s[0].shape[0],
+                                   decimal=18, err_msg='the impedance\
+is not correclty computed. The number of points in the array is not correct.')
+    assert isinstance(impedance_data_p_df, pd.DataFrame), \
+        'The output should be a pandas.DataFrame'
+    assert isinstance(impedance_data_s_df, pd.DataFrame), \
+        'The output should be a pandas.DataFrame'
