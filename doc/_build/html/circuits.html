@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -175,10 +175,13 @@ String representation for this circuit: -(RC)-</p>
 <li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
 <li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Electrode capacitance [F]</p></li>
 <li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
-<li><p><strong>Output</strong> – </p></li>
-<li><p><strong>---------</strong> – </p></li>
-<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [ohm]</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
 </dd>
 </dl>
 </dd></dl>
@@ -198,10 +201,13 @@ String representation for this circuit: -R-C-</p>
 <li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
 <li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface [F]</p></li>
 <li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
-<li><p><strong>Output</strong> – </p></li>
-<li><p><strong>---------</strong> – </p></li>
-<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [ohm]</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
 </dd>
 </dl>
 </dd></dl>
@@ -221,10 +227,13 @@ String representation for this circuit: -(RQ)-</p>
 <li><p><strong>alpha</strong> (<em>single value -float</em>) – Exponent of the constant phase element. Should be a value between
 0 and 1 [-]</p></li>
 <li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
-<li><p><strong>Output</strong> – </p></li>
-<li><p><strong>---------</strong> – </p></li>
-<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Ohm]</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
 </dd>
 </dl>
 </dd></dl>
@@ -246,10 +255,13 @@ String representation for this circuit: -R-Q-</p>
 <li><p><strong>alpha</strong> (<em>single value -float</em>) – Exponent of the constant phase element. Should be a value between
 0 and 1 [-]</p></li>
 <li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
-<li><p><strong>Output</strong> – </p></li>
-<li><p><strong>---------</strong> – </p></li>
-<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Oom]</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Oom]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
 </dd>
 </dl>
 </dd></dl>
@@ -270,10 +282,13 @@ String representation for this circuit: -Rs-(Q-(RW)-)-</p>
 the capacitor [ohm]</p></li>
 <li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface [F]</p></li>
 <li><p><strong>to add new parameters!!!!</strong><strong>]</strong><strong>]</strong> (<em>[</em><em>[</em><em>Need</em>) – </p></li>
-<li><p><strong>Output</strong> – </p></li>
-<li><p><strong>---------</strong> – </p></li>
-<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Ohm]</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
 </dd>
 </dl>
 </dd></dl>
@@ -296,10 +311,13 @@ String representation for this circuit: -Rs-(RC)-</p>
 the capacitor [ohm]</p></li>
 <li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface [F]</p></li>
 <li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the parallel RC circuit [Hz]</p></li>
-<li><p><strong>Output</strong> – </p></li>
-<li><p><strong>---------</strong> – </p></li>
-<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Ohm]</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
 </dd>
 </dl>
 </dd></dl>
@@ -325,10 +343,13 @@ capacitor [ohm]</p></li>
 second combination of RC in parallel [F]</p></li>
 <li><p><strong>peak_frequency_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the first parallel RC circuit [Hz]</p></li>
 <li><p><strong>peak_frequency_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the second parallel RC circuit [Hz]</p></li>
-<li><p><strong>Output</strong> – </p></li>
-<li><p><strong>---------</strong> – </p></li>
-<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Ohm]</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
 </dd>
 </dl>
 </dd></dl>
@@ -357,10 +378,13 @@ constant phase element [ohm]</p></li>
 Should be a value between 0 and 1 [-]</p></li>
 <li><p><strong>peak_frequency_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the first parallel RQ circuit [Hz]</p></li>
 <li><p><strong>peak_frequency_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the second parallel RQ circuit [Hz]</p></li>
-<li><p><strong>Output</strong> – </p></li>
-<li><p><strong>---------</strong> – </p></li>
-<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Ohm]</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
 </dd>
 </dl>
 </dd></dl>
@@ -378,11 +402,14 @@ logspaced freqencies</p>
 <li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
 <li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
 is set to be 7 [-]</p></li>
-<li><p><strong>Output</strong> – </p></li>
-<li><p><strong>----------</strong> – </p></li>
-<li><p><strong>= frequency range</strong><strong> [</strong><strong>Hz</strong><strong>]</strong> (<em>[</em><em>0</em><em>]</em>) – </p></li>
-<li><p><strong>= Angular frequency range</strong><strong> [</strong><strong>1/s</strong><strong>]</strong> (<em>[</em><em>1</em><em>]</em>) – </p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>[0] = frequency range [Hz]</em></p></li>
+<li><p><em>[1] = Angular frequency range [1/s]</em></p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>

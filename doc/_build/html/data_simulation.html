@@ -21,10 +21,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -585,10 +585,16 @@ in the current working directory.</p></li>
 frequency range used to determine the impedance respose.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>freq_range</strong> (<em>array-like</em>) – an array containing the frequency and angular frequency values
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freq_range</strong> (<em>array-like</em>) – an array containing the frequency and angular frequency values
 used to determine the corresponding impedance response.
 freq_range[0]- the frequency response [Hz]
-freq_range[1]- the angualr frequncy [1/s]</p>
+freq_range[1]- the angualr frequncy [1/s]</p></li>
+<li><p><strong>impedance_array</strong> (<em>array-like</em>) – an array containng the different parts of the impedance
+response just investigated. The expected content of the
+array should be: complex impedance, Re and Im parts,
+magnitude and phase angle of the complex impedance.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>impedance_response_df</strong> – pandas dataframe containing frequency and imepedance
