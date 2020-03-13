@@ -1,0 +1,441 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>circuits module &mdash; eisy.py 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="data_simulation module" href="data_simulation.html" />
+    <link rel="prev" title="alterations module" href="alterations.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> eisy.py
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">simulation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="alterations.html">alterations module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">circuits module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_simulation.html">data_simulation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotting.html">plotting module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version.html">version module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">eisy.py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">simulation</a> &raquo;</li>
+        
+      <li>circuits module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/circuits.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-circuits">
+<span id="circuits-module"></span><h1>circuits module<a class="headerlink" href="#module-circuits" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="circuits.cir_RC_parallel">
+<code class="sig-prename descclassname">circuits.</code><code class="sig-name descname">cir_RC_parallel</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">resistance='none'</em>, <em class="sig-param">capacitance='none'</em>, <em class="sig-param">peak_frequency='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#circuits.cir_RC_parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a resistor and a
+capacitor in a parallel configuration.
+String representation for this circuit: -(RC)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Electrode capacitance [F]</p></li>
+<li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>---------</strong> – </p></li>
+<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [ohm]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="circuits.cir_RC_series">
+<code class="sig-prename descclassname">circuits.</code><code class="sig-name descname">cir_RC_series</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">resistance='none'</em>, <em class="sig-param">capacitance='none'</em>, <em class="sig-param">peak_frequency='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#circuits.cir_RC_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a resistor and a
+capacitor in a series configuration.
+This circuit configuration is used to simulate the response of an ideally
+polarizable electrode, also known as a blocking electrode.
+String representation for this circuit: -R-C-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface [F]</p></li>
+<li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>---------</strong> – </p></li>
+<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [ohm]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="circuits.cir_RQ_parallel">
+<code class="sig-prename descclassname">circuits.</code><code class="sig-name descname">cir_RQ_parallel</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">resistance='none'</em>, <em class="sig-param">constant_phase_element='none'</em>, <em class="sig-param">alpha='none'</em>, <em class="sig-param">peak_frequency='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#circuits.cir_RQ_parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a resistor and a
+constant phase element in a parallel configuration.
+String representation for this circuit: -(RQ)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [Ohm]</p></li>
+<li><p><strong>constant_phase_element</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Constant phase angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha</strong> (<em>single value -float</em>) – Exponent of the constant phase element. Should be a value between
+0 and 1 [-]</p></li>
+<li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>---------</strong> – </p></li>
+<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Ohm]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="circuits.cir_RQ_series">
+<code class="sig-prename descclassname">circuits.</code><code class="sig-name descname">cir_RQ_series</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">resistance='none'</em>, <em class="sig-param">constant_phase_element='none'</em>, <em class="sig-param">alpha='none'</em>, <em class="sig-param">peak_frequency='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#circuits.cir_RQ_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a resistor and a
+constant phase element in a series configuration.
+This circuit configuration is used to simulate the response of a
+blocking electrode with distribution of reactivity.
+String representation for this circuit: -R-Q-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>constant_phase_element</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Constant phase angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha</strong> (<em>single value -float</em>) – Exponent of the constant phase element. Should be a value between
+0 and 1 [-]</p></li>
+<li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>---------</strong> – </p></li>
+<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Oom]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="circuits.cir_Randles_simplified">
+<code class="sig-prename descclassname">circuits.</code><code class="sig-name descname">cir_Randles_simplified</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">solution_resistance</em>, <em class="sig-param">parallel_resistance</em>, <em class="sig-param">alpha='none'</em>, <em class="sig-param">sigma='none'</em>, <em class="sig-param">Q='none'</em>, <em class="sig-param">fs='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#circuits.cir_Randles_simplified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the impedance of a Randles circuit with a simplified Warburg element
+This form of the Randles circuit is only meant for to simulate
+semi-infinate linear diffusion
+String representation for this circuit: -Rs-(Q-(RW)-)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – resistance of the element in parallel with
+the capacitor [ohm]</p></li>
+<li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface [F]</p></li>
+<li><p><strong>to add new parameters!!!!</strong><strong>]</strong><strong>]</strong> (<em>[</em><em>[</em><em>Need</em>) – </p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>---------</strong> – </p></li>
+<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Ohm]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="circuits.cir_RsRC">
+<code class="sig-prename descclassname">circuits.</code><code class="sig-name descname">cir_RsRC</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">solution_resistance</em>, <em class="sig-param">parallel_resistance='none'</em>, <em class="sig-param">capacitance='none'</em>, <em class="sig-param">peak_frequency='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#circuits.cir_RsRC" title="Permalink to this definition">¶</a></dt>
+<dd><p>‘
+Function that simulates the impedance response of a solution resistor in
+series with a resistor in parallel with a capacitor.
+This circuit configuration is used to simulate the response of an ideally
+polarizable electrode, also known as a blocking electrode.
+String representation for this circuit: -Rs-(RC)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – resistance of the element in parallel with
+the capacitor [ohm]</p></li>
+<li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface [F]</p></li>
+<li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the parallel RC circuit [Hz]</p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>---------</strong> – </p></li>
+<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Ohm]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="circuits.cir_RsRCRC">
+<code class="sig-prename descclassname">circuits.</code><code class="sig-name descname">cir_RsRCRC</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">solution_resistance</em>, <em class="sig-param">parallel_resistance_1='none'</em>, <em class="sig-param">capacitance_1='none'</em>, <em class="sig-param">parallel_resistance_2='none'</em>, <em class="sig-param">capacitance_2='none'</em>, <em class="sig-param">peak_frequency_1='none'</em>, <em class="sig-param">peak_frequency_2='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#circuits.cir_RsRCRC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a solution resistor in
+series with two sets of a resistor in parallel with a capacitor.
+String representation for this circuit: -Rs-(RC)-(RC)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – first combination of resistor in parallel with
+capacitor [ohm]</p></li>
+<li><p><strong>capacitance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface whichi is part of the
+first combination of RC in parallel [F]</p></li>
+<li><p><strong>parallel_resistance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – second combination of resistor in parallel with
+capacitor [ohm]</p></li>
+<li><p><strong>capacitance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface whichi is part of the
+second combination of RC in parallel [F]</p></li>
+<li><p><strong>peak_frequency_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the first parallel RC circuit [Hz]</p></li>
+<li><p><strong>peak_frequency_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the second parallel RC circuit [Hz]</p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>---------</strong> – </p></li>
+<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Ohm]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="circuits.cir_RsRQRQ">
+<code class="sig-prename descclassname">circuits.</code><code class="sig-name descname">cir_RsRQRQ</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">solution_resistance='none'</em>, <em class="sig-param">parallel_resistance_1='none'</em>, <em class="sig-param">constant_phase_element_1='none'</em>, <em class="sig-param">alpha_1='none'</em>, <em class="sig-param">parallel_resistance_2='none'</em>, <em class="sig-param">constant_phase_element_2='none'</em>, <em class="sig-param">alpha_2='none'</em>, <em class="sig-param">peak_frequency_1='none'</em>, <em class="sig-param">peak_frequency_2='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#circuits.cir_RsRQRQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a solution resistor in
+series with two sets of a resistor in parallel with a constant phase
+elements.
+String representation for this circuit: -Rs-(RQ)-(RQ)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – first combination of resistor in parallel with
+constant phase element [ohm]</p></li>
+<li><p><strong>constant_phase_element_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – First constant phas angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha_1</strong> (<em>single value -float</em>) – Exponent of the first constant phase element.
+Should be a value between 0 and 1 [-]</p></li>
+<li><p><strong>parallel_resistance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Second combination of resistor in parallel with
+constant phase element [ohm]</p></li>
+<li><p><strong>constant_phase_element_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Second Constant phas angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha_2</strong> (<em>single value -float</em>) – Exponent of the second constant phase element.
+Should be a value between 0 and 1 [-]</p></li>
+<li><p><strong>peak_frequency_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the first parallel RQ circuit [Hz]</p></li>
+<li><p><strong>peak_frequency_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the second parallel RQ circuit [Hz]</p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>---------</strong> – </p></li>
+<li><p><strong>Z_complex</strong> (<em>array-like</em>) – impedance response of the circuit under investigation [Ohm]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="circuits.freq_gen">
+<code class="sig-prename descclassname">circuits.</code><code class="sig-name descname">freq_gen</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades=7</em><span class="sig-paren">)</span><a class="headerlink" href="#circuits.freq_gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that generates the frequency range used to investigate the
+impedance response of an electrical circuit Frequency Generator with
+logspaced freqencies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>----------</strong> – </p></li>
+<li><p><strong>= frequency range</strong><strong> [</strong><strong>Hz</strong><strong>]</strong> (<em>[</em><em>0</em><em>]</em>) – </p></li>
+<li><p><strong>= Angular frequency range</strong><strong> [</strong><strong>1/s</strong><strong>]</strong> (<em>[</em><em>1</em><em>]</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="data_simulation.html" class="btn btn-neutral float-right" title="data_simulation module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="alterations.html" class="btn btn-neutral float-left" title="alterations module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Maria Politi, Abdul Moeez,              David Hurt, Mihyun Kim, Yao-Yu Li
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
