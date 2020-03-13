@@ -17,11 +17,11 @@ from eisy.data.simulation.plotting import nyquist_plot
 from eisy.data.simulation.data_simulation import *
 
 
-class TestSimulationToosl(unittest.TestCase):
+class TestSimulationTools(unittest.TestCase):
 
     def test_to_dataframe(self):
-        high_freq = 10**8  # Hz
-        low_freq = 0.01  # Hz
+        high_freq = int(10**8)  # Hz
+        low_freq = int(0.01)  # Hz
         decades = 7
         R = 100  # ohm
         C = 10E-6  # F
@@ -76,8 +76,8 @@ should contain the magnitude of the impedance.'
         #     assert C <= 1, 'the capacitance value is probably too high.'
 
     def test_impedance_array(self):
-        high_freq = 10**8  # Hz
-        low_freq = 0.01  # Hz
+        high_freq = int(10**8)  # Hz
+        low_freq = int(0.01)  # Hz
         decades = 7
         R = 100  # ohm
         C = 10E-6  # F
@@ -105,8 +105,8 @@ should contain the magnitude of the impedance.'
  not separated into its real and imaginary parts correctly.'
 
     def test_RC_simuation(self):
-        high_freq = 10**8  # Hz
-        low_freq = 0.01  # Hz
+        high_freq = int(10**8)  # Hz
+        low_freq = int(0.01)  # Hz
         decades = 7
         R = 100  # ohm
         C = 10E-6  # F
