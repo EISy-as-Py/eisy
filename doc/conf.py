@@ -15,8 +15,10 @@ import sys
 # import datatime
 
 # sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath('..'))
-sys.path.insert(0, os.path.abspath('../eisy/data/simulation/'))
+sys.path.insert(0, os.path.abspath('.'))
+module_path = os.path.abspath(os.path.join('../eisy/data/simulation'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
 
 # -- Project information -----------------------------------------------------
 
