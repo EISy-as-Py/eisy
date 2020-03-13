@@ -17,7 +17,7 @@ def freq_gen(high_freq, low_freq, decades=7):
               number of frequency decades to be used as range. Default value
               is set to be 7 [-]
 
-    Output
+    Returns
     ----------
     [0] = frequency range [Hz]
     [1] = Angular frequency range [1/s]
@@ -47,7 +47,7 @@ def cir_RC_parallel(angular_freq, resistance='none', capacitance='none',
     peak_frequency : single value (int or float)
                      Peak frequency of RC circuit [Hz]
 
-    Output
+    Returns
     ---------
     Z_complex : array-like
                 impedance response of the circuit under investigation [ohm]
@@ -82,7 +82,7 @@ def cir_RC_series(angular_freq, resistance='none', capacitance='none',
     peak_frequency : single value (int or float)
                      Peak frequency of RC circuit [Hz]
 
-    Output
+    Returns
     ---------
     Z_complex : array-like
                 impedance response of the circuit under investigation [ohm]
@@ -125,7 +125,7 @@ def cir_RQ_parallel(angular_freq, resistance='none',
     peak_frequency : single value (int or float)
                      Peak frequency of RC circuit [Hz]
 
-    Output
+    Returns
     ---------
     Z_complex : array-like
                 impedance response of the circuit under investigation [Ohm]
@@ -175,7 +175,7 @@ def cir_RQ_series(angular_freq, resistance='none',
     peak_frequency : single value (int or float)
                      Peak frequency of RC circuit [Hz]
 
-    Output
+    Returns
     ---------
     Z_complex : array-like
                 impedance response of the circuit under investigation [Oom]
@@ -225,7 +225,7 @@ def cir_RsRC(angular_freq, solution_resistance,
                   Capacitance of an electrode surface [F]
     peak_frequency : single value (int or float)
                      Peak frequency of the parallel RC circuit [Hz]
-    Output
+    Returns
     ---------
     Z_complex : array-like
                 impedance response of the circuit under investigation [Ohm]
@@ -285,7 +285,7 @@ def cir_RsRQRQ(angular_freq, solution_resistance='none',
                      Peak frequency of the first parallel RQ circuit [Hz]
     peak_frequency_2 : single value (int or float)
                        Peak frequency of the second parallel RQ circuit [Hz]
-    Output
+    Returns
     ---------
     Z_complex : array-like
                 impedance response of the circuit under investigation [Ohm]
@@ -358,7 +358,7 @@ def cir_RsRCRC(angular_freq, solution_resistance,
                        Peak frequency of the first parallel RC circuit [Hz]
     peak_frequency_2 : single value (int or float)
                        Peak frequency of the second parallel RC circuit [Hz]
-    Output
+    Returns
     ---------
     Z_complex : array-like
                 impedance response of the circuit under investigation [Ohm]
@@ -416,7 +416,7 @@ def cir_Randles_simplified(angular_freq, solution_resistance,
     capacitance : single value (int or float)
                   Capacitance of an electrode surface [F]
     [[Need to add new parameters!!!!]]
-    Output
+    Returns
     ---------
     Z_complex : array-like
                 impedance response of the circuit under investigation [Ohm]
