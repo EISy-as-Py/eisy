@@ -200,3 +200,103 @@ class TestSimulationTools(unittest.TestCase):
             total_Z = np.sqrt((real_Z**2) + (imag_Z**2))
             assert total_Z > Solution_Resistance, 'The Impedance value\
                 returned is lower than the Solution Resistance'
+
+    def test_RsRQRQ(self):
+        high_freq = 10**8  # Hz
+        low_freq = 0.01  # Hz
+        decades = 7
+
+        assert isinstance(decades, int),\
+            'The number of decades should be an integer'
+        assert high_freq >= low_freq,\
+            'The low frequency should be smaller than the high\
+             frequency limit value. Check again.'
+
+        f_range = circuits.freq_gen(high_freq, low_freq, decades)
+
+        Solution_Resistance = 10
+        Parallel_Resistance_1 = 100
+        Parallel_Resistance_2 = 100
+        Constant_phase_element_1 = 10**-6
+        Constant_phase_element_2 = 10**-6
+        alpha_1 = 1
+        alpha_2 = 1
+
+        assert np.positive(Solution_Resistance), 'The input resistance\
+            is invalid'
+        assert np.positive(Parallel_Resistance_1), 'The input resistance\
+            is invalid'
+        assert np.positive(Parallel_Resistance_2), 'The input resistance\
+            is invalid'
+        assert np.positive(Constant_phase_element_1), 'The input capacitance\
+            is invalid'
+        assert np.positive(Constant_phase_element_2), 'The input capacitance\
+            is invalid'
+        assert alpha_1 > 0 or alpha_1 <= 1, 'The values of alpha is invalid'
+        assert alpha_2 > 0 or alpha_2 <= 1, 'The values of alpha is invalid'
+
+        response = circuits.cir_RsRQRQ(f_range[1], Solution_Resistance,
+                                       Parallel_Resistance_1,
+                                       Constant_phase_element_1, alpha_1,
+                                       Parallel_Resistance_2,
+                                       Constant_phase_element_2, alpha_2)
+
+        assert len(response) == len(f_range[1]), 'The returned response\
+            is not valid'
+
+        for item in response:
+            assert isinstance(item, complex), 'The returned response\
+                includes invalid impedance'
+            real_Z = item.real
+            imag_Z = item.imag
+            total_Z = np.sqrt((real_Z**2) + (imag_Z**2))
+            assert total_Z > Solution_Resistance, 'The Impedance value\
+                returned is lower than the Solution Resistance'
+
+    def test_RsRCRC(self):
+        high_freq = 10**8  # Hz
+        low_freq = 0.01  # Hz
+        decades = 7
+
+        assert isinstance(decades, int),\
+            'The number of decades should be an integer'
+        assert high_freq >= low_freq,\
+            'The low frequency should be smaller than the high\
+             frequency limit value. Check again.'
+
+        f_range = circuits.freq_gen(high_freq, low_freq, decades)
+
+        Solution_Resistance = 10
+        Parallel_Resistance_1 = 100
+        Parallel_Resistance_2 = 100
+        Capacitance_1 = 10**-6
+        Capacitance_2 = 10**-6
+
+        assert np.positive(Solution_Resistance), 'The input resistance\
+            is invalid'
+        assert np.positive(Parallel_Resistance_1), 'The input resistance\
+            is invalid'
+        assert np.positive(Parallel_Resistance_2), 'The input resistance\
+            is invalid'
+        assert np.positive(Capacitance_1), 'The input capacitance\
+            is invalid'
+        assert np.positive(Capacitance_2), 'The input capacitance\
+            is invalid'
+
+        response = circuits.cir_RsRCRC(f_range[1], Solution_Resistance,
+                                       Parallel_Resistance_1,
+                                       Capacitance_1,
+                                       Parallel_Resistance_2,
+                                       Capacitance_2)
+
+        assert len(response) == len(f_range[1]), 'The returned response\
+            is not valid'
+
+        for item in response:
+            assert isinstance(item, complex), 'The returned response\
+                includes invalid impedance'
+            real_Z = item.real
+            imag_Z = item.imag
+            total_Z = np.sqrt((real_Z**2) + (imag_Z**2))
+            assert total_Z > Solution_Resistance, 'The Impedance value\
+                returned is lower than the Solution Resistance'
