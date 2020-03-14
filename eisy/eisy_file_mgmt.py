@@ -174,9 +174,9 @@ def new_config_import(config_file=config_file_location,
             "fdata_delim": ",",
             "fdata_head": {
                     "freq_hz":   "freq [Hz]",
-                    "real_ohm":  "Re_Z [Ohm]",
-                    "imag_ohm":  "Im_Z [Ohm]",
-                    "totl_ohm":  "|Z| [Ohm]",
+                    "r_real_ohm":  "Re_Z [Ohm]",
+                    "r_imag_ohm":  "Im_Z [Ohm]",
+                    "r_totl_ohm":  "|Z| [Ohm]",
                     "phase_rad": "phase_angle [rad]",
                     }
               }
@@ -192,8 +192,9 @@ def new_config_import(config_file=config_file_location,
         if popup:
             # If the user wants a tkinter window to ask for
             # what arguments they want, then give them that?
-            import tkinter
-            change_interact = ""  # WIP, leave empty
+            # import tkinter
+            # change_interact = ""  # WIP, leave empty
+            pass
         else:
             # If no popup windows, then ask in command line
             print("Please Input Config Parameters. Leave blank to finish")
@@ -594,7 +595,7 @@ def parse_fname_meta(file):
     return serial_id, meta_tags, class_tags
 
 
-def fseries_read_data(file, data_head = config["fdata_head"],
+def fseries_read_data(file, data_head=config["fdata_head"],
                       delim=config["fdata_delim"],
                       header_end_str=config["header_end_str"],
                       header_meta_key=config["header_meta"]):
@@ -649,8 +650,7 @@ def fseries_read_data(file, data_head = config["fdata_head"],
             # ^^ NOT WORKING.
             header_meta[key] = val  # Assign all key, value pairs
             pos += 1
-    f.close()
-    #header_meta = pd.read_csv(file, sep=delim, nrows=h_size-1)
+    # header_meta = pd.read_csv(file, sep=delim, nrows=h_size-1)
     # header_meta.
     fseries_raw = pd.read_csv(file, sep=delim, skiprows=h_size+1)
     f.close()
@@ -658,12 +658,205 @@ def fseries_read_data(file, data_head = config["fdata_head"],
     return header_meta, fseries_raw
 
 
-header_meta, fseries_raw = fseries_read_data('data/simulation/simulation_data\\200308-0001_sim_one.csv')
+header_meta, fseries_raw = fseries_read_data(
+        'data/simulation/simulation_data\\200308-0001_sim_one.csv')
 
 
+def fseries_fix_head(fseries_raw, correct_headers=None, interact=False):
+    """
+    frequency series raw-data can come in many formats.
+    For a SQL database, it's useful that it is the same every time.
+    This function should be written simply to start, and become "smarter"
+    over time.
+
+    INPUTS:
+        fseries_raw :   The pandas dataframe with all of the frequency-series
+                        data.
 
 
+        correct_headers:A list (or tuple? hmm) of the column names to be used
+                        in the SQL database.
+                        IF None, use a hard-coded list below.
 
+                        tuple-list might not be good enough... Somehow I need
+                        to make sure that the program knows and can "search"
+                        for the right type of data...
+
+                        I'd like someone else to review/fix/feedback on this,
+                        especially if there is a "right" pythonic way to do
+                        this sort of work.
+    """
+    import pandas as pd
+    import numpy as np
+
+    if interact:
+        # import tkinter
+        pass
+    if not correct_headers:
+        # If no headers given, use this one provided. (BS Hard-coding for now)
+        correct_headers = (
+                "freq_hz",
+                "z_real_ohm",
+                "z_imag_ohm",
+                "z_comb_ohm",
+                "phase_rad")
+    else:
+        pass
+
+    fseries_fixed = pd.DataFrame(columns=correct_headers)
+    fseries_hints = pd.DataFrame(columns=correct_headers)
+
+    # Now, for each column in the final dataframe, we have to ID which of the
+    #     raw data files is most likely to be the correct one.
+    # We will do that with a list (dataframe series actually) of "hints"
+    #     such as that "freq" is most likely only in the frequency database
+    #     Eventually do this smartly, but for now pick the first match.
+    # I want to load this from a configuration file, but for now again, we're
+    #     hard-coding it...
+
+    # NOTE: First Entries should be VERY Specific. later ones are for if we
+    #       are getting "despirate" to find the right column.
+    fseries_hints["freq_hz"] = ["freq_hz", "freq [Hz]", "freq",
+                                "Freq", "FREQ", "Hz", "HZ", "1/s"]
+    fseries_hints["z_real_ohm"] = ["z_real_ohm", "Re_Z [Ohm]", "real",
+                                   "Re", "RE", "Z']", "z']", "Z')", "z')"]
+    fseries_hints["z_imag_ohm"] = ["z_imag_ohm", "Im_Z [Ohm]", "imag",
+                                   "Imag", "IMAG", "IM", "Im",
+                                   "z''", "Z''", 'Z"', 'z"']
+    fseries_hints["z_comb_ohm"] = ["z_comb_ohm", "|Z| [Ohm]", "tot", "Tot",
+                                   "TOT", "comb", "|"]
+    fseries_hints["phase_rad"] = ["phase_rad", "phase_angle [rad]", "angle",
+                                  "Angle", "ANGLE", "phase", "Phase"]
+
+    for correct_key in correct_headers:
+        # For each column, match it to the raw data as given
+        fseries_fixed[correct_key] = match_columns(
+                fseries_raw, fseries_hints[correct_key],
+                interact=False, leaveblank=True)
+
+    # NOTE: Now to fix some Data Irregularities!
+    #       * Degrees to Radians conversion
+    #       * KiloHertz, Megahertz etc
+    #       * Negative Imaginary data. (For simplicity, we save the normal imZ)
+    fix_deg = False
+    fix_khz = False
+    # fix_mhz = False  # mili or Mega? Check both? This is getting pedantic...
+    fix_neg_img = False
+
+    # Check Degrees via Keywords
+    for degrees in ["degrees", "deg"]:
+        for raw_key in fseries_raw.keys():
+            if degrees in raw_key:
+                fix_deg = True
+    if max(abs(fseries_fixed["phase_rad"])) > 10:  # outside of +-2pi
+        fix_deg = True
+    if fix_deg:
+        fseries_fixed["phase_rad"] = fseries_fixed["phase_rad"]*np.pi/180.0
+
+    # Check for mhz and/or khz via keywords
+    for khz in ["KHZ", "KHz", "kHZ", "kHz", "khz", "Khz"]:
+        for raw_key in fseries_raw.keys():
+            if degrees in raw_key:
+                fix_khz = True
+    if fix_khz:
+        fseries_fixed["freq_hz"] = fseries_fixed["freq_hz"]/1000.0
+
+    # Check Imaginary values via keywords (negative sign)
+    # First find the imaginary string, then check if it starts with "-"
+    # also could have the word "neg" in it?
+    for hint in fseries_hints["z_imag_ohm"]:
+        for raw_key in fseries_raw.keys():
+            if hint in raw_key:
+                if raw_key.startswith('-'):
+                    fix_neg_img = True
+    # IF only contains positive imag. values (only true for inductor circuit?)
+    if min(fseries_fixed["z_imag_ohm"]) > 0:
+        fix_neg_img["z_imag_ohm"] = True
+    if fix_neg_img:
+        fseries_fixed["z_imag_ohm"] = -fseries_fixed["z_imag_ohm"]
+
+    # MORE Err Handling: What about Missing Columns?!?
+    # We are Over-fit with all the columns we save.
+    # With Z' and  Z'' you can calculate |Z| and Phase Angle, or vice-versa!
+    fseries_found = {}  # Initialize
+    for key in fseries_fixed.keys():
+        if np.isnan(fseries_fixed(key)[0]):  # if the first entry is nan
+            fseries_found[key] = False
+        else:
+            fseries_found[key] = True
+
+    # Now we have a boolean dictionary to tell us which columns were found!
+    if not(fseries_found["phase_rad"]) or not(fseries_found["z_comb_ohm"]):
+        # If missing phase angle and/or Combined Resistance
+        if fseries_found["z_imag_ohm"] and fseries_found["z_real_ohm"]:
+            print("Manually solving for Phase angle and |Z|")
+            # If we have Z_imag AND Z-real, re-calculate phase and total R:
+            fseries_fixed["phase_rad"] = np.arctan(
+                    fseries_fixed["z_imag_ohm"] / fseries_fixed["z_real_ohm"])
+            fseries_fixed["z_comb_ohm"] = (fseries_fixed["z_imag_ohm"]**2 +
+                                           fseries_fixed["z_real_ohm"]**2)**0.5
+        else:
+            raise AssertionError("Not Enough Data Columns Found!")
+
+    if not(fseries_found["z_imag_ohm"]) or not(fseries_found["z_real_ohm"]):
+        # If missing the Z' and Z'' columns
+        if fseries_found["phase_rad"] and fseries_found["z_comb_ohm"]:
+            # If we have the Total R and Angle, re-calculate Z' and Z'':
+            print("Manually Solving for Z' and Z''...")
+            fseries_fixed["z_imag_ohm"] = fseries_fixed["z_comb_ohm"] \
+                * np.sin(fseries_fixed["phase_rad"])
+            fseries_fixed["z_real_ohm"] = fseries_fixed["z_comb_ohm"] \
+                * np.cos(fseries_fixed["phase_rad"])
+        else:
+            raise AssertionError("Not Enough Data Columns Found!")
+
+    return fseries_fixed
+
+
+def match_columns(fseries_raw, hint_list, interact=True, leaveblank=True):
+    """
+    Stack Overflow says there's no way to break out of two loops.
+    It's not pythonic... Instead make a new function and then you can break out
+    using Return
+    """
+    for hint in hint_list:
+        # Load up the first hint
+        for raw_key in fseries_raw.keys():
+            # Check each column in the raw dataframe
+            if hint in raw_key:
+                # if you find the column, you're done
+                return fseries_raw[raw_key]
+            else:
+                # otherwise check the next column
+                pass
+        # If you didn't find that hint in any column, check next key
+
+    # If you get all the way through the hint list,
+    # Either raise an error, or send an Interaction message
+    # (Message in command line, OR via tkinter? Print for now...)
+
+    if interact:
+        # If it's okay to interact with the user, print and ask for response:
+        print("Could not find : " + hint_list[0] + " in this list of coluns:")
+        print(fseries_raw.keys())
+        users_column = "     "  # Initialize user input
+        while users_column not in fseries_raw.keys() and len(users_column):
+            # Continue looping until input matches, or user enters nothing.
+            users_column = input("Please enter the column name that matches: ")
+
+        if users_column in fseries_raw.keys():
+            return fseries_raw[users_column]
+        elif leaveblank:
+            return []  # If empty returns are ok, just do that.
+        else:
+            raise AssertionError("You gave up! Column:" + hint[0] +
+                                 "   Not Found")
+    elif leaveblank:
+        return []   # If empty returns are ok, return empty array
+
+    else:
+        raise AssertionError("Column: " + hint[0] + "   Not Found")
+    return []
 
 """
 * fseries_fix_head()    IF the headers in the data frame are not named/ordered
