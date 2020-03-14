@@ -1,6 +1,10 @@
+[![Build Status](https://travis-ci.org/EISy-as-Py/eisy.svg?branch=master](https://travis-ci.org/EISy-as-Py/eisy)
+
 # EISy-as-Py
 UW DIRECT DataScience Project, to Import/Process/Store/Report Data related to Electrochemical Impedance Measurements
 **For further Information, Background, Plans, and Future goals, [CHECK THE WIKI!](https://github.com/EISy-as-Py/EISy-as-Py/wiki)**
+
+<img src=https://github.com/EISy-as-Py/eisy/blob/master/doc/project_management/misc_design/Logo3_square.PNG width=400 p align="right">
 
 __**Readme Contents:**__
  * *"Da Rules"*

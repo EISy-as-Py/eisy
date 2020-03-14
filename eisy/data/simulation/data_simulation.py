@@ -1,13 +1,13 @@
 import csv
 import os
+import sys
 import time
 
 import numpy as np
 import pandas as pd
 
-#import .alterations
-#import .circuits
-
+from .alterations import *
+from .circuits import *
 from .plotting import nyquist_plot
 
 
