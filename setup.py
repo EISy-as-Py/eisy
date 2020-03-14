@@ -38,6 +38,6 @@ setup(name='eisy',
       author='Maria Polit, Abdul Moeez, David Hurt,\
             Mihyun Kim, Yao-Yu Li')
 
-if __name__ == '__main__':
-
-    setup(**opts)
+# if __name__ == '__main__':
+#
+#     setup(**opts)
