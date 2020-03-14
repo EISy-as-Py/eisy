@@ -1,13 +1,18 @@
 import csv
 import os
+import sys
 import time
+
+module_path = os.path.abspath(os.path.join('../data/simulation'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
 
 import numpy as np
 import pandas as pd
 
-import eisy.data.simulation.alterations as alterations
-import eisy.data.simulation.circuits as circuits
-from eisy.data.simulation.plotting import nyquist_plot
+import alterations
+import circuits
+from plotting import nyquist_plot
 
 
 def to_dataframe(freq_range, impedance_array):
