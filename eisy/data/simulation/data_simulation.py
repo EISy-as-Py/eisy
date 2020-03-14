@@ -3,10 +3,6 @@ import os
 import sys
 import time
 
-module_path = os.path.abspath(os.path.join('../data/simulation'))
-if module_path not in sys.path:
-    sys.path.append(module_path)
-
 import numpy as np
 import pandas as pd
 
