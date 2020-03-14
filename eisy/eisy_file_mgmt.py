@@ -97,6 +97,13 @@ Section 3: Export All Data into SQL Database as configured
 
 
 
+Section 4: Process Data from Time-Series Input
+----------------------------------------------
+(NOT IN CURRENT SCOPE OF WORK)
+
+
+
+
 """
 # ----------------------------------------------------------------------------
 # --- HARD - CODING SECTION --------------------------------------------------
@@ -657,9 +664,9 @@ def fseries_read_data(file, data_head=config["fdata_head"],
 
     return header_meta, fseries_raw
 
-
-header_meta, fseries_raw = fseries_read_data(
-        'data/simulation/simulation_data\\200308-0001_sim_one.csv')
+test_file='data/simulation/simulation_data\\200308-0001_sim_one.csv'
+serial_id, meta_tags, class_tags = parse_fname_meta(test_file)
+header_meta, fseries_raw = fseries_read_data(test_file)
 
 
 def fseries_fix_head(fseries_raw, correct_headers=None, interact=False):
@@ -716,22 +723,23 @@ def fseries_fix_head(fseries_raw, correct_headers=None, interact=False):
 
     # NOTE: First Entries should be VERY Specific. later ones are for if we
     #       are getting "despirate" to find the right column.
-    fseries_hints["freq_hz"] = ["freq_hz", "freq [Hz]", "freq",
-                                "Freq", "FREQ", "Hz", "HZ", "1/s"]
-    fseries_hints["z_real_ohm"] = ["z_real_ohm", "Re_Z [Ohm]", "real",
-                                   "Re", "RE", "Z']", "z']", "Z')", "z')"]
-    fseries_hints["z_imag_ohm"] = ["z_imag_ohm", "Im_Z [Ohm]", "imag",
-                                   "Imag", "IMAG", "IM", "Im",
-                                   "z''", "Z''", 'Z"', 'z"']
-    fseries_hints["z_comb_ohm"] = ["z_comb_ohm", "|Z| [Ohm]", "tot", "Tot",
-                                   "TOT", "comb", "|"]
-    fseries_hints["phase_rad"] = ["phase_rad", "phase_angle [rad]", "angle",
-                                  "Angle", "ANGLE", "phase", "Phase"]
+    fseries_hints["freq_hz"] = [["freq_hz", "freq [Hz]", "freq",
+                                "Freq", "FREQ", "Hz", "HZ", "1/s"]]
+    fseries_hints["z_real_ohm"] = [["z_real_ohm", "Re_Z [Ohm]", "real",
+                                   "Re", "RE", "Z']", "z']", "Z')", "z')"]]
+    fseries_hints["z_imag_ohm"] = [["z_imag_ohm", "Im_Z [Ohm]", "imag",
+                                    "Imag", "IMAG", "IM", "Im",
+                                    "z''", "Z''", 'Z"', 'z"']]
+    fseries_hints["z_comb_ohm"] = [["z_comb_ohm", "|Z| [Ohm]", "tot", "Tot",
+                                   "TOT", "comb", "|"]]
+    fseries_hints["phase_rad"] = [["phase_rad", "phase_angle [rad]", "angle",
+                                  "Angle", "ANGLE", "phase", "Phase"]]
+    # return fseries_hints
 
     for correct_key in correct_headers:
         # For each column, match it to the raw data as given
         fseries_fixed[correct_key] = match_columns(
-                fseries_raw, fseries_hints[correct_key],
+                fseries_raw, fseries_hints[correct_key][0],
                 interact=False, leaveblank=True)
 
     # NOTE: Now to fix some Data Irregularities!
@@ -764,7 +772,7 @@ def fseries_fix_head(fseries_raw, correct_headers=None, interact=False):
     # Check Imaginary values via keywords (negative sign)
     # First find the imaginary string, then check if it starts with "-"
     # also could have the word "neg" in it?
-    for hint in fseries_hints["z_imag_ohm"]:
+    for hint in fseries_hints["z_imag_ohm"][0]:
         for raw_key in fseries_raw.keys():
             if hint in raw_key:
                 if raw_key.startswith('-'):
@@ -780,7 +788,7 @@ def fseries_fix_head(fseries_raw, correct_headers=None, interact=False):
     # With Z' and  Z'' you can calculate |Z| and Phase Angle, or vice-versa!
     fseries_found = {}  # Initialize
     for key in fseries_fixed.keys():
-        if np.isnan(fseries_fixed(key)[0]):  # if the first entry is nan
+        if np.isnan(fseries_fixed[key][0]):  # if the first entry is nan
             fseries_found[key] = False
         else:
             fseries_found[key] = True
@@ -858,6 +866,9 @@ def match_columns(fseries_raw, hint_list, interact=True, leaveblank=True):
         raise AssertionError("Column: " + hint[0] + "   Not Found")
     return []
 
+
+fseries_fixed = fseries_fix_head(fseries_raw)
+
 """
 * fseries_fix_head()    IF the headers in the data frame are not named/ordered
                         correctly, we need to fix that.
@@ -890,6 +901,17 @@ def match_columns(fseries_raw, hint_list, interact=True, leaveblank=True):
 """
 
 
+'''
+
+
+
+
+
+
+
+
+'''
+
 """
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -900,6 +922,12 @@ def match_columns(fseries_raw, hint_list, interact=True, leaveblank=True):
 
 
 """
+NOTE: For learning SQL, I found this link (the SqlAlchemy tutorial page)
+to be very helpful:
+    <https://docs.sqlalchemy.org/en/13/orm/tutorial.html>
+
+
+
 * SQL_get_config()      Reads a configuration file that demonstrates how
                         the SQL server is to be set up.
                         SHOULD (?) FOLLOW STANDARD SCHEMA DESIGN RULES (?)
@@ -912,12 +940,53 @@ def match_columns(fseries_raw, hint_list, interact=True, leaveblank=True):
                         (We're not here yet. no idea what this will actually
                         need as inputs and outputs.)
 """
+sql_path="data/sql"
+import os
+import sqlalchemy
+from sqlalchemy import create_engine
+
+# If sql_path doesn't exist, make it!
+# and make the sql engine path to point to it!
+# Otherwise, make sql engine in Memory.
+if sql_path:
+    os.makedirs(sql_path, exist_ok=True)
+    sql_path = "sqlite:///" + sql_path
+else:
+    sql_path = "sqlite:///:memory:"
 
 
+engine = create_engine(sql_path, echo=True)
+
+# from sqlalchemy.ext.declarative import declarative_base
+# Base=declarative_base()
 
 
+# SQL TABLE SCHEMA:
+# NOTE: Using "<>" to identify a pointer to a new table
 
+# EXPERIMENT:
+# serial_id | date_run | serial_number | data_type <> |
 
+# F_SERIES_DATA:
+# serial_id | freq_hz | z_real_ohm | z_imag_ohm | z_comb_ohm | phase_rad |
+
+# PROCESSED DATA:
+# serial_id | ohmic_r | rc_fit | circuit_guess<> |
+
+# NOISE_CLASSIFY:
+# serial_id | noise <> | confidence | model_error | model_training_size |
+
+# CIRCUIT_CLASSIFY:
+# serial_id | circuit <> | confidence | model_error | model_training_size |
+
+# <> DATA_TYPES:
+# id# | source |
+
+# <> Noise_Classes:
+# id# | noise_type | message |
+
+# <> Circuit_Classes:
+# id# | circuit_type | message |
 
 
 
