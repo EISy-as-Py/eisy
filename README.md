@@ -1,4 +1,4 @@
-[! [Build Status] (https://travis-ci.org/EISy-as-Py/eisy.svg?branch=master)](https://travis-ci.org/EISy-as-Py/eisy.svg?branch=master)
+[! [Build Status] (https://travis-ci.org/EISy-as-Py/eisy.svg?branch=master) ](https://travis-ci.org/EISy-as-Py/eisy.svg?branch=master)
 
 
 # EISy-as-Py
