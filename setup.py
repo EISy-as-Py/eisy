@@ -36,8 +36,9 @@ setup(name='eisy',
       url='https://github.com/EISy-as-Py/eisy',
       license='MIT',
       author='Maria Polit, Abdul Moeez, David Hurt,\
-            Mihyun Kim, Yao-Yu Li')
+            Mihyun Kim, Yao-Yu Li',
+      python_requires='>=3.5')
 
-# if __name__ == '__main__':
-#
-#     setup(**opts)
+classifiers = ("Programming Language :: Python :: 3",
+               "License :: OSI Approved :: MIT License",
+               "Operating System :: OS Independent")
