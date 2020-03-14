@@ -1,6 +1,7 @@
 import sys
 import os
 
+import setuptools
 from setuptools import setup
 
 # Get version and release info, which is all stored in shablona/version.py
