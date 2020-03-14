@@ -5,10 +5,10 @@ import time
 import numpy as np
 import pandas as pd
 
-# import alterations
-# import circuits
+import alterations
+import circuits
 
-from .plotting import nyquist_plot
+from plotting import nyquist_plot
 
 
 def to_dataframe(freq_range, impedance_array):
