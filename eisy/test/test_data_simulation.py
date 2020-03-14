@@ -26,7 +26,7 @@ class TestSimulationTools(unittest.TestCase):
         R = 100  # ohm
         C = 10E-6  # F
         n_points = np.round(decades * np.log10(int(high_freq)) -
-                            np.log10(int(low_freq)))
+                            np.log10(low_freq))
         f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
         circuit = circuits.cir_RC_parallel(f_range[1], R, C)
         impedance_arr = impedance_array(circuit)
@@ -72,10 +72,6 @@ should contain the magnitude of the impedance.'
         assert isinstance(dataframe, pd.DataFrame), 'The output should be\
  a pandas.DataFrame'
 
-        #     assert isinstance(C, float), 'the capacitance should be a float,\
-        # not an integer'
-        #     assert C <= 1, 'the capacitance value is probably too high.'
-
     def test_impedance_array(self):
         high_freq = 10**8  # Hz
         low_freq = 0.01  # Hz
@@ -83,7 +79,7 @@ should contain the magnitude of the impedance.'
         R = 100  # ohm
         C = 10E-6  # F
         n_points = np.round(decades * np.log10(int(high_freq)) -
-                            np.log10(int(low_freq)))
+                            np.log10(low_freq))
         f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
         circuit = circuits.cir_RC_parallel(f_range[1], R, C)
         impedance = impedance_array(circuit)
@@ -113,7 +109,7 @@ should contain the magnitude of the impedance.'
         R = 100  # ohm
         C = 10E-6  # F
         n_points = np.round(decades * np.log10(int(high_freq)) -
-                            np.log10(int(low_freq)))
+                            np.log10(low_freq))
         f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
         # Define the RC parallel simulation
         circuit_configuration_p = 'parallel'
@@ -123,6 +119,74 @@ should contain the magnitude of the impedance.'
         # Define the RC series simulation
         circuit_configuration_s = 'series'
         circuit_series = circuits.cir_RC_series(f_range[1], R, C)
+        impedance_data_s = impedance_array(circuit_series)
+        impedance_data_s_df = to_dataframe(f_range, impedance_data_s)
+
+        assert isinstance(decades, int), 'the number of decades should be\
+    an integer'
+        assert high_freq >= low_freq, 'the low frequency should be smaller\
+ than the high frequency limit value. Check again.'
+        np.testing.assert_almost_equal(len(f_range[1]),
+                                       impedance_data_p[0].shape[0],
+                                       decimal=18, err_msg='the impedance\
+ is not correclty computed. The number of points in the array is not correct.')
+        np.testing.assert_almost_equal(len(f_range[1]),
+                                       impedance_data_s[0].shape[0],
+                                       decimal=18, err_msg='the impedance\
+ is not correclty computed. The number of points in the array is not correct.')
+        assert isinstance(impedance_data_p_df, pd.DataFrame), \
+            'The output should be a pandas.DataFrame'
+        assert isinstance(impedance_data_s_df, pd.DataFrame), \
+            'The output should be a pandas.DataFrame'
+        assert len(f_range[1]) == impedance_data_p[0].shape[0], 'the frequency\
+ and the impedance respons do not match in length. Check again.'
+        assert isinstance(circuit_configuration_p, str), 'the circuit\
+     configuration should be a string.'
+        assert len(impedance_data_p) == 5, 'the impedance array inputted\
+ is not the right dimensions. The number of columns exceed the\
+ expected value (5)'
+        assert isinstance(impedance_data_s[0][1], complex), 'the first\
+ column of the impedance response should be populated by complex numberes'
+        assert circuit_parallel[0].real == impedance_data_p[1][0], 'the\
+ complex impedance is not separated into its real and imaginary\
+ parts correctly.'
+        assert circuit_parallel[0].imag == impedance_data_p[2][0], 'the\
+ complex impedance is not separated into its real and imaginary parts\
+ correctly.'
+        assert isinstance(circuit_configuration_s, str), 'the circuit\
+     configuration should be a string.'
+        assert len(f_range[1]) == impedance_data_s[0].shape[0], 'the frequency\
+ and the impedance respons do not match in length. Check again.'
+        assert len(impedance_data_s) == 5, 'the impedance array inputted is\
+ not the right dimensions. The number of columns exceed the expected value (5)'
+        assert isinstance(impedance_data_s[0][1], complex), 'the first column\
+ of the impedance response should be populated by complex numberes'
+        assert circuit_series[0].real == impedance_data_s[1][0], 'the complex\
+     impedance is not separated into its real and imaginary parts correctly.'
+        assert circuit_series[0].imag == impedance_data_s[2][0], 'the complex\
+     impedance is not separated into its real and imaginary parts correctly.'
+        assert isinstance(C, float), 'the capacitance should be a float,\
+     not an integer'
+        assert C <= 1, 'the capacitance value is probably too high.'
+
+    def test_RQ_simuation(self):
+        high_freq = 10**8  # Hz
+        low_freq = 0.01  # Hz
+        decades = 7
+        R = 100  # ohm
+        Q = 10E-6  #
+        alpha =
+        n_points = np.round(decades * np.log10(int(high_freq)) -
+                            np.log10(low_freq))
+        f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
+        # Define the RC parallel simulation
+        circuit_configuration_p = 'parallel'
+        circuit_parallel = circuits.cir_RQ_parallel(f_range[1], R, )
+        impedance_data_p = impedance_array(circuit_parallel)
+        impedance_data_p_df = to_dataframe(f_range, impedance_data_p)
+        # Define the RC series simulation
+        circuit_configuration_s = 'series'
+        circuit_series = circuits.cir_RQ_series(f_range[1], R, C)
         impedance_data_s = impedance_array(circuit_series)
         impedance_data_s_df = to_dataframe(f_range, impedance_data_s)
 
