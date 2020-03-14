@@ -37,7 +37,8 @@ setup(name='eisy',
       license='MIT',
       author='Maria Polit, Abdul Moeez, David Hurt,\
             Mihyun Kim, Yao-Yu Li',
-      python_requires='>=3.5')
+      python_requires='>=3.5',
+      packages=setuptools.find_packages())
 
 classifiers = ("Programming Language :: Python :: 3",
                "License :: OSI Approved :: MIT License",
