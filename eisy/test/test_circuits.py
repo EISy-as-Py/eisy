@@ -8,7 +8,7 @@ module_path = os.path.abspath(os.path.join('../data/simulation'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-import eisy.data.simulation.circuits as circuits
+import eisy.simulation.circuits as circuits
 
 import numpy as np
 import pandas as pd
