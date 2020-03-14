@@ -397,7 +397,7 @@ Cannot compute the impedance response')
 
 def cir_Randles_simplified(angular_freq, solution_resistance,
                            parallel_resistance, alpha='none', sigma='none',
-                           Q='none', fs='none'):
+                           constant_phase_element='none', fs='none'):
     '''
     Return the impedance of a Randles circuit with a simplified Warburg element
     This form of the Randles circuit is only meant for to simulate
@@ -423,13 +423,13 @@ def cir_Randles_simplified(angular_freq, solution_resistance,
     '''
     circuit = '-Rs-(Q-(RW)-)-'
     if parallel_resistance == 'none':
-        parallel_resistance = (1/(Q*(2*np.pi*fs)**alpha))
+        parallel_resistance = (1/(constant_phase_element*(2*np.pi*fs)**alpha))
     elif sigma == 'none':
         sigma = (1/(parallel_resistance*(2*np.pi*fs)**alpha))
     elif alpha == 'none':
-        alpha = np.log(Q*parallel_resistance)/np.log(1/(2*np.pi*fs))
+        alpha = np.log(constant_phase_element*parallel_resistance)/np.log(1/(2*np.pi*fs))
 
-    Z_Q = 1/(Q*(angular_freq*1j)**alpha)
+    Z_Q = 1/(constant_phase_element*(angular_freq*1j)**alpha)
     Z_R = parallel_resistance
     Z_w = sigma*(angular_freq**(-0.5))-1j*sigma*(angular_freq**(-0.5))
 
