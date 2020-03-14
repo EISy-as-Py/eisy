@@ -1,3 +1,6 @@
+https://travis-ci.org/EISy-as-Py/eisy.svg?branch=master
+
+
 # EISy-as-Py
 UW DIRECT DataScience Project, to Import/Process/Store/Report Data related to Electrochemical Impedance Measurements
 **For further Information, Background, Plans, and Future goals, [CHECK THE WIKI!](https://github.com/EISy-as-Py/EISy-as-Py/wiki)**
