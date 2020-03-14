@@ -20,12 +20,13 @@ from eisy.data.simulation.data_simulation import *
 class TestSimulationTools(unittest.TestCase):
 
     def test_to_dataframe(self):
-        high_freq = int(10**8)  # Hz
-        low_freq = int(0.01)  # Hz
+        high_freq = 10**8  # Hz
+        low_freq = 0.01  # Hz
         decades = 7
         R = 100  # ohm
         C = 10E-6  # F
-        n_points = np.round(decades * np.log10(high_freq) - np.log10(low_freq))
+        n_points = np.round(decades * np.log10(int(high_freq)) -
+                            np.log10(int(low_freq)))
         f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
         circuit = circuits.cir_RC_parallel(f_range[1], R, C)
         impedance_arr = impedance_array(circuit)
@@ -76,12 +77,13 @@ should contain the magnitude of the impedance.'
         #     assert C <= 1, 'the capacitance value is probably too high.'
 
     def test_impedance_array(self):
-        high_freq = int(10**8)  # Hz
-        low_freq = int(0.01)  # Hz
+        high_freq = 10**8  # Hz
+        low_freq = 0.01  # Hz
         decades = 7
         R = 100  # ohm
         C = 10E-6  # F
-        n_points = np.round(decades * np.log10(high_freq) - np.log10(low_freq))
+        n_points = np.round(decades * np.log10(int(high_freq)) -
+                            np.log10(int(low_freq)))
         f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
         circuit = circuits.cir_RC_parallel(f_range[1], R, C)
         impedance = impedance_array(circuit)
@@ -105,12 +107,13 @@ should contain the magnitude of the impedance.'
  not separated into its real and imaginary parts correctly.'
 
     def test_RC_simuation(self):
-        high_freq = int(10**8)  # Hz
-        low_freq = int(0.01)  # Hz
+        high_freq = 10**8  # Hz
+        low_freq = 0.01  # Hz
         decades = 7
         R = 100  # ohm
         C = 10E-6  # F
-        n_points = np.round(decades * np.log10(high_freq) - np.log10(low_freq))
+        n_points = np.round(decades * np.log10(int(high_freq)) -
+                            np.log10(int(low_freq)))
         f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
         # Define the RC parallel simulation
         circuit_configuration_p = 'parallel'
