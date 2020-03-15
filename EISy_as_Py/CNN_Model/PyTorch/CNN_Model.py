@@ -28,28 +28,30 @@ from torch.utils.data import DataLoader
 REBUILD_DATA = True
 
 class EISType():
-    
-    MD = "Nyquist/Missing" # Determine the number of type and then give the directory of each type of image
+
+    MD = "Nyquist/Missing"  # Determine the number of type and then give the directory of each type of image
     SP = "Nyquist/SinglePeak"
     TP = "Nyquist/TwoPeaks"
     # TL = "Nyquist/Tail"
-    LABELS = {MD:0, SP:1, TP:2 }
+    LABELS = {MD: 0, SP: 1, TP: 2}
     training_data = []
     mdcount = 0
     spcount = 0
     tpcount = 0
-    #tlcount = 0
+    # tlcount = 0
     
     def make_training_data(self):
-    	"""Take the data from assigned file and transfrom images into array."""
-    	"""Also, categorize the labeled training data."""
-        for label in self.LABELS: #iterate the directory
+        """
+        Take the data from assigned file and transfrom images into array.
+        Also, categorize the labeled training data.
+        """
+        for label in self.LABELS:  # iterate the directory
             print(label)
-            for f in tqdm(os.listdir(label)): # iterate all the image within the directory, f -> the file name
-                path = os.path.join(label, f) # get the full path to the image
-                img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) # convert the iimage to gray scale (optional)
+            for f in tqdm(os.listdir(label)):  # iterate all the image within the directory, f -> the file name
+                path = os.path.join(label, f)  # get the full path to the image
+                img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)  # convert the iimage to gray scale (optional)
                 img = rescale(img, 0.15)
-                self.training_data.append([np.array(img), np.eye(3)[self.LABELS[label]]])                 
+                self.training_data.append([np.array(img), np.eye(3)[self.LABELS[label]]])
 
                 if label == self.MD:
                     self.mdcount += 1
@@ -57,17 +59,37 @@ class EISType():
                     self.spcount += 1
                 elif label == self.TP:
                     self.tpcount += 1
-                #elif label == self.TL:
-                    #self.tlcount += 1    
+                # elif label == self.TL:
+                    # self.tlcount += 1
                 
         np.random.shuffle(self.training_data)
         np.save("eis_training_data.npy", self.training_data)
         print("Missing:", self.mdcount)
         print("SinglePeak:", self.spcount)
         print("TwoPeaks:", self.tpcount)
-        #print("Tail:", self.tlcount)
+        # print("Tail:", self.tlcount)
         
 if REBUILD_DATA:
     Type = EISType()
-    Type.make_training_data()
-    
+    Type.make_training_data()    
+
+# 
+training_data = np.load("eis_training_data.npy", allow_pickle = True)
+
+##print(training_data.shape)  # Check size of the dataset.
+##print(training_data[1][0].shape)  # Check the image size.
+
+##plt.imshow(training_data[1][0])
+##plt.show
+
+def load_training_data(training_data):
+    """Load the data to check if all the images have been in the program."""
+    training_data = np.load("eis_training_data.npy", allow_pickle = True)
+    return training_data
+
+def data_information(training_data, k):
+    """Check the size of image and dataset."""
+    print("Size of training_data:", len(training_data))
+    print("Size of image:", training_data[k][0].shape[0], "x" ,training_data[k][0].shape[1])
+
+
