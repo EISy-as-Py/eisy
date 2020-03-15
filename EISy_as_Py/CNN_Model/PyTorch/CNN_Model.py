@@ -116,12 +116,12 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(7296, 64) 
         self.fc2 = nn.Linear(64, output_size)
 
-    def convs(self, )
+    def convs(self, ):
 
 
 
 
-    
+   
     def forward(self, x):
         x = F.max_pool2d(F.relu(self.conv1(x)), (2,2))
         x = F.max_pool2d(F.relu(self.conv2(x)), (2,2))
@@ -156,5 +156,23 @@ def data_separation(data, ratio_of_testing, TRAIN):
     test_data = data[-val_size:]
     print("Testing Samples:", len(test_data))
     return test_data
+
+def learning(train_data1, train_data2, image_width, image_height, learning_rate, BATCH_SIZE, EPOCHS):
+    """ """
+    optimizer = optim.Adam(net.parameter(), lr = learning_rate)
+    loss_function = nn.MSELoss()
+
+    for epoch in range(EPOCHS):
+        for i in tqdm(range(0, len(train_data1), BATCH_SIZE)):
+            batch_data1 = train_data1[i:i+BATCH_SIZE].view(-1, 1, image_height, image_width)
+            batch_data2 = train_data2[i:i+BATCH_SIZE]
+
+            net.zero_grad()
+            outputs = net(batch_data1)
+            loss = loss_function(outputs, batch_data2)
+            loss.backward()
+            optimizer.step()
+            
+        print(loss)
 
 
