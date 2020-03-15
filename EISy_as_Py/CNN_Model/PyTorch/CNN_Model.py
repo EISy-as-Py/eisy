@@ -172,7 +172,23 @@ def learning(train_data1, train_data2, image_width, image_height, learning_rate,
             loss = loss_function(outputs, batch_data2)
             loss.backward()
             optimizer.step()
-            
+
         print(loss)
+
+def accuracy(test_data1, test_data2, image_width, image_height):
+    """"""
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for i in tqdm(range(len(test_data1))):
+            real_type = torch.argmax(test_data2[i])
+            net_out = net(test_data1[i].view(-1, 1, image_height, image_width))[0]
+            predicted_type = torch.argmax(net_out)
+
+            if predicted_type == real_type:
+                correct += 1
+            total += 1
+
+    print("Accuracy:", round(correct/total, 3))
 
 
