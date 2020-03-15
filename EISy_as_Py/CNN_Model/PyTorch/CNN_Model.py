@@ -134,7 +134,27 @@ class Net(nn.Module):
         
         return F.softmax(output, dim=1)
 
+def image_to_tensor(training_data, image_height, image_width):
+    """Transform the array image into tensor."""
+    X = torch.Tensor([i[0] for i in training_data]).view(-1, image_height, image_width)
+    return X
+
+def type_to_tensor(training_data):
+    """Transform the array type into tensor."""
+    y = torch.Tensor([i[1] for i in training_data])
+    return y
+
+def data_separation(data, ratio_of_testing, TRAIN):
+    """Separate the training and testing data."""
+    VAL_PCT = ratio_of_testing
+    val_size = int(len(X)*VAL_PCT)
+
+    if TRAIN = True:
+        train_data = data[:-val_size]
+        print("Training Samples:", len(train_data))
+        return train_data
+    test_data = data[-val_size:]
+    print("Testing Samples:", len(test_data))
+    return test_data
 
 
-
-        
