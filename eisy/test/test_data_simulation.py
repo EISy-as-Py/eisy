@@ -175,18 +175,18 @@ should contain the magnitude of the impedance.'
         decades = 7
         R = 100  # ohm
         Q = 10E-6  #
-        alpha =
+        alpha = 0.75
         n_points = np.round(decades * np.log10(int(high_freq)) -
                             np.log10(low_freq))
         f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
         # Define the RC parallel simulation
         circuit_configuration_p = 'parallel'
-        circuit_parallel = circuits.cir_RQ_parallel(f_range[1], R, )
+        circuit_parallel = circuits.cir_RQ_parallel(f_range[1], R, Q, alpha)
         impedance_data_p = impedance_array(circuit_parallel)
         impedance_data_p_df = to_dataframe(f_range, impedance_data_p)
         # Define the RC series simulation
         circuit_configuration_s = 'series'
-        circuit_series = circuits.cir_RQ_series(f_range[1], R, C)
+        circuit_series = circuits.cir_RQ_series(f_range[1], R, Q, alpha)
         impedance_data_s = impedance_array(circuit_series)
         impedance_data_s_df = to_dataframe(f_range, impedance_data_s)
 
@@ -235,4 +235,4 @@ should contain the magnitude of the impedance.'
      impedance is not separated into its real and imaginary parts correctly.'
         assert isinstance(C, float), 'the capacitance should be a float,\
      not an integer'
-        assert C <= 1, 'the capacitance value is probably too high.'
+        assert Q <= 1, 'the constant phase element value is probably too high'
