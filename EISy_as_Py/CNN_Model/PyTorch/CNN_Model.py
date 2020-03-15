@@ -1,20 +1,17 @@
-# Import necessary package
-
-# The basic python package
-import numpy as np
-import matplotlib.pyplot as plt
-import skimage
-# from scipy.misc import imread
-from IPython import display
-from PIL import Image
-from skimage.transform import rescale
-
-# The processing package
+"""Import necessary package"""
 import os
 import cv2
 from tqdm import tqdm
 
-# The torch package
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import style
+import skimage
+from scipy.misc import imread
+from IPython import display
+from PIL import Image
+from skimage.transform import rescale
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -23,7 +20,7 @@ import torchvision
 from torchvision import transforms, datasets
 from torch.utils.data import DataLoader
 
-# Data Pre-Processing
+"""Data Pre-Processing"""
 
 REBUILD_DATA = True
 
@@ -68,7 +65,10 @@ class EISType():
         print("SinglePeak:", self.spcount)
         print("TwoPeaks:", self.tpcount)
         # print("Tail:", self.tlcount)
-        
+
+
+"""Data Status Check"""
+
 if REBUILD_DATA:
     Type = EISType()
     Type.make_training_data()    
@@ -82,7 +82,7 @@ def load_training_data(training_data):
 def data_information(training_data, k):
     """Check the size of image and dataset."""
     print("Size of training_data:", len(training_data))
-    print("Size of image:", training_data[k][0].shape[0], "x" ,training_data[k][0].shape[1])
+    print("Size of image(after rescale):", training_data[k][0].shape[1], "x" ,training_data[k][0].shape[0])
 
 def ploting_data(training_data, k):
     """Showing the assigned image."""
@@ -103,36 +103,43 @@ def Neuron_Calculation(numConvLayer, width, height, firstHidden, kernel, poolSiz
     total = size[0]*size[1]*size[2]
     return total
 
-# Convolutional Neural Network Model
+
+"""Convolutional Neural Network Model"""
 class Net(nn.Module):
     
-    def __init__(self, input_size, firstHidden, kernel_size, output_size):
+    def __init__(self, input_size, image_width, image_height, firstHidden, kernel_size, output_size):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(input_size, firstHidden, kernel_size) 
         self.conv2 = nn.Conv2d(firstHidden, firstHidden*2, kernel_size)
         self.conv3 = nn.Conv2d(firstHidden*2, firstHidden*4, kernel_size)
         self.conv4 = nn.Conv2d(firstHidden*4, firstHidden*8, kernel_size)
         
-        self.fc1 = nn.Linear(7296, 64) 
+        x = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
+        conv_to_linear = None
+        self.convs(x)
+
+        self.fc1 = nn.Linear(conv_to_linear, 64) 
         self.fc2 = nn.Linear(64, output_size)
 
-    def convs(self, ):
-
-
-
-
-   
-    def forward(self, x):
+    def convs(self, x):
         x = F.max_pool2d(F.relu(self.conv1(x)), (2,2))
         x = F.max_pool2d(F.relu(self.conv2(x)), (2,2))
         x = F.max_pool2d(F.relu(self.conv3(x)), (2,2))
         x = F.max_pool2d(F.relu(self.conv4(x)), (2,2))
-        
-        xF = x.view(-1, 64 * 19 * 6 ) # flatten
+
+        if conv_to_linear is None:
+            conv_to_linear = x[0].shape[0]*x[0].shape[1]*x[0].shape[2]
+        return x
+   
+    def forward(self, x):
+        x = self.convs(x)        
+        xF = x.view(-1, conv_to_linear) # flatten
         output = F.relu(self.fc1(xF)) # put into the first fully connected layer
         output = self.fc2(output)
         
         return F.softmax(output, dim=1)
+
+
 
 def image_to_tensor(training_data, image_height, image_width):
     """Transform the array image into tensor."""
