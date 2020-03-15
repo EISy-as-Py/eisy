@@ -142,14 +142,11 @@ class Net(nn.Module):
                      The size of next layer will be twice of the current layer
                      Ex: 1st is 8, 2nd will be 16, 3rd will be 24 and so on.
                      Number of hidden layer is set as 4 by default.
-        kernal_size: The size of kernal to scan over the original image and
-                     turn into a 
+        kernel_size: It will form a subwindom with size of kernel to scan over
+                     the original image.
                      kernel_size must be an odd integer,
                      usually not larger than 7
         output_size: The number of final target category.
-
-
-
 
         """
         super(Net, self).__init__()
@@ -160,37 +157,49 @@ class Net(nn.Module):
         
         x = torch.randn(image_height, image_width).view(-1, 1, image_height,
                                                         image_width)
-        conv_to_linear = None
-        self.convs(x)
+        conv_to_linear = self.last_conv_neuron(x)
 
         self.fc1 = nn.Linear(conv_to_linear, 64)
         self.fc2 = nn.Linear(64, output_size)
 
+    def last_conv_neuron(x):
+        """
+        Calculate how many neurons that the last convolutional layer will
+        connect to the linear hidden layer
+
+        Parameters
+        ----------
+        x: a random torch tensor with size (-1, 1, image_height, image_width)
+        Ex: x = torch.randn(image_height, image_width
+                            ).view(-1, 1, image_height, image_width)
+        """
+        x = self.convs(x)
+        conv_to_linear = x[0].shape[0]*x[0].shape[1]*x[0].shape[2]
+        return conv_to_linear
+
     def convs(self, x):
-        """ """
+        """
+        Put the image into the convolutional hidden layer. Scan over the
+        original image to and use the max pooling function (with size 2) to
+        determine the one number to represent the sub-image.
+
+        """
         x = F.max_pool2d(F.relu(self.conv1(x)), (2, 2))
         x = F.max_pool2d(F.relu(self.conv2(x)), (2, 2))
         x = F.max_pool2d(F.relu(self.conv3(x)), (2, 2))
         x = F.max_pool2d(F.relu(self.conv4(x)), (2, 2))
-
-        if conv_to_linear is None:
-            conv_to_linear = x[0].shape[0]*x[0].shape[1]*x[0].shape[2]
         return x
    
     def forward(self, x):
         """ """
         x = self.convs(x)
+        conv_to_linear = x[0].shape[0]*x[0].shape[1]*x[0].shape[2]
         # Flatten the data
         xF = x.view(-1, conv_to_linear)
         # put into the first fully connected layer
         output = F.relu(self.fc1(xF))
         output = self.fc2(output)
         return F.softmax(output, dim=1)
-
-
-def net():
-    net = Net()
-    return net
 
 
 def image_to_tensor(training_data, image_height, image_width):
@@ -220,10 +229,13 @@ def data_separation(data, ratio_of_testing, TRAIN):
     return test_data
 
 
-def learning(train_data1, train_data2, image_width, image_height,
-             learning_rate, BATCH_SIZE, EPOCHS):
+def learning(train_data1, train_data2, input_size, image_width, image_height,
+             firstHidden, kernel_size, output_size, learning_rate, BATCH_SIZE,
+             EPOCHS):
     """ """
-    optimizer = optim.Adam(net.parameter(), lr=learning_rate)
+    optimizer = optim.Adam(Net(input_size, image_width, image_height,
+                               firstHidden, kernel_size, output_size
+                               ).parameter(), lr=learning_rate)
     loss_function = nn.MSELoss()
 
     for epoch in range(EPOCHS):
@@ -233,8 +245,10 @@ def learning(train_data1, train_data2, image_width, image_height,
                                                            image_width)
             batch_data2 = train_data2[i:i+BATCH_SIZE]
 
-            net.zero_grad()
-            outputs = net(batch_data1)
+            Net(input_size, image_width, image_height, firstHidden,
+                kernel_size, output_size).zero_grad()
+            outputs = Net(input_size, image_width, image_height, firstHidden,
+                          kernel_size, output_size)(batch_data1)
             loss = loss_function(outputs, batch_data2)
             loss.backward()
             optimizer.step()
@@ -242,15 +256,19 @@ def learning(train_data1, train_data2, image_width, image_height,
         print(loss)
 
 
-def accuracy(test_data1, test_data2, image_width, image_height):
+def accuracy(test_data1, test_data2, input_size, image_width, image_height,
+             firstHidden, kernel_size, output_size):
     """ """
     correct = 0
     total = 0
     with torch.no_grad():
         for i in tqdm(range(len(test_data1))):
             real_type = torch.argmax(test_data2[i])
-            net_out = net(test_data1[i].view(-1, 1, image_height,
-                                             image_width))[0]
+            net_out = Net(input_size, image_width,
+                          image_height, firstHidden,
+                          kernel_size, output_size
+                          )(test_data1[i].view(-1, 1, image_height,
+                                               image_width))[0]
             predicted_type = torch.argmax(net_out)
 
             if predicted_type == real_type:
