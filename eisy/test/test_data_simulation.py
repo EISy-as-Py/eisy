@@ -169,7 +169,7 @@ should contain the magnitude of the impedance.'
      not an integer'
         assert C <= 1, 'the capacitance value is probably too high.'
 
-    def test_RQ_simuation(self):
+    def test_RQ_simulation(self):
         high_freq = 10**8  # Hz
         low_freq = 0.01  # Hz
         decades = 7
