@@ -233,6 +233,6 @@ should contain the magnitude of the impedance.'
      impedance is not separated into its real and imaginary parts correctly.'
         assert circuit_series[0].imag == impedance_data_s[2][0], 'the complex\
      impedance is not separated into its real and imaginary parts correctly.'
-        assert isinstance(C, float), 'the capacitance should be a float,\
+        assert isinstance(Q, float), 'the capacitance should be a float,\
      not an integer'
         assert Q <= 1, 'the constant phase element value is probably too high'
