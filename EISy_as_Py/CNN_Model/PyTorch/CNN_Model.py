@@ -73,14 +73,6 @@ if REBUILD_DATA:
     Type = EISType()
     Type.make_training_data()    
 
-# 
-training_data = np.load("eis_training_data.npy", allow_pickle = True)
-
-##print(training_data.shape)  # Check size of the dataset.
-##print(training_data[1][0].shape)  # Check the image size.
-
-##plt.imshow(training_data[1][0])
-##plt.show
 
 def load_training_data(training_data):
     """Load the data to check if all the images have been in the program."""
@@ -92,4 +84,57 @@ def data_information(training_data, k):
     print("Size of training_data:", len(training_data))
     print("Size of image:", training_data[k][0].shape[0], "x" ,training_data[k][0].shape[1])
 
+def ploting_data(training_data, k):
+    """Showing the assigned image."""
+    plt.imshow(training_data[k][0])
+    plt.show
 
+def Neuron_Calculation(numConvLayer, width, height, firstHidden, kernel, poolSize):
+    """Calculating how many neurons we need for the output of last convolutional layer"""
+    size = [0, 0, 0]
+    for i in range(numConvLayer):
+        width = int((width - kernel + 1) / poolSize)
+        height = int((height - kernel + 1) / poolSize)
+        size[0] = width
+        size[1] = height
+        size[2] = firstHidden*(2**i)
+
+    print(size)
+    total = size[0]*size[1]*size[2]
+    return total
+
+# Convolutional Neural Network Model
+class Net(nn.Module):
+    
+    def __init__(self, input_size, firstHidden, kernel_size, output_size):
+        super(Net, self).__init__()
+        self.conv1 = nn.Conv2d(input_size, firstHidden, kernel_size) 
+        self.conv2 = nn.Conv2d(firstHidden, firstHidden*2, kernel_size)
+        self.conv3 = nn.Conv2d(firstHidden*2, firstHidden*4, kernel_size)
+        self.conv4 = nn.Conv2d(firstHidden*4, firstHidden*8, kernel_size)
+        
+        self.fc1 = nn.Linear(7296, 64) 
+        self.fc2 = nn.Linear(64, output_size)
+
+    def convs(self, )
+
+
+
+
+    
+    def forward(self, x):
+        x = F.max_pool2d(F.relu(self.conv1(x)), (2,2))
+        x = F.max_pool2d(F.relu(self.conv2(x)), (2,2))
+        x = F.max_pool2d(F.relu(self.conv3(x)), (2,2))
+        x = F.max_pool2d(F.relu(self.conv4(x)), (2,2))
+        
+        xF = x.view(-1, 64 * 19 * 6 ) # flatten
+        output = F.relu(self.fc1(xF)) # put into the first fully connected layer
+        output = self.fc2(output)
+        
+        return F.softmax(output, dim=1)
+
+
+
+
+        
