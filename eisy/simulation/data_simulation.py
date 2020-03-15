@@ -546,8 +546,8 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
         data_file.write('Circuit type:, -Rs-(RC)-(RC)-'+'\n')
         data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm C1={} F\
 R2={} ohm C2={} F]'
-                        .format(sol_resistance, parallel_resistace_1,
-                                capacitance_1, parallel_resistace_2,
+                        .format(sol_resistance, parallel_resistance_1,
+                                capacitance_1, parallel_resistance_2,
                                 capacitance_2) + '\n')
         if alteration:
             data_file.write('Alteration :, {}'.format(alteration))
@@ -556,8 +556,8 @@ R2={} ohm C2={} F]'
         data_file.write('---'+'\n')
 
         df = RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
-                               parallel_resistace_1, capacitance_1,
-                               parallel_resistace_2, capacitance_2)
+                               parallel_resistance_1, capacitance_1,
+                               parallel_resistance_2, capacitance_2)
         if alteration:
             df = added_noise(df, 0.4)
         else:
