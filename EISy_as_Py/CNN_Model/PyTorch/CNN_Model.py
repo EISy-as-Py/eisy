@@ -21,57 +21,54 @@ import torch.optim as optim
 # from torch.utils.data import DataLoader
 
 """Data Pre-Processing"""
+REBUILD_DATA = True
+
 
 class EISType():
+
+    def DataImporter(k, path_list):
+        """
+
+
+
+        """
+    count_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+    count = []
+    for i in range(len(count_list)):
+        count.append(0)
     
-    NS = "Nyquist/Noisy" # Determine the number of type and then give the directory of each type of image
-    SH = "Nyquist/SingleHump"
-    TH = "Nyquist/TwoHumps"
-    TL = "Nyquist/Tail"
-    LABELS = {NS:0, SH:1, TH:2, TL:3}
     training_data = []
-    nscount = 0
-    shcount = 0
-    thcount = 0
-    tlcount = 0
-    
-    def make_training_data(self):
-        for label in self.LABELS: #iterate the directory
-            print(label)
-            for f in tqdm(os.listdir(label)): # iterate all the image within the directory, f -> the file name               
-                path = os.path.join(label, f) # get the full path to the image
-                if "png" in path:                    
-                    img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) # convert the iimage to gray scale (optional)
-                    img = cv2.resize(img, (800, 536))
-                    self.training_data.append([path, np.array(img), np.eye(4)[self.LABELS[label]]])                 
+    #iterate the directory
+    for label in range(len(path_list)-1): 
+        print(path_list[label])
+        # iterate all the image within the directory, f -> the file name 
+        for f in tqdm(os.listdir(path_list[label])): 
+            # get the full path to the image              
+            path = os.path.join(path_list[label], f) 
+            if "png" in path:
+                # read images in the given path and turn them into nparray.
+                # convert the iimage to gray scale (optional)
+                img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) 
+                img = cv2.resize(img, (800, 536))
+                training_data.append([path, np.array(img), np.eye(k)[label]])
+                
+                for i in range(k):
+                    if label == i:
+                        count[i] += 1  
 
-                    if label == self.NS:
-                        self.nscount += 1
-                    elif label == self.SH:
-                        self.shcount += 1
-                    elif label == self.TH:
-                        self.thcount += 1
-                    elif label == self.TL:
-                        self.tlcount += 1    
-
-        np.random.shuffle(self.training_data)
-        np.save("eis_training_data.npy", self.training_data)
-        print("Noisy:", self.nscount)
-        print("SingleHump:", self.shcount)
-        print("TwoHumps:", self.thcount)
-        print("Tail:", self.tlcount)
+    np.random.shuffle(training_data)
+    np.save(path_list[-1], training_data)
+        
+    for i in range(len(path_list)-1):
+        print(path_list[i], ":", count[i])
 
 if REBUILD_DATA:
     Type = EISType()
     Type.make_training_data()
-    
-
-
-
 
 """Data Status Check"""
 
-def load_training_data():
+def load_training_data(np_ndarray_file):
     """
     Load the data from the default file "eis_training_data.npy"
     to check if all the images have been in the program.
@@ -82,7 +79,7 @@ def load_training_data():
                     type -> numpy.ndarray
 
     """
-    training_data = np.load("eis_training_data.npy", allow_pickle=True)
+    training_data = np.load(np_ndarray_file, allow_pickle=True)
     return training_data
 
 
