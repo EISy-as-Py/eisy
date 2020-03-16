@@ -35,6 +35,8 @@ Add list of package dependencies.
 Other Section
 -------------
 
+.. automodule:: eisy.simulation.data_simulation
+    :members:
 
 .. toctree::
    :maxdepth: 2
