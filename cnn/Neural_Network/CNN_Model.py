@@ -5,28 +5,21 @@ from tqdm import tqdm
 
 import numpy as np
 import matplotlib.pyplot as plt
-# from matplotlib import style
-# import skimage
-# from scipy.misc import imread
-# from IPython import display
-# from PIL import Image
 from skimage.transform import rescale
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-# import torchvision
-# from torchvision import transforms, datasets
-# from torch.utils.data import DataLoader
 
-"""Data Pre-Processing"""
+
+"""Data Import and Pre-Processing"""
 REBUILD_DATA = True
 
 
 class EISType():
 
-    def DataImporter(k, path_list):
+    def DataImporter_Training(k, path_list):
         """
 
 
@@ -38,16 +31,16 @@ class EISType():
         count.append(0)
     
     training_data = []
-    #iterate the directory
+    # Iterate the directory
     for label in range(len(path_list)-1): 
         print(path_list[label])
-        # iterate all the image within the directory, f -> the file name 
+        # Iterate all the image within the directory, f -> the file name 
         for f in tqdm(os.listdir(path_list[label])): 
-            # get the full path to the image              
+            # Get the full path to the image              
             path = os.path.join(path_list[label], f) 
             if "png" in path:
-                # read images in the given path and turn them into nparray.
-                # convert the iimage to gray scale (optional)
+                # Read images in the given path and turn them into nparray.
+                # Convert the iimage to gray scale (optional)
                 img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) 
                 img = cv2.resize(img, (800, 536))
                 training_data.append([path, np.array(img), np.eye(k)[label]])
@@ -93,8 +86,8 @@ def data_information(training_data):
     
     """
     print("Size of training_data:", len(training_data))
-    print("Size of image(after rescale):", training_data[0][0].shape[1],
-          "x", training_data[0][0].shape[0])
+    print("Size of image(after rescale):", training_data[0][1].shape[1],
+          "x", training_data[0][1].shape[0])
 
 
 def ploting_data(training_data, k):
@@ -108,7 +101,8 @@ def ploting_data(training_data, k):
         k should fall in the range of dataset size.
 
     """
-    plt.imshow(training_data[k][0])
+    print(training_data[k][0])
+    plt.imshow(training_data[k][1])
     plt.show
 
 
