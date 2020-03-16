@@ -56,6 +56,9 @@ class TestSimulationTools(unittest.TestCase):
             is invalid'
         assert np.positive(Capacitance), 'The input capacitance\
             is invalid'
+        assert isinstance(Capacitance, float), 'the capacitance should\
+ be a float, not an integer'
+        assert Capacitance <= 1, 'the capacitance value is probably too high.'
 
         response = circuits.cir_RC_parallel(f_range[1], Resistance,
                                             Capacitance)
