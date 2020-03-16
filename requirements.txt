@@ -1,5 +1,5 @@
 numpy
 pandas
 matplotlib
-pytorch
+torch
 sqlalchemy
