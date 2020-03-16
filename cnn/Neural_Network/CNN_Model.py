@@ -5,73 +5,96 @@ from tqdm import tqdm
 
 import numpy as np
 import matplotlib.pyplot as plt
-# from matplotlib import style
-# import skimage
-# from scipy.misc import imread
-# from IPython import display
-# from PIL import Image
-from skimage.transform import rescale
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-# import torchvision
-# from torchvision import transforms, datasets
-# from torch.utils.data import DataLoader
-
-"""Data Pre-Processing"""
-REBUILD_DATA = True
 
 
-class EISType():
+class EISData():
+    """Data Import and Pre-Processing"""
 
-    def DataImporter(k, path_list):
+    def DataImporter_Training(self, k, path_List, image_width, image_height):
         """
 
 
 
         """
-    count_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-    count = []
-    for i in range(len(count_list)):
-        count.append(0)
-    
-    training_data = []
-    #iterate the directory
-    for label in range(len(path_list)-1): 
-        print(path_list[label])
-        # iterate all the image within the directory, f -> the file name 
-        for f in tqdm(os.listdir(path_list[label])): 
-            # get the full path to the image              
-            path = os.path.join(path_list[label], f) 
-            if "png" in path:
-                # read images in the given path and turn them into nparray.
-                # convert the iimage to gray scale (optional)
-                img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) 
-                img = cv2.resize(img, (800, 536))
-                training_data.append([path, np.array(img), np.eye(k)[label]])
-                
-                for i in range(k):
-                    if label == i:
-                        count[i] += 1  
+        path_list = path_List
+        countImage_Training = [0, 0, 0, 0, 0, 0, 0]
+        training_data = []
+        # Iterate the directory
+        for label in range(len(path_list)-1):
+            print(path_list[label])
+            # Iterate all the image within the directory, f -> the file name
+            for f in tqdm(os.listdir(path_list[label])):
+                # Get the full path to the image
+                path = os.path.join(path_list[label], f)
+                if "png" in path:
+                    # Read images in the given path and turn them into nparray.
+                    # Convert the iimage to gray scale (optional)
+                    img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+                    img = cv2.resize(img, (image_width, image_height))
+                    training_data.append([path, np.array(img),
+                                          np.eye(k-1)[label]])
+                    for i in range(k):
+                        if label == i:
+                            countImage_Training[i] += 1
 
-    np.random.shuffle(training_data)
-    np.save(path_list[-1], training_data)
-        
-    for i in range(len(path_list)-1):
-        print(path_list[i], ":", count[i])
+        np.random.shuffle(training_data)
+        np.save(path_list[-1], training_data)
+        for i in range(len(path_list)-1):
+            print(path_list[i], ":", countImage_Training[i])
 
-if REBUILD_DATA:
-    Type = EISType()
-    Type.make_training_data()
+    def DataImporter_Predict(self, k, path_list, image_width, image_height):
+        """
+
+        """
+        countImage_Predict = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        training_data = []
+        # Iterate the directory
+        for label in range(len(path_list)-1):
+            print(path_list[label])
+            # Iterate all the image within the directory, f -> the file name
+            for f in tqdm(os.listdir(path_list[label])):
+                # Get the full path to the image
+                path = os.path.join(path_list[label], f)
+                if "png" in path:
+                    # Read images in the given path and turn into nparray.
+                    # Convert the iimage to gray scale (optional)
+                    img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+                    img = cv2.resize(img, (image_width, image_height))
+                    training_data.append([path, np.array(img)])
+                    # Count the number of image
+                    for i in range(k):
+                        if label == i:
+                            countImage_Predict[i] += 1
+
+        np.random.shuffle(training_data)
+        np.save(path_list[-1], training_data)
+        for i in range(len(path_list)-1):
+            print(path_list[i], ":", countImage_Predict[i])
+
+
+def Build_Data(Training, k, path_list, image_width, image_height):
+    Class = EISData()
+    if Training is True:
+        Class.DataImporter_Training(k, path_list, image_width, image_height)
+    Class.DataImporter_Predict(k, path_list, image_width, image_height)
+
 
 """Data Status Check"""
 
 def load_training_data(np_ndarray_file):
     """
-    Load the data from the default file "eis_training_data.npy"
-    to check if all the images have been in the program.
+    Load the data from the .npy file to check if all the images
+    have been in the program.
+
+    Parameter
+    ----------
+    np_ndarray_file: The XXX.npy file name.
+                     Should be identical to the last index in path list
 
     Returns
     ----------
@@ -90,11 +113,12 @@ def data_information(training_data):
     Parameters
     ----------
     training_data: the data loading from "eis_training_data.npy"
-    
+
     """
+    print("Type of training_data:", type(training_data))
     print("Size of training_data:", len(training_data))
-    print("Size of image(after rescale):", training_data[0][0].shape[1],
-          "x", training_data[0][0].shape[0])
+    print("Size of image(after rescale):", training_data[0][1].shape[1],
+          "x", training_data[0][1].shape[0])
 
 
 def ploting_data(training_data, k):
@@ -108,13 +132,13 @@ def ploting_data(training_data, k):
         k should fall in the range of dataset size.
 
     """
-    plt.imshow(training_data[k][0])
+    print(training_data[k][0])
+    plt.imshow(training_data[k][1])
     plt.show
 
 
-"""Convolutional Neural Network Model"""
 class Net(nn.Module):
-    
+    """Convolutional Neural Network Model"""
     def __init__(self, input_size, image_width, image_height,
                  firstHidden, kernel_size, output_size):
         """
@@ -142,7 +166,7 @@ class Net(nn.Module):
         self.conv2 = nn.Conv2d(firstHidden, firstHidden*2, kernel_size)
         self.conv3 = nn.Conv2d(firstHidden*2, firstHidden*4, kernel_size)
         self.conv4 = nn.Conv2d(firstHidden*4, firstHidden*8, kernel_size)
-        
+        # Get size
         x = torch.randn(image_height, image_width).view(-1, 1, image_height,
                                                         image_width)
         conv_to_linear = self.last_conv_neuron(x)
@@ -150,7 +174,7 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(conv_to_linear, 64)
         self.fc2 = nn.Linear(64, output_size)
 
-    def last_conv_neuron(x):
+    def last_conv_neuron(self, x):
         """
         Calculate how many neurons that the last convolutional layer will
         connect to the linear hidden layer
@@ -177,9 +201,11 @@ class Net(nn.Module):
         x = F.max_pool2d(F.relu(self.conv3(x)), (2, 2))
         x = F.max_pool2d(F.relu(self.conv4(x)), (2, 2))
         return x
-   
+
     def forward(self, x):
-        """ """
+        """
+
+        """
         x = self.convs(x)
         conv_to_linear = x[0].shape[0]*x[0].shape[1]*x[0].shape[2]
         # Flatten the data
@@ -220,7 +246,7 @@ def data_separation(data, ratio_of_testing, TRAIN):
 def learning(train_data1, train_data2, input_size, image_width, image_height,
              firstHidden, kernel_size, output_size, learning_rate, BATCH_SIZE,
              EPOCHS):
-    """ 
+    """
 
     """
     optimizer = optim.Adam(Net(input_size, image_width, image_height,
@@ -268,6 +294,3 @@ def accuracy(test_data1, test_data2, input_size, image_width, image_height,
             total += 1
 
     print("Accuracy:", round(correct/total, 3))
-
-
-
