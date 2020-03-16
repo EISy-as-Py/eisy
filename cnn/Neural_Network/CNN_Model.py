@@ -13,19 +13,16 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 
-"""Data Import and Pre-Processing"""
-REBUILD_DATA = True
+class EISData():
+    """Data Import and Pre-Processing"""
 
-
-class EISType():
-
-    def DataImporter_Training(k, path_list):
+    def DataImporter_Training(self, k, path_list, image_width, image_height):
         """
 
 
 
         """
-    count_list = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+    count_list = ['Ta', 'Tb', 'Tc', 'Td', 'Te', 'Tf', 'Tg']
     count = []
     for i in range(len(count_list)):
         count.append(0)
@@ -42,8 +39,8 @@ class EISType():
                 # Read images in the given path and turn them into nparray.
                 # Convert the iimage to gray scale (optional)
                 img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) 
-                img = cv2.resize(img, (800, 536))
-                training_data.append([path, np.array(img), np.eye(k)[label]])
+                img = cv2.resize(img, (image_width, image_height))
+                training_data.append([path, np.array(img), np.eye(k-1)[label]])
                 
                 for i in range(k):
                     if label == i:
@@ -55,16 +52,61 @@ class EISType():
     for i in range(len(path_list)-1):
         print(path_list[i], ":", count[i])
 
-if REBUILD_DATA:
-    Type = EISType()
-    Type.make_training_data()
+
+    def DataImporter_Predict(self, k, path_list, image_width, image_height):
+        """
+
+
+
+        """
+    count_list = ['Pa', 'Pb', 'Pc', 'Pd', 'Pe', 'Pf', 'Pg', 'Ph', 'Pi', 'Pj']
+    count = []
+    for i in range(len(count_list)):
+        count.append(0)
+    
+    training_data = []
+    # Iterate the directory
+    for label in range(len(path_list)-1): 
+        print(path_list[label])
+        # Iterate all the image within the directory, f -> the file name 
+        for f in tqdm(os.listdir(path_list[label])): 
+            # Get the full path to the image              
+            path = os.path.join(path_list[label], f) 
+            if "png" in path:
+                # Read images in the given path and turn them into nparray.
+                # Convert the iimage to gray scale (optional)
+                img = cv2.imread(path, cv2.IMREAD_GRAYSCALE) 
+                img = cv2.resize(img, (image_width, image_height))
+                training_data.append([path, np.array(img)])
+                
+                for i in range(k):
+                    if label == i:
+                        count[i] += 1  
+
+    np.random.shuffle(training_data)
+    np.save(path_list[-1], training_data)
+        
+    for i in range(len(path_list)-1):
+        print(path_list[i], ":", count[i]) 
+
+def Build_Data(Training, k, path_list, image_width, image_height):
+    Class = EISData()
+    if Training == True:
+        Class.DataImporter_Training(k, path_list, image_width, image_height)
+    Class.DataImporter_Predict(k, path_list, image_width, image_height)
+
 
 """Data Status Check"""
 
 def load_training_data(np_ndarray_file):
     """
-    Load the data from the default file "eis_training_data.npy"
-    to check if all the images have been in the program.
+    Load the data from the .npy file to check if all the images 
+    have been in the program.
+
+    Parameter
+    ----------
+    np_ndarray_file: The XXX.npy file name.
+                     Should be identical to the last index in path list 
 
     Returns
     ----------
@@ -85,6 +127,7 @@ def data_information(training_data):
     training_data: the data loading from "eis_training_data.npy"
     
     """
+    print("Type of training_data:", type(training_data))
     print("Size of training_data:", len(training_data))
     print("Size of image(after rescale):", training_data[0][1].shape[1],
           "x", training_data[0][1].shape[0])
