@@ -664,10 +664,6 @@ def fseries_read_data(file, data_head=config["fdata_head"],
 
     return header_meta, fseries_raw
 
-test_file='data/simulation/simulation_data\\200308-0001_sim_one.csv'
-serial_id, meta_tags, class_tags = parse_fname_meta(test_file)
-header_meta, fseries_raw = fseries_read_data(test_file)
-
 
 def fseries_fix_head(fseries_raw, correct_headers=None, interact=False):
     """
@@ -867,8 +863,6 @@ def match_columns(fseries_raw, hint_list, interact=True, leaveblank=True):
     return []
 
 
-fseries_fixed = fseries_fix_head(fseries_raw)
-
 """
 * fseries_fix_head()    IF the headers in the data frame are not named/ordered
                         correctly, we need to fix that.
@@ -940,53 +934,158 @@ to be very helpful:
                         (We're not here yet. no idea what this will actually
                         need as inputs and outputs.)
 """
-sql_path="data/sql"
-import os
-import sqlalchemy
-from sqlalchemy import create_engine
-
-# If sql_path doesn't exist, make it!
-# and make the sql engine path to point to it!
-# Otherwise, make sql engine in Memory.
-if sql_path:
-    os.makedirs(sql_path, exist_ok=True)
-    sql_path = "sqlite:///" + sql_path
-else:
-    sql_path = "sqlite:///:memory:"
 
 
-engine = create_engine(sql_path, echo=True)
+def SQL_setup(sql_path="data/", sql_file="eisy_sql.db"):
+    # sql_path = False will generate the database in active Memory
+    import os
+    import sqlalchemy
+    from sqlalchemy import create_engine
 
-# from sqlalchemy.ext.declarative import declarative_base
-# Base=declarative_base()
+    from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy import Column, Integer, String, Float
+
+    # If sql_path doesn't exist, make it!
+    # and make the sql engine path to point to it!
+    # Otherwise, make sql engine in Memory.
+    if sql_path:
+        os.makedirs(sql_path, exist_ok=True)
+        sql_path = "sqlite:///" + sql_path + sql_file
+        print(sql_path)
+    else:
+        sql_path = "sqlite:///:memory:"
+
+    engine = create_engine(sql_path, echo=True)
+    # from sqlalchemy.ext.declarative import declarative_base
+    # Base=declarative_base()
+
+    # SQL TABLE SCHEMA:
+    # NOTE: Using "<>" to identify a pointer to a new table
+
+    # EXPERIMENT:
+    # serial_id | date_run | serial_number | data_type <> |
+
+    # F_SERIES_DATA:
+    # serial_id | freq_hz | z_real_ohm | z_imag_ohm | z_comb_ohm | phase_rad |
+
+    # PROCESSED DATA:
+    # serial_id | ohmic_r | rc_fit | circuit_guess<> |
+
+    # NOISE_CLASSIFY:
+    # serial_id | noise <> | confidence | model_error | model_training_size |
+
+    # CIRCUIT_CLASSIFY:
+    # serial_id | circuit <> | confidence | model_error | model_training_size |
+
+    # <> DATA_TYPES:
+    # id# | source |
+
+    # <> Noise_Classes:
+    # id# | noise_type | message |
+
+    # <> Circuit_Classes:
+    # id# | circuit_type | message |
+
+    Base = declarative_base()
+
+    class Experiment(Base):
+        __tablename__ = "experiments"
+
+        id = Column(String, primary_key=True)
+        date_run = Column(String)
+        serial_id = Column(String)
+        data_type = Column(String)
+
+    class F_Series_Data(Base):
+        __tablename__ = "frequency_data"
+
+        id = Column(String, primary_key=True)
+        freq_hz = Column(Float)
+        z_real_ohm = Column(Float)
+        z_imag_ohm = Column(Float)
+        z_comb_ohm = Column(Float)
+        phase_rad = Column(Float)
+
+    class Processed_Data(Base):
+        __tablename__ = "processed_data"
+
+        id = Column(String, primary_key=True)
+        ohmic_r = Column(Float)
+        rc_fit = Column(Float)
+        circuit_guess = Column(String)
+
+    class Noise_Classification(Base):
+        __tablename__ = "noise_classification"
+
+        id = Column(String, primary_key=True)
+        noise_class = Column(Integer)
+        confidence = Column(Float)
+        model_accuracy = Column(Float)
+        model_training_size = Column(Integer)
+
+    class Circuit_Classification(Base):
+        __tablename__ = "circuit_classification"
+
+        id = Column(String, primary_key=True)
+        circuit_class = Column(Integer)
+        confidence = Column(Float)
+        model_accuracy = Column(Float)
+        model_training_size = Column(Integer)
+
+    class Data_Types(Base):
+        __tablename__ = "data_types"
+
+        id = Column(Integer, primary_key=True)
+        data_type = Column(String)
+
+    class Noise_Categories(Base):
+        __tablename__ = "noise_categories"
+
+        id = Column(Integer, primary_key=True)
+        noise_type = Column(String)
+        noise_message = Column(String)
+
+    class Circuit_Categories(Base):
+        __tablename__ = "circuit_categories"
+
+        id = Column(Integer, primary_key=True)
+        circuit_type = Column(String)
+        circuit_message = Column(String)
+
+    Base.metadata.create_all(engine)
+
+    return sql_path
 
 
-# SQL TABLE SCHEMA:
-# NOTE: Using "<>" to identify a pointer to a new table
 
-# EXPERIMENT:
-# serial_id | date_run | serial_number | data_type <> |
+def SQL_add_expeirment(sql_path, test_file, interact=True):
+    """
+    Wrapper Funciton, putting together many of the above functions.
+    Starts from the raw file, processes all the data, and saves
+    them as defined in the SQL database.
 
-# F_SERIES_DATA:
-# serial_id | freq_hz | z_real_ohm | z_imag_ohm | z_comb_ohm | phase_rad |
+    INPUT:
+        sql_path :  Location of the sql database to add to.
+                    needs to check that the database exists
 
-# PROCESSED DATA:
-# serial_id | ohmic_r | rc_fit | circuit_guess<> |
+        test_file : csv file to be added to the SQL database.
+                    Need info on how to handle errors, and/or
 
-# NOISE_CLASSIFY:
-# serial_id | noise <> | confidence | model_error | model_training_size |
+    """
+    import sqlalchemy
 
-# CIRCUIT_CLASSIFY:
-# serial_id | circuit <> | confidence | model_error | model_training_size |
 
-# <> DATA_TYPES:
-# id# | source |
+    test_file = 'data/simulation/simulation_data\\200308-0001_sim_one.csv'
+    serial_id, meta_tags, class_tags = parse_fname_meta(test_file)
+    header_meta, fseries_raw = fseries_read_data(test_file)
+    fseries_fixed = fseries_fix_head(fseries_raw)
 
-# <> Noise_Classes:
-# id# | noise_type | message |
 
-# <> Circuit_Classes:
-# id# | circuit_type | message |
+
+
+
+
+SQL_setup()
 
 
 
