@@ -1,6 +1,6 @@
-config_created: '2020-03-13 14:15:06.929136'
-config_updated: '2020-03-17 12:30:42.544961'
-data_dir: data/simulation/simulation_data
+config_created: '2020-03-17 12:53:04.030981'
+config_updated: '2020-03-17 12:53:35.842883'
+data_dir: simulation/simulation_data
 fdata_delim: ','
 fdata_head:
   freq_hz: freq [Hz]

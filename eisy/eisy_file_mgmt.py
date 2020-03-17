@@ -228,8 +228,7 @@ def new_config_import(config_file=config_file_location,
             os.mkdir(config_dir)
 
         # Now, save the file using yaml
-        flags = os.O_RDWR | os.O_CREAT
-        f = os.open(config_file, flags, "w+")
+        f = open(config_file, "w")
         yaml.dump(config, f)
         f.truncate()
         f.close()
@@ -279,7 +278,7 @@ def get_config_import(config_file=config_file_location,
 
 
 def set_config_import(config_file=config_file_location,
-                      change={"file_type": ".csv"}, add_new=False):
+                      change={"file_type": ".csv"}, add_new=True):
     """
     Create or Modify configuration file, used to pass new defaults
     Will import and parse the file if it exists.
@@ -334,7 +333,9 @@ def set_config_import(config_file=config_file_location,
     # Not sure why the dataframe idea wasn't working, however I think we can
     #    just leave things as the dictionary.
 
-    f = open(config_file, 'w+')
+    # Now, save the file using yaml
+    flags = os.O_RDWR | os.O_CREAT
+    f = open(config_file, "w")
     yaml.dump(config, f)      # Save and overwrite config file
     f.truncate()              # Eliminates extra lines if file got shorter
     f.close()
