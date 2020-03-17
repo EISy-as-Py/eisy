@@ -332,9 +332,14 @@ def set_config_import(config_file=config_file_location,
     # save_config = pd.DataFrame.from_dict(data=config) # This seems broken?
     # Not sure why the dataframe idea wasn't working, however I think we can
     #    just leave things as the dictionary.
+    config_dir = os.path.dirname(config_file)
+    if os.path.isdir(config_dir):
+        pass
+    else:
+        # Create directory if doesn't exist
+        os.mkdir(config_dir)
 
     # Now, save the file using yaml
-    flags = os.O_RDWR | os.O_CREAT
     f = open(config_file, "w")
     yaml.dump(config, f)      # Save and overwrite config file
     f.truncate()              # Eliminates extra lines if file got shorter
