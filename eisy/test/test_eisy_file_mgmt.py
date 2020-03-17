@@ -106,7 +106,8 @@ class TestFileManagement(unittest.TestCase):
 
         files, file_path = eisy_file_mgmt.get_file_list(dir_path=test_dir,
                                                         str_has=["sim"],
-                                                        str_inc=["data"])
+                                                        str_inc=["data"],
+                                                        interact=False)
 
     def test_check_dir_path(self):
         dir_path = "eisy/test/data/"

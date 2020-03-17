@@ -16,9 +16,9 @@ import cnn.Neural_Network.CNN_Model as CNN
 
 class TestCNNModelTools(unittest.TestCase):
 	def test_DataImporter_Training():
-		train_d = CNN.EISDataImport.DataImporter_Training(self, k, 
+		train_d = CNN.EISDataImport.DataImporter_Training(self, k,
 														  path_List_training,
-	                              						  image_width, 
+	                              						  image_width,
 	                              						  image_height)
 		assert k == len(path_List_training) - 1, 'Incorrect number of type'
 		assert k <= 7, 'Too many types.'
@@ -28,9 +28,9 @@ class TestCNNModelTools(unittest.TestCase):
 		assert image_height <= 1000, 'Image size is too large'
 
 	def test_DataImporter_Predict():
-		predict_d = CNN.EISDataImport.DataImporter_Predict(self, k, 
+		predict_d = CNN.EISDataImport.DataImporter_Predict(self, k,
 														  path_List_predict,
-	                              						  image_width, 
+	                              						  image_width,
 	                              						  image_height)
 		assert k == len(path_List_training) - 1, 'Incorrect number of type'
 		assert k <= 10 , 'Too many folders/paths.'
@@ -40,7 +40,7 @@ class TestCNNModelTools(unittest.TestCase):
 		assert image_height <= 1000, 'Image size is too large.'
 
 	def test_Build_Data():
-		Build_d = CNN.Build_Data(Training, Predict, k, path_list, 
+		Build_d = CNN.Build_Data(Training, Predict, k, path_list,
 								 image_width, image_height)
 		assert Training != Predict, 'Build only one type of data in one time.'
 		if Training is True:
@@ -57,4 +57,5 @@ class TestCNNModelTools(unittest.TestCase):
 		assert type(np_ndarray_file) == str, \
 			'Wrong type. The np_ndarray_file should be a string.'
 
-	def test_data_information()
+	def test_data_information():
+        return
