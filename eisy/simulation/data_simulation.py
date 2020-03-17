@@ -363,7 +363,7 @@ def RQ_file_writer(high_freq, low_freq, decades, resistance,
         data_file.write('Date:, {}'.format(date)+'\n')
         data_file.write('Serial number:, {}'.format(number)+'\n')
         data_file.write('Data Source:, simulation'+'\n')
-        data_file.write('Circuit type:, rc'+'\n')
+        data_file.write('Circuit type:, -RQ-'+'\n')
         data_file.write('Circuit configuration:, {}'
                         .format(circuit_configuration)+'\n')
         data_file.write('Circuit elements:, [R={} ohm Q={} [s^(alpha-1)/ohm]\
@@ -545,14 +545,13 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
         data_file.write('Data Source:, simulation'+'\n')
         data_file.write('Circuit type:, -Rs-(RC)-(RC)-'+'\n')
         data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm C1={} F\
-R2={} ohm C2={} F]'
-                        .format(sol_resistance, parallel_resistance_1,
-                                capacitance_1, parallel_resistance_2,
-                                capacitance_2) + '\n')
+R2={} ohm C2={} F]'.format(sol_resistance, parallel_resistance_1,
+                           capacitance_1, parallel_resistance_2,
+                           capacitance_2) + '\n')
         if alteration:
-            data_file.write('Alteration :, {}'.format(alteration))
+            data_file.write('Alteration :, {} \n'.format(alteration))
         else:
-            data_file.write('Alteration :, None')
+            data_file.write('Alteration :, None \n')
         data_file.write('---'+'\n')
 
         df = RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
@@ -864,7 +863,7 @@ def randles_file_writer(high_freq, low_freq, decades, solution_resistance,
         data_file.write('Data Source:, simulation'+'\n')
         data_file.write('Circuit type:, -Rs-(Cdl-(Rct-Zw))-'+'\n')
         data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm Q1={}\
-[s^(alpha-1)/ohm] alpha_1={} ohm sigma={}'
+[s^(alpha-1)/ohm alpha_1={} ohm sigma={}]'
                         .format(solution_resistance, parallel_resistance,
                                 constant_phase_element, alpha,
                                 sigma) + '\n')
