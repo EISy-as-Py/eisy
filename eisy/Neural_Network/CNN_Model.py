@@ -125,9 +125,7 @@ def Build_Data(Training, Predict, k, path_list, image_width, image_height):
         Class.DataImporter_Predict(k, path_list, image_width, image_height)
 
 
-"""Data Status Check"""
-
-def load_array_data(np_ndarray_file):
+def load_array_data(np_ndarray_file):  # Data Status Check
     """
     Load the data from the .npy file to check if all the images
     have been in the program.
@@ -137,7 +135,7 @@ def load_array_data(np_ndarray_file):
     np_ndarray_file: The XXX.npy file name.
                      Should be identical to the last index in path list
 
-    Returns
+    Return
     ----------
     training_data:  the dataset expressed in numpy array form.
                     type -> numpy.ndarray
@@ -304,14 +302,14 @@ def data_separation(tensor_data, ratio_of_testing, TRAIN, TEST):
            otherwise, print out the testing sample size
     """
     VAL_PCT = ratio_of_testing
-    val_size = int(len(data)*VAL_PCT)
+    val_size = int(len(tensor_data)*VAL_PCT)
 
     if TRAIN is True:
-        training_sample = data[:-val_size]
+        training_sample = tensor_data[:-val_size]
         print("Training Samples:", len(training_sample))
         return training_sample
     if TEST is True:
-        testing_sample = data[-val_size:]
+        testing_sample = tensor_data[-val_size:]
         print("Testing Samples:", len(testing_sample))
         return testing_sample
 
@@ -350,8 +348,8 @@ def learning(training_sample_image, training_sample_type, input_size,
     for epoch in range(EPOCHS):
         for i in tqdm(range(0, len(training_sample_image), BATCH_SIZE)):
             batch_image = training_sample_image[i:i+BATCH_SIZE
-                                             ].view(-1, 1, image_height,
-                                                    image_width)
+                                                ].view(-1, 1, image_height,
+                                                       image_width)
             batch_type = training_sample_type[i:i+BATCH_SIZE]
 
             Net(input_size, image_width, image_height, firstHidden,
@@ -433,11 +431,11 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
 
     """
     countImage_predicted_type = [0, 0, 0, 0, 0, 0, 0]
-    for i in range(len(Input_data)):
+    for i in range(len(tensor_data)):
         net_out_predict = Net(input_size, image_width, image_height,
                               firstHidden, kernel_size, output_size
-                              )(Input_data[i].view(-1, 1, image_height,
-                                                   image_width))[0]
+                              )(tensor_data[i].view(-1, 1, image_height,
+                                                    image_width))[0]
         predicted_type = torch.argmax(net_out_predict)
         for Type in range(k):
             if predicted_type == Type:
