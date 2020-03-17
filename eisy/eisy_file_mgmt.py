@@ -368,7 +368,7 @@ config = set_config_import(change={})
 
 
 def get_file_list(dir_path=config["data_dir"],
-                  str_has=['sim'], str_inc=['0001', '0002'],
+                  str_has=['.'], str_inc=['.'],
                   ftype=config['file_type'],
                   interact=True):
     """
@@ -1073,14 +1073,15 @@ def SQL_add_expeirment(sql_path, test_file, interact=True):
 
     """
     import sqlalchemy
-
+    from sqlalchemy import create_engine
 
     test_file = 'data/simulation/simulation_data\\200308-0001_sim_one.csv'
     serial_id, meta_tags, class_tags = parse_fname_meta(test_file)
     header_meta, fseries_raw = fseries_read_data(test_file)
     fseries_fixed = fseries_fix_head(fseries_raw)
 
-
+    # Start up a sql engine at the path given
+    engine = create_engine(sql_path, echo=True)
 
 
 
