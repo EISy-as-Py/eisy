@@ -3,14 +3,23 @@ package:
   version: 0.0.1
 
 source:
-git_url: https://github.com/EISy-as-Py/eisy
+  git_url: https://github.com/EISy-as-Py/eisy
 
 build:
   number: 0
 
 requirements:
+  build:
+    - python
+    - setuptools
+
   run:
     - python>=3.5
+
+test:
+  imports:
+    - eisy.simulation.data_simulation
+
 about:
   summary: package to analyze, simulate and model electrochemical spectroscopy data.
   license: MIT
