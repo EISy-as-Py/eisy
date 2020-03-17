@@ -7,6 +7,7 @@ UW DIRECT DataScience Project, to Import/Process/Store/Report Data related to el
 
 `eisy` is a Python module for simulating and classifying impedance data.
 
+<img src=https://github.com/EISy-as-Py/eisy/blob/master/doc/project_management/misc_design/Logo3_square.PNG width=400 p align="right"> 
 
 Using different combinations of circuit elements and their expression for impedance, the simulation module is able to reproduce the overall impedance response of the selected circuit. Look into the `circuit.py` page to see which configurations are already supported.
 The `data_simulation.py` module allows to simulate the impedance response  in the frequency domain and saves the result as a `pandas.DataFrame` . The impedance response is  presented both in its complex form, as well as separated in its real and imaginary parts. Additionally, the `data_simulation.py` module allows for the creation of a .csv file containing metadata of the simuation just performed (i.e. circuit used, circuit elements values, etc.), as well as appending the raw data of the simulation. Finally, the simulation module provides option of generating a plot of the impdance respose. This can be generated for immediate inspection of the data trend, or saved automaticallyin a .png file having the same file name as the raw `.csv` file. 
