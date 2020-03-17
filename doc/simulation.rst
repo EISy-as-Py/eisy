@@ -4,7 +4,7 @@ simulation package
 Submodules
 ----------
 
-simulation.alterations module
+Alterations
 -----------------------------
 
 .. automodule:: simulation.alterations
@@ -12,7 +12,7 @@ simulation.alterations module
    :undoc-members:
    :show-inheritance:
 
-simulation.circuits module
+Circuits
 --------------------------
 
 .. automodule:: simulation.circuits
@@ -20,7 +20,7 @@ simulation.circuits module
    :undoc-members:
    :show-inheritance:
 
-simulation.data\_simulation module
+Data Simulation
 ----------------------------------
 
 .. automodule:: simulation.data_simulation
@@ -28,18 +28,10 @@ simulation.data\_simulation module
    :undoc-members:
    :show-inheritance:
 
-simulation.plotting module
+Plotting
 --------------------------
 
 .. automodule:: simulation.plotting
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-simulation.version module
--------------------------
-
-.. automodule:: simulation.version
    :members:
    :undoc-members:
    :show-inheritance:
