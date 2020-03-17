@@ -166,7 +166,7 @@ def new_config_import(config_file=config_file_location,
     import os.path
     config_dir = os.path.dirname(config_file)
     config = {
-            "data_dir": "data/simulation/simulation_data",
+            "data_dir": "simulation/simulation_data",
             "config_created": str(datetime.now()),
             "config_updated": None,
             "file_type": ".csv",  # just to check that the edit works
@@ -228,7 +228,7 @@ def new_config_import(config_file=config_file_location,
             os.mkdir(config_dir)
 
         # Now, save the file using yaml
-        f = open(config_file, "w+")
+        f = open(config_file, "w")
         yaml.dump(config, f)
         f.truncate()
         f.close()
@@ -278,7 +278,7 @@ def get_config_import(config_file=config_file_location,
 
 
 def set_config_import(config_file=config_file_location,
-                      change={"file_type": ".csv"}, add_new=False):
+                      change={"file_type": ".csv"}, add_new=True):
     """
     Create or Modify configuration file, used to pass new defaults
     Will import and parse the file if it exists.
@@ -332,8 +332,15 @@ def set_config_import(config_file=config_file_location,
     # save_config = pd.DataFrame.from_dict(data=config) # This seems broken?
     # Not sure why the dataframe idea wasn't working, however I think we can
     #    just leave things as the dictionary.
+    config_dir = os.path.dirname(config_file)
+    if os.path.isdir(config_dir):
+        pass
+    else:
+        # Create directory if doesn't exist
+        os.mkdir(config_dir)
 
-    f = open(config_file, 'w+')
+    # Now, save the file using yaml
+    f = open(config_file, "w")
     yaml.dump(config, f)      # Save and overwrite config file
     f.truncate()              # Eliminates extra lines if file got shorter
     f.close()
@@ -391,7 +398,8 @@ def get_file_list(dir_path=config["data_dir"],
     from os import listdir
     import tkinter
     from tkinter.filedialog import askdirectory
-    root = tkinter.Tk()  # this will help control file dialog boxes!
+    if interact:
+        root = tkinter.Tk()  # this will help control file dialog boxes!
 
     # Check if the path specified includes at least 1 file of the file type
     success, err_msg = check_dir_path(dir_path, [ftype], 1, False)
@@ -409,15 +417,19 @@ def get_file_list(dir_path=config["data_dir"],
                                     initialdir=dir_path)
             success, err_msg = check_dir_path(dir_path, [ftype], 1, False)
         else:
-            root.destroy
+
             raise AssertionError(err_msg)
     else:
+        if interact:
+            root.destroy
         print("You found a good folder at: <" + dir_path + ">")
 
     if not len(dir_path):
-        root.destroy()
+        if interact:
+            root.destroy()
         raise AssertionError("You Closed the Dialog Window Without a Folder!")
-    root.destroy()
+    if interact:
+        root.destroy()
 
     """
     If we've gotten this far, we found files!
@@ -1086,7 +1098,7 @@ def SQL_add_expeirment(sql_path, test_file, interact=True):
 
 
 
-SQL_setup()
+#SQL_setup()
 
 
 
