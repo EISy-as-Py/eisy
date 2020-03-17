@@ -166,7 +166,7 @@ def new_config_import(config_file=config_file_location,
     import os.path
     config_dir = os.path.dirname(config_file)
     config = {
-            "data_dir": "data/simulation/simulation_data",
+            "data_dir": "simulation/simulation_data",
             "config_created": str(datetime.now()),
             "config_updated": None,
             "file_type": ".csv",  # just to check that the edit works
@@ -228,7 +228,8 @@ def new_config_import(config_file=config_file_location,
             os.mkdir(config_dir)
 
         # Now, save the file using yaml
-        f = open(config_file, "w+")
+        flags = os.O_RDWR | os.O_CREAT
+        f = os.open(config_file, flags, "w+")
         yaml.dump(config, f)
         f.truncate()
         f.close()
@@ -1086,7 +1087,7 @@ def SQL_add_expeirment(sql_path, test_file, interact=True):
 
 
 
-SQL_setup()
+#SQL_setup()
 
 
 

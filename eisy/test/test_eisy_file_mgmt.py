@@ -5,7 +5,7 @@ import unittest
 from eisy import eisy_file_mgmt
 # from eisy.eisy_file_mgmt import *
 
-module_path = os.path.abspath(os.path.join('../simulation'))
+module_path = os.path.abspath(os.path.join('../'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
