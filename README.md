@@ -52,12 +52,25 @@ Some notebooks are available in the `examples/` directory. In order to make use 
 
 More requirements can be found in the *requirements.txt* file. 
 
+Deep Learning - Convoluted Neural Network
+---------------------------------------------------
+
+Deep learning is implemented in the project to identify the graph images in .png format whether the raw data is bad or worth taking a second look, then further classified into four different graph types: single hump, double humps, with tail, and noisy. The classification infers important information for types of circuits the raw data is obtained. 
+Convoluted Neural Network allows users to simply upload their raw nyquist plots in .png format to determine whether or not the experiment has been performed reasonably. 
+Currently, the size of the image training data library for classification is very limited and our group has been aiming to enlarge the libary to give users highly accurate results in sorting.
+
+At the current stage of development, the nyquist plot images used for training the system is uploaded on google drive and is accessible by the url below. After gitclone, it is required of our users to manually download the files on the google drive and make sure it is saved to a directory parallel to the jupyter notebook.
+
+Google Drive for images : 
+Categorized Images for training: https://drive.google.com/drive/u/0/folders/1M4Q3K28A6JYoJ1LlvSKRh9UA5OhTtrt4
+Random Images for testing: https://drive.google.com/drive/u/0/folders/1pF7InGuDUZq4YwPFVXbHN07rwqbvfREP
+
 Future features
 ----------------------
 
-The folloowing are implemetations that are planned for the `eisy` package:
+The following are implemetations that are planned for the `eisy` package:
 
-* Expand the `plotting.py` module to include *bode plots*, as well as *DRT*
+* Expand the `plotting.py` module to include *blode plots*, as well as *DRT*
 * Expand the `alterations.py` module to allow the simulation of *missing data points* and *interrupted data collection*. 
 * Train the Neural Network to being able to cathegorize the above mentioned fetures. 
 * Add a model fitting module to allow to predict the equivalent electrcal circuit fr experimental data
