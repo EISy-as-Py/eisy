@@ -15,13 +15,14 @@ import torch.optim as optim
 class EISData():
     """Data Import and Pre-Processing"""
 
-    def DataImporter_Training(self, k, path_List, image_width, image_height):
+    def DataImporter_Training(self, k, path_List_training,
+                              image_width, image_height):
         """
 
 
 
         """
-        path_list = path_List
+        path_list = path_List_training
         countImage_Training = [0, 0, 0, 0, 0, 0, 0]
         training_data = []
         # Iterate the directory
@@ -45,12 +46,14 @@ class EISData():
         np.random.shuffle(training_data)
         np.save(path_list[-1], training_data)
         for i in range(len(path_list)-1):
-            print(path_list[i], ":", countImage_Training[i])
+            print(path_List_training[i], ":", countImage_Training[i])
 
-    def DataImporter_Predict(self, k, path_list, image_width, image_height):
+    def DataImporter_Predict(self, k, path_List_predict,
+                             image_width, image_height):
         """
 
         """
+        path_list = path_List_predict
         countImage_Predict = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         training_data = []
         # Iterate the directory
@@ -74,7 +77,7 @@ class EISData():
         np.random.shuffle(training_data)
         np.save(path_list[-1], training_data)
         for i in range(len(path_list)-1):
-            print(path_list[i], ":", countImage_Predict[i])
+            print(path_List_predict[i], ":", countImage_Predict[i])
 
 
 def Build_Data(Training, k, path_list, image_width, image_height):
@@ -218,14 +221,14 @@ class Net(nn.Module):
 
 def image_to_tensor(training_data, image_height, image_width):
     """Transform the array image into tensor."""
-    X = torch.Tensor([i[0] for i in training_data]).view(-1, image_height,
-                                                         image_width)
+    X = torch.Tensor([i[1] for i in training_data]
+                     ).view(-1, image_height, image_width)
     return X
 
 
 def type_to_tensor(training_data):
     """Transform the array type into tensor."""
-    y = torch.Tensor([i[1] for i in training_data])
+    y = torch.Tensor([i[2] for i in training_data])
     return y
 
 
@@ -282,15 +285,39 @@ def accuracy(test_data1, test_data2, input_size, image_width, image_height,
     with torch.no_grad():
         for i in tqdm(range(len(test_data1))):
             real_type = torch.argmax(test_data2[i])
-            net_out = Net(input_size, image_width,
-                          image_height, firstHidden,
-                          kernel_size, output_size
-                          )(test_data1[i].view(-1, 1, image_height,
-                                               image_width))[0]
-            predicted_type = torch.argmax(net_out)
+            net_out_train = Net(input_size, image_width, image_height,
+                                firstHidden, kernel_size, output_size
+                                )(test_data1[i].view(-1, 1, image_height,
+                                                     image_width))[0]
+            predicted_type = torch.argmax(net_out_train)
 
             if predicted_type == real_type:
                 correct += 1
             total += 1
 
     print("Accuracy:", round(correct/total, 3))
+
+def type_prediction(k, path_List_training, Input_data, np_array_data,
+                    input_size, image_width, image_height, firstHidden,
+                    kernel_size, output_size, detailed_information):
+    """
+
+
+    """
+    countImage_predicted_type = [0, 0, 0, 0, 0, 0, 0]
+    for i in range(len(Input_data)):
+        net_out_predict = Net(input_size, image_width, image_height,
+                              firstHidden, kernel_size, output_size
+                              )(Input_data[i].view(-1, 1, image_height,
+                                                   image_width))[0]
+        predicted_type = torch.argmax(net_out_predict)
+        for Type in range(k):
+            if predicted_type == Type:
+                countImage_predicted_type[Type] += 1
+                # Print out the detailed information.
+                if detailed_information is True:
+                    print("Type Prediction:", path_List_training[Type])
+                    print("Path and File Name", np_array_data[i][0])
+
+    for i in range(len(path_List_training)-1):
+        print(path_List_training[i], ":", countImage_predicted_type[i])
