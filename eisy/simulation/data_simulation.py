@@ -112,14 +112,14 @@ def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
                            data.
     """
     # Define the frequency range to be simulated
-    freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+    freq_range = freq_gen(high_freq, low_freq, decades)
     # Obtain the impedance of the RC circuit
     if circuit_configuration == 'series':
-        complex_impedance = circuits.cir_RC_series(freq_range[1], resistance,
-                                                   capacitance)
+        complex_impedance = cir_RC_series(freq_range[1], resistance,
+                                          capacitance)
     elif circuit_configuration == 'parallel':
-        complex_impedance = circuits.cir_RC_parallel(freq_range[1], resistance,
-                                                     capacitance)
+        complex_impedance = cir_RC_parallel(freq_range[1], resistance,
+                                            capacitance)
     else:
         raise AssertionError('The inputted configuration is not supported')
     impedance_data = impedance_array(complex_impedance)
@@ -211,19 +211,19 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
         else:
             data_file.write('Alteration :, None')
         data_file.write('---'+'\n')
-        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+        freq_range = freq_gen(high_freq, low_freq, decades)
         if circuit_configuration == 'series':
-            circuit = circuits.cir_RC_series(freq_range[1], resistance,
-                                             capacitance)
+            circuit = cir_RC_series(freq_range[1], resistance,
+                                    capacitance)
         elif circuit_configuration == 'parallel':
-            circuit = circuits.cir_RC_parallel(freq_range[1], resistance,
-                                               capacitance)
+            circuit = cir_RC_parallel(freq_range[1], resistance,
+                                      capacitance)
         else:
             raise AssertionError('The inputted configuration is not supported')
         df = RC_simulation(high_freq, low_freq, decades, resistance,
                            capacitance, circuit_configuration)
         if alteration:
-            df = alterations.added_noise(df, 0.4)
+            df = added_noise(df, 0.4)
         else:
             df = df
         df.to_csv(data_file, mode='a')
@@ -273,16 +273,16 @@ def RQ_simulation(high_freq, low_freq, decades, resistance,
                            data.
     """
     # Define the frequency range to be simulated
-    freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+    freq_range = freq_gen(high_freq, low_freq, decades)
     # Obtain the impedance of the RC circuit
     if circuit_configuration == 'series':
-        complex_impedance = circuits.cir_RQ_series(freq_range[1], resistance,
-                                                   constant_phase_element,
-                                                   alpha)
+        complex_impedance = cir_RQ_series(freq_range[1], resistance,
+                                          constant_phase_element,
+                                          alpha)
     elif circuit_configuration == 'parallel':
-        complex_impedance = circuits.cir_RQ_parallel(freq_range[1], resistance,
-                                                     constant_phase_element,
-                                                     alpha)
+        complex_impedance = cir_RQ_parallel(freq_range[1], resistance,
+                                            constant_phase_element,
+                                            alpha)
     else:
         raise AssertionError('The inputted configuration is not supported')
     impedance_data = impedance_array(complex_impedance)
@@ -363,7 +363,7 @@ def RQ_file_writer(high_freq, low_freq, decades, resistance,
         data_file.write('Date:, {}'.format(date)+'\n')
         data_file.write('Serial number:, {}'.format(number)+'\n')
         data_file.write('Data Source:, simulation'+'\n')
-        data_file.write('Circuit type:, rc'+'\n')
+        data_file.write('Circuit type:, -RQ-'+'\n')
         data_file.write('Circuit configuration:, {}'
                         .format(circuit_configuration)+'\n')
         data_file.write('Circuit elements:, [R={} ohm Q={} [s^(alpha-1)/ohm]\
@@ -375,22 +375,22 @@ alpha={}]'.format(resistance, constant_phase_element, alpha)
             data_file.write('Alteration :, None')
         data_file.write('---'+'\n')
 
-        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+        freq_range = freq_gen(high_freq, low_freq, decades)
         if circuit_configuration == 'series':
-            circuit = circuits.cir_RQ_series(freq_range[1], resistance,
-                                             constant_phase_element,
-                                             alpha)
+            circuit = cir_RQ_series(freq_range[1], resistance,
+                                    constant_phase_element,
+                                    alpha)
         elif circuit_configuration == 'parallel':
-            circuit = circuits.cir_RQ_parallel(freq_range[1], resistance,
-                                               constant_phase_element,
-                                               alpha)
+            circuit = cir_RQ_parallel(freq_range[1], resistance,
+                                      constant_phase_element,
+                                      alpha)
         else:
             raise AssertionError('The inputted configuration is not supported')
         df = RQ_simulation(high_freq, low_freq, decades, resistance,
                            constant_phase_element, alpha,
                            circuit_configuration)
         if alteration:
-            df = alterations.added_noise(df, 0.4)
+            df = added_noise(df, 0.4)
         else:
             df = df
         df.to_csv(data_file, mode='a')
@@ -446,14 +446,14 @@ def RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
                            data.
     """
     # Define the frequency range to be simulated
-    freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+    freq_range = freq_gen(high_freq, low_freq, decades)
     # Obtain the impedance of the RsRCRC circuit
-    complex_impedance = circuits.cir_RsRCRC(freq_range[1],
-                                            sol_resistance,
-                                            parallel_resistance_1,
-                                            capacitance_1,
-                                            parallel_resistance_2,
-                                            capacitance_2)
+    complex_impedance = cir_RsRCRC(freq_range[1],
+                                   sol_resistance,
+                                   parallel_resistance_1,
+                                   capacitance_1,
+                                   parallel_resistance_2,
+                                   capacitance_2)
     impedance_data = impedance_array(complex_impedance)
     impedance_data_df = to_dataframe(freq_range, impedance_data)
     return impedance_data_df
@@ -545,21 +545,20 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
         data_file.write('Data Source:, simulation'+'\n')
         data_file.write('Circuit type:, -Rs-(RC)-(RC)-'+'\n')
         data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm C1={} F\
-R2={} ohm C2={} F]'
-                        .format(sol_resistance, parallel_resistace_1,
-                                capacitance_1, parallel_resistace_2,
-                                capacitance_2) + '\n')
+R2={} ohm C2={} F]'.format(sol_resistance, parallel_resistance_1,
+                           capacitance_1, parallel_resistance_2,
+                           capacitance_2) + '\n')
         if alteration:
-            data_file.write('Alteration :, {}'.format(alteration))
+            data_file.write('Alteration :, {} \n'.format(alteration))
         else:
-            data_file.write('Alteration :, None')
+            data_file.write('Alteration :, None \n')
         data_file.write('---'+'\n')
 
         df = RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
-                               parallel_resistace_1, capacitance_1,
-                               parallel_resistace_2, capacitance_2)
+                               parallel_resistance_1, capacitance_1,
+                               parallel_resistance_2, capacitance_2)
         if alteration:
-            df = alterations.added_noise(df, 0.4)
+            df = added_noise(df, 0.4)
         else:
             df = df
         df.to_csv(data_file, mode='a')
@@ -618,16 +617,16 @@ def RsRQRQ_simulation(high_freq, low_freq, decades, solution_resistance,
                            data.
     """
     # Define the frequency range to be simulated
-    freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+    freq_range = freq_gen(high_freq, low_freq, decades)
     # Obtain the impedance of the RsRCRC circuit
-    complex_impedance = circuits.cir_RsRQRQ(freq_range[1],
-                                            solution_resistance,
-                                            parallel_resistance_1,
-                                            constant_phase_element_1,
-                                            alpha_1,
-                                            parallel_resistance_2,
-                                            constant_phase_element_2,
-                                            alpha_2)
+    complex_impedance = cir_RsRQRQ(freq_range[1],
+                                   solution_resistance,
+                                   parallel_resistance_1,
+                                   constant_phase_element_1,
+                                   alpha_1,
+                                   parallel_resistance_2,
+                                   constant_phase_element_2,
+                                   alpha_2)
     impedance_data = impedance_array(complex_impedance)
     impedance_data_df = to_dataframe(freq_range, impedance_data)
     return impedance_data_df
@@ -741,7 +740,7 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                                alpha_1, parallel_resistance_2,
                                constant_phase_element_2, alpha_2)
         if alteration:
-            df = alterations.added_noise(df, 0.4)
+            df = added_noise(df, 0.4)
         else:
             df = df
         df.to_csv(data_file, mode='a')
@@ -768,13 +767,13 @@ def randles_simulation(high_freq, low_freq, decades, solution_resistance,
     ----------
     """
     # Define the frequency range to be simulated
-    freq_range = circuits.freq_gen(high_freq, low_freq, decades)
+    freq_range = freq_gen(high_freq, low_freq, decades)
     # Obtain the impedance of the RC circuit
-    complex_impedance = circuits.cir_Randles_simplified(freq_range[1],
-                                                        solution_resistance,
-                                                        parallel_resistace,
-                                                        alpha, sigma,
-                                                        constant_phase_element)
+    complex_impedance = cir_Randles_simplified(freq_range[1],
+                                               solution_resistance,
+                                               parallel_resistace,
+                                               alpha, sigma,
+                                               constant_phase_element)
     # Separate the impedance into its real and imaginary components
     impedance_data = impedance_array(complex_impedance)
     impedance_data_df = to_dataframe(freq_range, impedance_data)
@@ -864,7 +863,7 @@ def randles_file_writer(high_freq, low_freq, decades, solution_resistance,
         data_file.write('Data Source:, simulation'+'\n')
         data_file.write('Circuit type:, -Rs-(Cdl-(Rct-Zw))-'+'\n')
         data_file.write('Circuit elements: , [Rs={} ohm R1={} ohm Q1={}\
-[s^(alpha-1)/ohm] alpha_1={} ohm sigma={}'
+[s^(alpha-1)/ohm alpha_1={} ohm sigma={}]'
                         .format(solution_resistance, parallel_resistance,
                                 constant_phase_element, alpha,
                                 sigma) + '\n')
@@ -880,7 +879,7 @@ def randles_file_writer(high_freq, low_freq, decades, solution_resistance,
                                 alpha, sigma, constant_phase_element)
 
         if alteration:
-            df = alterations.added_noise(df, 0.4)
+            df = added_noise(df, 0.4)
         else:
             df = df
         df.to_csv(data_file, mode='a')
