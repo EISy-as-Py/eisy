@@ -15,10 +15,15 @@ import unittest
 import eisy.Neural_Network.CNN_Model as CNN
 
 class TestCNNModelTools(unittest.TestCase):
+<<<<<<< HEAD
 	def test_DataImporter_Training(self):
 		train_d = CNN.EISDataImport.DataImporter_Training(self, k, 
+=======
+	def test_DataImporter_Training():
+		train_d = CNN.EISDataImport.DataImporter_Training(self, k,
+>>>>>>> 967de5db3f1988f2de28a97e88a11822c5ce6896
 														  path_List_training,
-	                              						  image_width, 
+	                              						  image_width,
 	                              						  image_height)
 		assert k == len(path_List_training) - 1, 'Incorrect number of type'
 		assert k <= 7, 'Too many types.'
@@ -27,10 +32,15 @@ class TestCNNModelTools(unittest.TestCase):
 		assert image_width <= 1000, 'Image size is too large'
 		assert image_height <= 1000, 'Image size is too large'		
 
+<<<<<<< HEAD
 	def test_DataImporter_Predict(self):
 		predict_d = CNN.EISDataImport.DataImporter_Predict(self, k, 
+=======
+	def test_DataImporter_Predict():
+		predict_d = CNN.EISDataImport.DataImporter_Predict(self, k,
+>>>>>>> 967de5db3f1988f2de28a97e88a11822c5ce6896
 														  path_List_predict,
-	                              						  image_width, 
+	                              						  image_width,
 	                              						  image_height)
 		assert k == len(path_List_training) - 1, \
 			'Incorrect number of folders/paths'
@@ -40,8 +50,13 @@ class TestCNNModelTools(unittest.TestCase):
 		assert image_width <= 1000, 'Image size is too large.'
 		assert image_height <= 1000, 'Image size is too large.'
 
+<<<<<<< HEAD
 	def test_Build_Data(self):
 		Build_d = CNN.Build_Data(Training, Predict, k, path_list, 
+=======
+	def test_Build_Data():
+		Build_d = CNN.Build_Data(Training, Predict, k, path_list,
+>>>>>>> 967de5db3f1988f2de28a97e88a11822c5ce6896
 								 image_width, image_height)
 		assert Training != Predict, 'Build only one type of data in one time.'
 		if Training is True:
@@ -58,6 +73,7 @@ class TestCNNModelTools(unittest.TestCase):
 		assert type(np_ndarray_file) == str, \
 			'Wrong type. The np_ndarray_file should be a string.'
 
+<<<<<<< HEAD
 	def test_data_information(self):
 		data_information = CNN.data_information(array_data)
 		assert type(array_data) == np.ndarray, \
@@ -129,3 +145,7 @@ class TestCNNModelTools(unittest.TestCase):
 		assert image_height <= 1000, 'Image size is too large.'
 		assert kernel_size <= 7, 'Maximum kernel_size is set as 7.'
 		assert kernel_size % 2 == 1, 'kernel_size should be an odd integer'
+=======
+	def test_data_information():
+        return
+>>>>>>> 967de5db3f1988f2de28a97e88a11822c5ce6896

@@ -84,8 +84,9 @@ class TestFileManagement(unittest.TestCase):
         # If the file does not exist, will create the file.
         # But should error out if the file name is not a .yaml
         try:
-            config_dict = eisy_file_mgmt.set_config_import("badpath/")
-        except AssertionError:
+            config_dict = eisy_file_mgmt.set_config_import(
+                    "badpath/config.yaml")
+        except IsADirectoryError:
             pass
 
     def test_get_file_list(self):
@@ -95,7 +96,7 @@ class TestFileManagement(unittest.TestCase):
         import os.path
 
         # Ask for list of test files in the test directory
-        test_dir = "data/"
+        test_dir = "eisy/test/data/"
         files, file_path = eisy_file_mgmt.get_file_list(dir_path=test_dir,
                                     str_has=['.'], str_inc=['.'],
                                     interact=False)
@@ -105,10 +106,11 @@ class TestFileManagement(unittest.TestCase):
 
         files, file_path = eisy_file_mgmt.get_file_list(dir_path=test_dir,
                                                         str_has=["sim"],
-                                                        str_inc=["data"])
+                                                        str_inc=["data"],
+                                                        interact=False)
 
     def test_check_dir_path(self):
-        dir_path = "data/"
+        dir_path = "eisy/test/data/"
         a, msg = eisy_file_mgmt.check_dir_path(dir_path,
                                                files_contain=['.csv'],
                                                n_required=1,

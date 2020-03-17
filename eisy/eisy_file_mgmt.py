@@ -398,7 +398,8 @@ def get_file_list(dir_path=config["data_dir"],
     from os import listdir
     import tkinter
     from tkinter.filedialog import askdirectory
-    root = tkinter.Tk()  # this will help control file dialog boxes!
+    if interact:
+        root = tkinter.Tk()  # this will help control file dialog boxes!
 
     # Check if the path specified includes at least 1 file of the file type
     success, err_msg = check_dir_path(dir_path, [ftype], 1, False)
@@ -416,15 +417,19 @@ def get_file_list(dir_path=config["data_dir"],
                                     initialdir=dir_path)
             success, err_msg = check_dir_path(dir_path, [ftype], 1, False)
         else:
-            root.destroy
+
             raise AssertionError(err_msg)
     else:
+        if interact:
+            root.destroy
         print("You found a good folder at: <" + dir_path + ">")
 
     if not len(dir_path):
-        root.destroy()
+        if interact:
+            root.destroy()
         raise AssertionError("You Closed the Dialog Window Without a Folder!")
-    root.destroy()
+    if interact:
+        root.destroy()
 
     """
     If we've gotten this far, we found files!
