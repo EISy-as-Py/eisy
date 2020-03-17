@@ -1,13 +1,13 @@
-config_created: '2020-03-13 14:15:06.929136'
-config_updated: '2020-03-17 07:52:41.841356'
-data_dir: data/simulation/simulation_data
+config_created: '2020-03-11 16:21:36.377253'
+config_updated: null
+data_dir: data/simulation/sim_data
 fdata_delim: ','
 fdata_head:
   freq_hz: freq [Hz]
+  imag_ohm: Im_Z [Ohm]
   phase_rad: phase_angle [rad]
-  r_imag_ohm: Im_Z [Ohm]
-  r_real_ohm: Re_Z [Ohm]
-  r_totl_ohm: '|Z| [Ohm]'
+  real_ohm: Re_Z [Ohm]
+  totl_ohm: '|Z| [Ohm]'
 file_type: .csv
 header_end_str: '---'
 header_meta:
