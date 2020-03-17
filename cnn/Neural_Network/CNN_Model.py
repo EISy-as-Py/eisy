@@ -65,7 +65,7 @@ class EISDataImport():
 
         Parameters
         ----------
-        k:
+        k: The total number of path(folder) 
            (Setting the maximum value equal 10 by defult)
         path_list_training: A list containing the path of training folder.
                             One index for one path only.
@@ -101,19 +101,33 @@ class EISDataImport():
             print(path_List_predict[i], ":", countImage_Predict[i])
 
 
-def Build_Data(Training, k, path_list, image_width, image_height):
+def Build_Data(Training, Predict, k, path_list, image_width, image_height):
     """
+    Determine the type of data to build.
+
+    Parameters
+    ----------
+    Training: True for building the training data
+    Predict: True for building the predict data
+    k: The total number of path(folder) 
+       (Setting the maximum value equal 10 by defult)
+    path_list_training: A list containing the path of training folder.
+                        One index for one path only.
+                        Last index is the nparray file name (XXX.npy).
+    image_width: The target width after resize
+    image_height: The target height after resize
 
     """
     Class = EISDataImport()
     if Training is True:
         Class.DataImporter_Training(k, path_list, image_width, image_height)
-    Class.DataImporter_Predict(k, path_list, image_width, image_height)
+    if Predict is True:
+        Class.DataImporter_Predict(k, path_list, image_width, image_height)
 
 
 """Data Status Check"""
 
-def load_training_data(np_ndarray_file):
+def load_array_data(np_ndarray_file):
     """
     Load the data from the .npy file to check if all the images
     have been in the program.
@@ -129,38 +143,38 @@ def load_training_data(np_ndarray_file):
                     type -> numpy.ndarray
 
     """
-    training_data = np.load(np_ndarray_file, allow_pickle=True)
-    return training_data
+    array_data = np.load(np_ndarray_file, allow_pickle=True)
+    return array_data
 
 
-def data_information(training_data):
+def data_information(array_data):
     """
     Check the size of image and dataset.
 
     Parameters
     ----------
-    training_data: the data in nparray form loading from "XXX.npy" file.
+    array_data: the data in nparray form loading from "XXX.npy" file.
 
     """
-    print("Type of training_data:", type(training_data))
-    print("Size of training_data:", len(training_data))
-    print("Size of image(after rescale):", training_data[0][1].shape[1],
-          "x", training_data[0][1].shape[0])
+    print("Type of input_data:", type(array_data))
+    print("Size of imput_data:", len(array_data))
+    print("Size of image(after rescale):", array_data[0][1].shape[1],
+          "x", array_data[0][1].shape[0])
 
 
-def ploting_data(training_data, i):
+def ploting_data(input_data, i):
     """
     Show the assigned image with matplotlib package.
 
     Parameters
     ----------
-    training_data: the data in nparray form loading from "XXX.npy" file.
-    i:  A arbitrary number to assign one image in training_data to show.
+    input_data: the data in nparray form loading from "XXX.npy" file.
+    i:  A arbitrary number to assign one image in input_data to show.
         Should fall in the range of dataset size.
 
     """
-    print(training_data[i][0])  # Print out the file name (path).
-    plt.imshow(training_data[i][1])
+    print(input_data[i][0])  # Print out the file name (path).
+    plt.imshow(input_data[i][1])
     plt.show()
 
 
@@ -243,13 +257,13 @@ class Net(nn.Module):
         return F.softmax(output, dim=1)
 
 
-def image_to_tensor(training_data, image_width, image_height):
+def image_to_tensor(array_data, image_width, image_height):
     """
     Transform the array image into tensor.
 
     Parameters
     ----------
-    training_data: the data in nparray form loading from "XXX.npy" file.
+    array_data: the data in nparray form loading from "XXX.npy" file.
     image_width: The target width after resize
     image_height: The target height after resize
 
@@ -258,26 +272,26 @@ def image_to_tensor(training_data, image_width, image_height):
     tensor_image: Images in tensor form.
 
     """
-    tensor_image = torch.Tensor([i[1] for i in training_data]
+    tensor_image = torch.Tensor([i[1] for i in array_data]
                                 ).view(-1, image_height, image_width)
     return tensor_image
 
 
-def type_to_tensor(training_data):
+def type_to_tensor(array_data):
     """
     Transform the array type into tensor.
     The function should be used only in the training part.
 
     Parameters
     ----------
-    training_data: the data in nparray form loading from "XXX.npy" file.
+    array_data: the data in nparray form loading from "XXX.npy" file.
 
     """
-    tensor_type = torch.Tensor([i[2] for i in training_data])
+    tensor_type = torch.Tensor([i[2] for i in array_data])
     return tensor_type
 
 
-def data_separation(data, ratio_of_testing, TRAIN):
+def data_separation(tensor_data, ratio_of_testing, TRAIN, TEST):
     """
     Separate the training and testing data.
 
@@ -296,22 +310,23 @@ def data_separation(data, ratio_of_testing, TRAIN):
         training_sample = data[:-val_size]
         print("Training Samples:", len(training_sample))
         return training_sample
-    testing_sample = data[-val_size:]
-    print("Testing Samples:", len(testing_sample))
-    return testing_sample
+    if TEST is True:
+        testing_sample = data[-val_size:]
+        print("Testing Samples:", len(testing_sample))
+        return testing_sample
 
 
-def learning(training_sample1, training_sample2, input_size, image_width,
-             image_height, firstHidden, kernel_size, output_size,
+def learning(training_sample_image, training_sample_type, input_size, 
+             image_width, image_height, firstHidden, kernel_size, output_size,
              learning_rate, BATCH_SIZE, EPOCHS):
     """
     Put the training sample into to the neural network model to learn.
 
     Parameters
     ----------
-    training_sample1
+    training_sample_image:
 
-    training_sample2
+    training_sample_type:
 
     Same as the parameters of nn model
     input_size
@@ -333,31 +348,32 @@ def learning(training_sample1, training_sample2, input_size, image_width,
     loss_function = nn.MSELoss()
 
     for epoch in range(EPOCHS):
-        for i in tqdm(range(0, len(training_sample1), BATCH_SIZE)):
-            batch_sample1 = training_sample1[i:i+BATCH_SIZE
+        for i in tqdm(range(0, len(training_sample_image), BATCH_SIZE)):
+            batch_image = training_sample_image[i:i+BATCH_SIZE
                                              ].view(-1, 1, image_height,
                                                     image_width)
-            batch_sample2 = training_sample2[i:i+BATCH_SIZE]
+            batch_type = training_sample_type[i:i+BATCH_SIZE]
 
             Net(input_size, image_width, image_height, firstHidden,
                 kernel_size, output_size).zero_grad()
             outputs = Net(input_size, image_width, image_height, firstHidden,
-                          kernel_size, output_size)(batch_sample1)
-            loss = loss_function(outputs, batch_sample2)
+                          kernel_size, output_size)(batch_image)
+            loss = loss_function(outputs, batch_type)
             loss.backward()
             optimizer.step()
 
         print(loss)
 
 
-def accuracy(test_data1, test_data2, input_size, image_width, image_height,
-             firstHidden, kernel_size, output_size):
+def accuracy(testing_sample_image, testing_sample_type, input_size, 
+             image_width, image_height, firstHidden, kernel_size, 
+             output_size):
     """
     Test the predicting accuracy for the learning function
     Parameters
     ----------
-    test_data1:
-    test_data2:
+    testing_sample_image:
+    testing_sample_type:
 
     Same as the parameters of nn model
     input_size
@@ -372,12 +388,14 @@ def accuracy(test_data1, test_data2, input_size, image_width, image_height,
     correct = 0
     total = 0
     with torch.no_grad():
-        for i in tqdm(range(len(test_data1))):
-            real_type = torch.argmax(test_data2[i])
+        for i in tqdm(range(len(testing_sample_image))):
+            real_type = torch.argmax(testing_sample_type[i])
             net_out_train = Net(input_size, image_width, image_height,
                                 firstHidden, kernel_size, output_size
-                                )(test_data1[i].view(-1, 1, image_height,
-                                                     image_width))[0]
+                                )(testing_sample_image[i].view(-1, 1,
+                                                               image_height,
+                                                               image_width
+                                                               ))[0]
             predicted_type = torch.argmax(net_out_train)
 
             if predicted_type == real_type:
@@ -389,7 +407,7 @@ def accuracy(test_data1, test_data2, input_size, image_width, image_height,
     return predicting_accuracy
 
 
-def type_prediction(k, path_List_training, Input_data, np_array_data,
+def type_prediction(k, path_List_training, tensor_data, array_data,
                     input_size, image_width, image_height, firstHidden,
                     kernel_size, output_size, detailed_information):
     """
@@ -427,7 +445,7 @@ def type_prediction(k, path_List_training, Input_data, np_array_data,
                 # Print out the detailed information.
                 if detailed_information is True:
                     print("Type Prediction:", path_List_training[Type])
-                    print("Path and File Name", np_array_data[i][0])
+                    print("Path and File Name", array_data[i][0])
 
     for i in range(len(path_List_training)-1):
         print(path_List_training[i], ":", countImage_predicted_type[i])
