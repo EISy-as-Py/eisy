@@ -1,6 +1,9 @@
 [![Build Status](https://travis-ci.org/EISy-as-Py/eisy.svg?branch=master)](https://travis-ci.org/EISy-as-Py/eisy)
 [![Documentation Status](https://readthedocs.org/projects/eisy-as-py/badge/?version=latest)](https://eisy-as-py.readthedocs.io/en/latest/?badge=latest)
 [![Coverage Status](https://coveralls.io/repos/github/EISy-as-Py/eisy/badge.svg?branch=master)](https://coveralls.io/github/EISy-as-Py/eisy?branch=master)
+[![Conda](https://anaconda.org/politim/eisy/badges/installer/conda.svg)]
+[![Downloads](https://anaconda.org/politim/eisy/badges/downloads.svg)]
+[![License](https://anaconda.org/politim/eisy/badges/license.svg)]
 
 # eisy
 UW DIRECT DataScience Project, to Import/Process/Store/Report Data related to electrochemical impedance measurements. 
