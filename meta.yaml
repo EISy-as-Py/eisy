@@ -17,8 +17,6 @@ requirements:
     - python>=3.5
 
 test:
-  imports:
-    - eisy.simulation.data_simulation
 
 about:
   summary: package to analyze, simulate and model electrochemical spectroscopy data.
