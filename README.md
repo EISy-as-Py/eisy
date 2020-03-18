@@ -20,7 +20,9 @@ An SQL database was created to preserve the simuation files produced and to allo
 
 Deep learning is implemented in the project to identify the raw graph images in .png format whether the raw data is bad or worth taking a second look, then further classified into four different graph types: single hump, double humps, with tail, and noisy. The classification infers important information for types and the nature of circuits the raw data is obtained.
 Convoluted Neural Network technology allows users to simply upload their raw Nyquist plots in .png format to determine whether or not the experiment has been performed considerably. Currently, the size of the image training data library for classification is very limited and our group has been aiming to enlarge the library to give users highly accurate results in sorting the raw data.
-At the current stage of development, the Nyquist plot images used for training the system is uploaded on google drive and is accessible by the URL below. After git-clone, it is required of our users to manually download the files on the google drive and make sure it is saved to a directory parallel to the jupyter notebook. 
+At the current stage of development, the Nyquist plot images used for training the system is uploaded on google drive and is accessible by the URL below. After git-clone, it is required of our users to manually download the files on the google drive and make sure it is saved to a directory parallel to the jupyter notebook.
+
+Sample of Testing Data: [Data](https://drive.google.com/drive/u/0/folders/1pF7InGuDUZq4YwPFVXbHN07rwqbvfREP)
 
 
 .. note::
