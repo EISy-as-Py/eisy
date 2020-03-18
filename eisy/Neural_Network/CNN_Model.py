@@ -65,7 +65,7 @@ class EISDataImport():
 
         Parameters
         ----------
-        k: The total number of path(folder) 
+        k: The total number of path(folder)
            (Setting the maximum value equal 10 by defult)
         path_list_training: A list containing the path of training folder.
                             One index for one path only.
@@ -109,8 +109,9 @@ def Build_Data(Training, Predict, k, path_list, image_width, image_height):
     ----------
     Training: True for building the training data
     Predict: True for building the predict data
-    k: The total number of path(folder) 
-       (Setting the maximum value equal 10 by defult)
+    k: Depends on training/predict switch: 
+       The total number of type/path(folder). 
+       (Setting the maximum value equal 7/10 by defult)
     path_list_training: A list containing the path of training folder.
                         One index for one path only.
                         Last index is the nparray file name (XXX.npy).
@@ -167,7 +168,7 @@ def ploting_data(input_data, i):
     Parameters
     ----------
     input_data: the data in nparray form loading from "XXX.npy" file.
-    i:  A arbitrary number to assign one image in input_data to show.
+    i:  An arbitrary number to assign one image in input_data to show.
         Should fall in the range of dataset size.
 
     """
@@ -183,7 +184,7 @@ class Net(nn.Module):
         """
         Parameters
         ----------
-        input_size:
+        input_size: Setting as 1 for gray scale image.
         image_width: The target width after resize
         image_height: The target height after resize
         firstHidden: The size of first hidden layer.
@@ -242,7 +243,7 @@ class Net(nn.Module):
 
     def forward(self, x):
         """
-        Determine the order that image pass through the neural network model
+        Determine the order that image pass through the neural network model.
 
         """
         x = self.convs(x)
@@ -267,7 +268,7 @@ def image_to_tensor(array_data, image_width, image_height):
 
     Return
     ----------
-    tensor_image: Images in tensor form.
+    tensor_image: Image data in tensor form.
 
     """
     tensor_image = torch.Tensor([i[1] for i in array_data]
@@ -283,6 +284,10 @@ def type_to_tensor(array_data):
     Parameters
     ----------
     array_data: the data in nparray form loading from "XXX.npy" file.
+
+    Return
+    ----------
+    tensor_type: Types data in tensor form.
 
     """
     tensor_type = torch.Tensor([i[2] for i in array_data])
@@ -314,7 +319,7 @@ def data_separation(tensor_data, ratio_of_testing, TRAIN, TEST):
         return testing_sample
 
 
-def learning(training_sample_image, training_sample_type, input_size, 
+def learning(training_sample_image, training_sample_type, input_size,
              image_width, image_height, firstHidden, kernel_size, output_size,
              learning_rate, BATCH_SIZE, EPOCHS):
     """
@@ -326,7 +331,7 @@ def learning(training_sample_image, training_sample_type, input_size,
 
     training_sample_type:
 
-    Same as the parameters of nn model
+    ---Same as the parameters of nn model---
     input_size
 
     image_width: The target width after resize
@@ -363,17 +368,18 @@ def learning(training_sample_image, training_sample_type, input_size,
         print(loss)
 
 
-def accuracy(testing_sample_image, testing_sample_type, input_size, 
-             image_width, image_height, firstHidden, kernel_size, 
+def accuracy(testing_sample_image, testing_sample_type, input_size,
+             image_width, image_height, firstHidden, kernel_size,
              output_size):
     """
     Test the predicting accuracy for the learning function
+
     Parameters
     ----------
     testing_sample_image:
     testing_sample_type:
 
-    Same as the parameters of nn model
+    ---Same as the parameters of nn model---
     input_size
     image_width: The target width after resize
     image_height: The target height after resize
@@ -415,9 +421,14 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
 
     Parameters
     ----------
-    k
-    path
-    Same as the parameters of nn model
+    k: The total number of path(folder)
+       (Setting the maximum value equal 10 by defult)
+    path_list_training: A list containing the path of training folder.
+                        One index for one path only.
+                        Last index is the nparray file name (XXX.npy).
+    tensor_data: from the return of image_to_tensor() function.
+    array_data: from the return of load_array_data() function.
+    ---Same as the parameters of nn model---
     input_size
     image_width: The target width after resize
     image_height: The target height after resize
