@@ -24,7 +24,7 @@ class EISDataImport():
         ----------
         k: The total number of the type.
            (Setting the maximum value equal 7 by defult)
-        path_list_training: A list containing the path of training folder.
+        path_list_training: A list containing the path of training images.
                             One index for one path only.
                             Last index is the nparray file name (XXX.npy).
         image_width: The target width after resize
@@ -39,7 +39,7 @@ class EISDataImport():
             print(path_list[label])
             # Iterate all the image within the directory, f -> the file name
             for f in tqdm(os.listdir(path_list[label])):
-                # Get the full path to the image
+                # Get the full path to the images
                 path = os.path.join(path_list[label], f)
                 if "png" in path:
                     # Read images in the given path and turn into nparray.
@@ -67,9 +67,10 @@ class EISDataImport():
         ----------
         k: The total number of path(folder)
            (Setting the maximum value equal 10 by defult)
-        path_list_training: A list containing the path of training folder.
-                            One index for one path only.
-                            Last index is the nparray file name (XXX.npy).
+        path_list_predict: A list containing the path of random image to 
+                            be predicted.
+                           One index for one path only.
+                           Last index is the nparray file name (XXX.npy).
         image_width: The target width after resize
         image_height: The target height after resize
 
@@ -134,12 +135,12 @@ def load_array_data(np_ndarray_file):  # Data Status Check
     Parameter
     ----------
     np_ndarray_file: The XXX.npy file name.
-                     Should be identical to the last index in path list
+                      Should be identical to the last index in path list
 
     Return
     ----------
-    training_data:  the dataset expressed in numpy array form.
-                    type -> numpy.ndarray
+    training_data:  The dataset expressed in numpy array form.
+                     type -> numpy.ndarray
 
     """
     array_data = np.load(np_ndarray_file, allow_pickle=True)
@@ -161,7 +162,7 @@ def data_information(array_data):
           "x", array_data[0][1].shape[0])
 
 
-def ploting_data(input_data, i):
+def plotting_data(input_data, i):
     """
     Show the assigned image with matplotlib package.
 
@@ -193,11 +194,11 @@ class Net(nn.Module):
                      Number of hidden layer is set as 4 by default.
         kernel_size: It will form a subwindom with size of kernel to scan over
                      the original image.
-                     kernel_size must be an odd integer,
-                     usually not larger than 7.
+                     Kernel_size must be an odd integer,
+                     Usually not larger than 7.
         output_size: The number of final target type.
-                     (For the training part, it should be identical to
-                     the k value in DataImporter_Training function())
+                      (For the training part, it should be identical to
+                      the k value in DataImporter_Training function())
 
         """
         super(Net, self).__init__()
@@ -268,7 +269,7 @@ def image_to_tensor(array_data, image_width, image_height):
 
     Return
     ----------
-    tensor_image: Image data in tensor form.
+    tensor_image: Image data in tensor-form.
 
     """
     tensor_image = torch.Tensor([i[1] for i in array_data]
@@ -289,7 +290,7 @@ def type_to_tensor(array_data):
 
     Return
     ----------
-    tensor_type: Types data in tensor form.
+    tensor_type: Types data in tensor-form.
 
     """
     tensor_type = torch.Tensor([i[2] for i in array_data])
@@ -302,11 +303,11 @@ def data_separation(tensor_data, ratio_of_testing, TRAIN, TEST):
 
     Parameters
     ----------
-    data: the data in tensor form
+    tensor_data: the data in tensor form
     ratio_of_testing: ratio for the testing data
     TRAIN: determine which size of data will be printed out
-           if TRIAN is True, print out the training sample size
-           otherwise, print out the testing sample size
+            if TRIAN is True, print out the training sample size
+            otherwise, print out the testing sample size
     """
     VAL_PCT = ratio_of_testing
     val_size = int(len(tensor_data)*VAL_PCT)
@@ -329,23 +330,24 @@ def learning(training_sample_image, training_sample_type, input_size,
 
     Parameters
     ----------
-    training_sample_image:
+    training_sample_image: The tensor-form images used to train the model
 
-    training_sample_type:
+    training_sample_type: The tensor-form types used to train the model
 
     ---Same as the parameters of nn model---
-    input_size
-
+    input_size: Setting as 1 for gray scale image.
     image_width: The target width after resize
     image_height: The target height after resize
     firstHidden: The size of first hidden layer.
     kernel_size: It will form a subwindom with size of kernel to scan over
-                 the original image.
+                  the original image.
     output_size: The number of final target type.
 
-    learning_rate:
-    BATCH_SIZE:
-    EPOCHS:
+    learning_rate: The learning rate controls how quickly the model is adapted
+                    to the problem (often in the range between 0.0 and 1.0.)
+                   
+    BATCH_SIZE: Number of training examples utilized in one iteration.
+    EPOCHS: Number of iterations in the whole training process
     """
     optimizer = optim.Adam(Net(input_size, image_width, image_height,
                                firstHidden, kernel_size, output_size
@@ -378,16 +380,16 @@ def accuracy(testing_sample_image, testing_sample_type, input_size,
 
     Parameters
     ----------
-    testing_sample_image:
-    testing_sample_type:
+    testing_sample_image: The tensor-form images used to test model accuracy
+    testing_sample_type: The tensor-form types used to test model accuracy
 
     ---Same as the parameters of nn model---
-    input_size
+    input_size: Setting as 1 for gray scale image.
     image_width: The target width after resize
     image_height: The target height after resize
     firstHidden: The size of first hidden layer.
     kernel_size: It will form a subwindom with size of kernel to scan over
-                 the original image.
+                  the original image.
     output_size: The number of final target type.
 
     """
@@ -423,24 +425,27 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
 
     Parameters
     ----------
-    k: The total number of path(folder)
-       (Setting the maximum value equal 10 by defult)
-    path_list_training: A list containing the path of training folder.
+    k: The total number of "TRAINING" folder.
+        Must be identical to the first parameter in 
+         DataImporter_Training function
+    path_list_training: Must be identical to the second parameter 
+                         in DataImporter_Training function
+                        A list containing the path of "TRAINING" folder.
                         One index for one path only.
                         Last index is the nparray file name (XXX.npy).
     tensor_data: from the return of image_to_tensor() function.
     array_data: from the return of load_array_data() function.
     ---Same as the parameters of nn model---
-    input_size
+    input_size: Setting as 1 for gray scale image.
     image_width: The target width after resize
     image_height: The target height after resize
     firstHidden: The size of first hidden layer.
     kernel_size: It will form a subwindom with size of kernel to scan over
-                 the original image.
+                  the original image.
     output_size: The number of final target type.
 
     detailed information: Show the predicted type and file
-                          name for each image or not
+                           name for each image or not
 
     """
     countImage_predicted_type = [0, 0, 0, 0, 0, 0, 0]
