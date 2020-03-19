@@ -67,6 +67,15 @@ Google Drive for images :
 Categorized Images for training: https://drive.google.com/drive/u/0/folders/1M4Q3K28A6JYoJ1LlvSKRh9UA5OhTtrt4
 Random Images for testing: https://drive.google.com/drive/u/0/folders/1pF7InGuDUZq4YwPFVXbHN07rwqbvfREP
 
+Two python functions are available. Examples of how to use the functions are located as following:
+1) Raw image data sorting - bad or passing
+https://github.com/EISy-as-Py/eisy/blob/master/examples/CNN_sorting_tutorial.ipynb
+2) Sorted image data classification
+https://github.com/EISy-as-Py/eisy/blob/master/examples/CNN_Model_tutorial.ipynb
+
+Important: If CNN_Model_Raw.py is used for processing, processed.npy should be created with data that has passed the cnn testing. Skip the pre-processing in CNN_Model.py. (def Build_Data).
+
+
 Future features
 ----------------------
 
