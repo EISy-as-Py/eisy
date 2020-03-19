@@ -1,3 +1,5 @@
+#Following are all included in environment.yml 
+
 import os
 import cv2
 from tqdm import tqdm
@@ -103,7 +105,7 @@ def Build_Data(Training, k, path_list, image_width, image_height):
     ----------
     Training = True (Class.DataImporter_Training) will be used/ False (vice versa)
     k = the total number of path
-    path_list = [string of folder path]
+    path_list = [string of folder path on local drive]
     image_width/height for rescaling
     
     Returns
@@ -115,6 +117,7 @@ def Build_Data(Training, k, path_list, image_width, image_height):
         Class.DataImporter_Training(k, path_list, image_width, image_height)
     else :
         Class.DataImporter_Predict(k, path_list, image_width, image_height)
+
 
 def load_training_data(np_ndarray_file):
     """
@@ -149,7 +152,7 @@ def data_information(training_data):
     print("Size of image(after rescale):", training_data[0][1].shape[1],
           "x", training_data[0][1].shape[0])
 
-def ploting_data(training_data, k):
+def plotting_data(training_data, k):
     """
     Show the assigned image with matplotlib package.
 
@@ -173,7 +176,7 @@ class Net(nn.Module):
 
         Parameters
         ----------
-        input_size:
+        input_size: 1
         image_width: The width of input images.
                      this is provided from the data_information function
         image_height: The width of input images.
@@ -243,19 +246,14 @@ class Net(nn.Module):
         output = self.fc2(output)
         return F.softmax(output, dim=1)
 
-def image_to_tensor(training_data, image_height, image_width):
-    """Transform the array image into tensor."""
-    X = torch.Tensor([i[1] for i in training_data]
-                     ).view(-1, image_height, image_width)
-    return X/255.
 
-def type_to_tensor(training_data):
-    """Transform the array type into tensor."""
-    y = torch.Tensor([i[2] for i in training_data])
-    return y
-
-def data_separation(data, ratio_of_testing, TRAIN):
-    """Separate the training and testing data."""
+    """Separate the training and testing data.
+    Parameters
+    -------------
+    data: A tensor. Tranformed image numpy array.
+    ratio_of_testing. Float. 0.2 = 20% of data is stored as testing data
+    Train: True/False
+    """
     VAL_PCT = ratio_of_testing
     val_size = int(len(data)*VAL_PCT)
 
@@ -266,6 +264,17 @@ def data_separation(data, ratio_of_testing, TRAIN):
     test_data = data[-val_size:]
     print("Testing Samples:", len(test_data))
     return test_data
+
+def image_to_tensor(training_data, image_height, image_width):
+    """Transform the array image into tensor."""
+    X = torch.Tensor([i[1] for i in training_data]
+                     ).view(-1, image_height, image_width)
+    return X/255. #normalize X
+
+def type_to_tensor(training_data):
+    """Transform the array type into tensor."""
+    y = torch.Tensor([i[2] for i in training_data])
+    return y
 
 def learning(train_data1, train_data2, input_size, image_width, image_height,
              firstHidden, kernel_size, output_size, learning_rate, BATCH_SIZE,
@@ -309,7 +318,12 @@ def learning(train_data1, train_data2, input_size, image_width, image_height,
 def accuracy(test_data1, test_data2, input_size, image_width, image_height,
              firstHidden, kernel_size, output_size):
     """
-
+    This function tells how well the predictions are made based on the correctness. 
+    Parameters:
+    --------------
+    test_data1 = tensor. From image_to_tensor
+    test_data2 = tensor. From type_to_tensor
+    input_size,image_width,image_height,firstHidden,kernel_size,output_size same as the function call for learning
     """
     correct = 0
     total = 0
@@ -328,6 +342,7 @@ def accuracy(test_data1, test_data2, input_size, image_width, image_height,
 
     print("Accuracy:", round(correct/total, 3))
 
+
 def type_prediction(k, path_List_training, tensor_data, array_data,
                     input_size, image_width, image_height, firstHidden,
                     kernel_size, output_size, detailed_information):
@@ -338,9 +353,10 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
     Parameters
     ----------
     k
-    path
-    Same as the parameters of nn model
-    input_size
+    path_List_training : Same as the parameters of nn model
+    tensor_data: from the return of image_to_tensor() function.
+    array_data: from the return of load_array_data() function.
+    input_size : 1
     image_width: The target width after resize
     image_height: The target height after resize
     firstHidden: The size of first hidden layer.
@@ -350,23 +366,26 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
     detailed information: Show the predicted type and file
                           name for each image or not
     """
+    passing_data=[]
     countImage_predicted_type = [0, 0, 0, 0, 0, 0, 0]
     for i in range(len(Input_data)):
         net_out_predict = Net(input_size, image_width, image_height,
-                              firstHidden, kernel_size, output_size
-                              )(Input_data[i].view(-1, 1, image_height,
-                                                   image_width))[0]
+                              firstHidden, kernel_size, output_size)(Input_data[i].view(-1, 1, image_height,image_width))[0]
         predicted_type = torch.argmax(net_out_predict)
         for Type in range(k):
             if predicted_type == 0:
                 countImage_predicted_type[Type] += 1
                 # Print out the detailed information.
                 if detailed_information is True:
+                    #The following messages are optional. Mute for faster processing time.
                     print("Warning! Type Prediction:", path_List_training[Type])
                     print("Path and File Name", array_data[i][0])
             else:
                 countImage_predicted_type[Type] += 1
+                passing_data.append([array_data[i][0], array_data[i][1]])
                 
-
     for i in range(len(path_List_training)-1):
         print(path_List_training[i], ":", countImage_predicted_type[i])
+    
+    np.save('processed.npy', passing_data)
+
