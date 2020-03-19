@@ -1,4 +1,3 @@
-
 import os
 import cv2
 from tqdm import tqdm
@@ -57,7 +56,6 @@ def test_Build_Data(self):
     assert Training != Predict, 'Build only one type of data in one time.'
     if Training is True:
         assert k <= 7, 'Too many types.'
-        assert Build_d [1][k-1] == True, ‘Wrong k value  inserted’
     if Predict is True:
         assert k <= 10, 'Too many folders/paths.'
     assert k == (len(path_list) - 1), 'Incorrect number of type.'
@@ -105,7 +103,8 @@ def test_image_to_tensor(self):
                                           image_height)
     assert type(array_data) == np.ndarray, \
         'Wrong type. The array_data should be a numpy array.'
-    assert max(image_to_tensor) >= 1, ‘normalization failed’
+    assert max(image_to_tensor) >= 1, \
+	'normalization failed'
 
 def test_type_to_tensor(self):
     input_data = []
@@ -153,7 +152,7 @@ def test_learning(self):
         'The number of image should equals to the number of label.'
     assert kernel_size <= 7, 'Maximum kernel_size is set as 7.'
     assert kernel_size % 2 == 1, 'kernel_size should be an odd integer'
-    assert learning <= 1, ‘loss must be less than 1’
+    assert learning <= 1, 'loss must be less than 1'
 
 def test_accuracy(self):
     image_width = 200
@@ -171,7 +170,7 @@ def test_accuracy(self):
         'The number of image should equals to the number of label'
     assert kernel_size <= 7, 'Maximum kernel_size is set as 7.'
     assert kernel_size % 2 == 1, 'kernel_size should be an odd integer'
-    assert accuracy <= 1, ‘Maximum accuracy is set as 1’
+    assert accuracy <= 1, 'Maximum accuracy is set as 1'
 
 def test_type_prediction(self):
     k = 1
@@ -199,17 +198,17 @@ def test_type_prediction(self):
     assert k == len(path_List_training) - 1, \
         'Incorrect number of folders/paths'
     assert len(path_List_training) == 2, \
-        'Incorrect number of folders/paths. Classification/ Data Input must be 2; Bad, Passing’
+        'Incorrect number of folders/paths.Classification/ Data Input must be 2; Bad, Passing'
     assert k <= 10, 'Too many folders/paths.'
     assert type(path_List_training) == list, \
         'path_List_predict should be a list'
     assert type(tensor_data) == torch.Tensor, \
         'Wrong type. The array_data should be a tensor.'
     assert type(array_data) == np.ndarray, \
+        'Wrong type. The array_data should be a numpy.'
     assert image_width <= 1000, 'Image size is too large.'
     assert image_height <= 1000, 'Image size is too large.'
     assert kernel_size <= 7, 'Maximum kernel_size is set as 7.'
     assert kernel_size % 2 == 1, 'kernel_size should be an odd integer'
-    assert type(‘processed.npy’) == np.ndarray, \
+    assert type('processed.npy') == np.ndarray, \
         'Wrong type. The array_data should be a numpy array.'
-
