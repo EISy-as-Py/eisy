@@ -13,8 +13,8 @@ UW DIRECT DataScience Project, to Import/Process/Store/Report Data related to el
 
 <img src=https://github.com/EISy-as-Py/eisy/blob/master/doc/project_management/misc_design/Logo3_square.PNG width=400 p align="right"> 
 
-Using different combinations of circuit elements and their expression for impedance, the simulation module is able to reproduce the overall impedance response of the selected circuit. Look into the `circuit.py` page to see which configurations are already supported.
-The `data_simulation.py` module allows to simulate the impedance response  in the frequency domain and saves the result as a `pandas.DataFrame` . The impedance response is  presented both in its complex form, as well as separated in its real and imaginary parts. Additionally, the `data_simulation.py` module allows for the creation of a .csv file containing metadata of the simuation just performed (i.e. circuit used, circuit elements values, etc.), as well as appending the raw data of the simulation. Finally, the simulation module provides option of generating a plot of the impdance respose. This can be generated for immediate inspection of the data trend, or saved automaticallyin a .png file having the same file name as the raw `.csv` file. 
+Using different combinations of circuit elements and their expression for impedance, the simulation module is able to reproduce the overall impedance response of the selected circuits. Look into the `circuit.py` page to see which configurations are already supported.
+The `data_simulation.py` module allows to simulate the impedance response in the frequency domain and saves the result as a `pandas.DataFrame` . The impedance response is  presented both in its complex form, as well as separated in its real and imaginary parts. Additionally, the `data_simulation.py` module allows for the creation of a .csv file containing metadata of the simuation just performed (i.e. circuit used, circuit elements values, etc.), as well as appending the raw data of the simulation. Finally, the simulation module provides option of generating a plot of the impdance respose. This can be generated for immediate inspection of the data trend, or saved automaticallyin a .png file having the same file name as the raw `.csv` file. 
 
 An SQL database was created to preserve the simuation files produced and to allow for long term storage of electrochemical impedance spectroscopy data, as well as any data generate from future freatures added to the package. There is a SQL-generating function which opens up a standardidzed schema. Once this database is set up, users should be able to query and add new experiments (either simulated or real life data sets) to the database. In the future, this schema should be declared in a YAML configuration file, so it can be set up exactly how a user wants it to be. (For now, it is a hard-coded schema designed for our uses). Furthermore, we don't yet have the database entries automated from after classification and processing, which should be a logical future feature to impliment. In the mean time, standardized SQL query language can be used to add and inspect data.
 
@@ -83,9 +83,12 @@ The following are implemetations that are planned for the `eisy` package:
 
 * Expand the `plotting.py` module to include *blode plots*, as well as *DRT*
 * Expand the `alterations.py` module to allow the simulation of *missing data points* and *interrupted data collection*. 
-* Train the Neural Network to being able to cathegorize the above mentioned fetures. 
-* Add a model fitting module to allow to predict the equivalent electrcal circuit fr experimental data
+* Train the Neural Network so it could categorize the above mentioned features. 
+* Add a model fitting module to allow to predict the equivalent electrcal circuit from experimental data
 * Rewrite some of the modules to broaden their scope and be more inclusive in functionalities 
+* Expand the data libary to improve the Neural Network performance and to improve the precision on predictions.
+* Refine test functions to make the test more user-friendly.
+
 
 Suggestions of modifications or additions are welcomed and incoraged. File an issue [here](https://github.com/EISy-as-Py/eisy/issues)
 
