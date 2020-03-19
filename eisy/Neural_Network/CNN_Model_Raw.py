@@ -9,7 +9,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-%matplotlib inline
+#%matplotlib inline
 
 class EISDataImport():
     
