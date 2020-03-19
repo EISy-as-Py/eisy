@@ -14,11 +14,12 @@ import unittest
 
 import eisy.Neural_Network.CNN_Model as CNN
 
+
 class TestCNNModelTools(unittest.TestCase):
 
     def test_DataImporter_Training(self):
         k = 1
-        path_List_training = ['../test/testImage/', 'training.npy']
+        path_List_training = ['.', 'training.npy']
         image_width = 200
         image_height = 134
         train_d = CNN.EISDataImport.DataImporter_Training(self, k,
@@ -35,7 +36,7 @@ class TestCNNModelTools(unittest.TestCase):
 
     def test_DataImporter_Predict(self):
         k = 1
-        path_List_predict = ['testImage/testImage.png', 'training.npy']
+        path_List_predict = ['.', 'training.npy']
         image_width = 200
         image_height = 134
 
@@ -55,7 +56,7 @@ class TestCNNModelTools(unittest.TestCase):
         Training = True
         Predict = False
         k = 1
-        path_list = ['testImage/testImage.png', 'training.npy']
+        path_list = ['.', 'training.npy']
         image_width = 200
         image_height = 134
 
@@ -190,7 +191,7 @@ class TestCNNModelTools(unittest.TestCase):
         input_size = 1
         image_width = 200
         image_height = 134
-        path_List_training = ['testImage/testImage.png', 'training.npy']
+        path_List_training = ['testImage.png', 'training.npy']
         tensor_data = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
         input_data = []
         IMG = np.random.rand(134, 200)

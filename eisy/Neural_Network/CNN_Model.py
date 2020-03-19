@@ -109,8 +109,8 @@ def Build_Data(Training, Predict, k, path_list, image_width, image_height):
     ----------
     Training: True for building the training data
     Predict: True for building the predict data
-    k: Depends on training/predict switch: 
-       The total number of type/path(folder). 
+    k: Depends on training/predict switch:
+       The total number of type/path(folder).
        (Setting the maximum value equal 7/10 by defult)
     path_list_training: A list containing the path of training folder.
                         One index for one path only.
@@ -278,7 +278,7 @@ def image_to_tensor(array_data, image_width, image_height):
 
 def type_to_tensor(array_data):
     """
-    The type here means the labels which were put with the images 
+    The type here means the labels which were put with the images
     while importing
     Transform the array type into tensor.
     The function should be used only in the training part.
@@ -460,4 +460,3 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
 
     for i in range(len(path_List_training)-1):
         print(path_List_training[i], ":", countImage_predicted_type[i])
-
