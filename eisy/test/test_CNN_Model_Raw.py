@@ -14,7 +14,7 @@ import eisy.Neural_Network.CNN_Model_Raw as CNN
 class TestCNNModelTools(unittest.TestCase):
     def test_DataImporter_Training(self):
         k = 2
-        path_List_training = ['.', 'training.npy']
+        path_List_training = ['.', '.']
         image_width = 200
         image_height = 134
         train_d = CNN.EISDataImport.DataImporter_Training(self, k,
@@ -30,7 +30,7 @@ class TestCNNModelTools(unittest.TestCase):
 
     def test_DataImporter_Predict(self):
         k = 2
-        path_List_predict = ['.', 'training.npy']
+        path_List_predict = ['.', '.']
         image_width = 200
         image_height = 134
         predict_d = CNN.EISDataImport.DataImporter_Predict(self, k,
@@ -48,7 +48,7 @@ class TestCNNModelTools(unittest.TestCase):
 def test_Build_Data(self):
     Training = True
     k = 1
-    path_list = ['.', 'training.npy']
+    path_list = ['.', '.']
     image_width = 200
     image_height = 134
     Build_d = CNN.Build_Data(Training, k, path_list,
