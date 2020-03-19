@@ -48,7 +48,7 @@ class EISDataImport():
                     img = cv2.resize(img, (image_width, image_height))
                     # Label the image with np.eye() matrix.
                     training_data.append([path, np.array(img),
-                                          np.eye(k-1)[label]])
+                                          np.eye(k)[label]])
                     for i in range(k):
                         if label == i:
                             countImage_Training[i] += 1
@@ -278,6 +278,8 @@ def image_to_tensor(array_data, image_width, image_height):
 
 def type_to_tensor(array_data):
     """
+    The type here means the labels which were put with the images 
+    while importing
     Transform the array type into tensor.
     The function should be used only in the training part.
 
@@ -347,7 +349,7 @@ def learning(training_sample_image, training_sample_type, input_size,
     """
     optimizer = optim.Adam(Net(input_size, image_width, image_height,
                                firstHidden, kernel_size, output_size
-                               ).parameter(), lr=learning_rate)
+                               ).parameters(), lr=learning_rate)
     loss_function = nn.MSELoss()
 
     for epoch in range(EPOCHS):
@@ -458,3 +460,4 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
 
     for i in range(len(path_List_training)-1):
         print(path_List_training[i], ":", countImage_predicted_type[i])
+
