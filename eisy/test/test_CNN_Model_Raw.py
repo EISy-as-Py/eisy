@@ -13,7 +13,7 @@ import eisy.Neural_Network.CNN_Model_Raw as CNN
 
 class TestCNNModelTools(unittest.TestCase):
     def test_DataImporter_Training(self):
-        k = 2
+        k = 1
         path_List_training = ['.', '.']
         image_width = 200
         image_height = 134
@@ -29,7 +29,7 @@ class TestCNNModelTools(unittest.TestCase):
         assert image_height <= 1000, 'Image size is too large'
 
     def test_DataImporter_Predict(self):
-        k = 2
+        k = 1
         path_List_predict = ['.', '.']
         image_width = 200
         image_height = 134
