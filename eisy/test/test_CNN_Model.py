@@ -18,7 +18,7 @@ class TestCNNModelTools(unittest.TestCase):
 
     def test_DataImporter_Training(self):
         k = 1
-        path_List_training = ['./testImage/', 'training.npy']
+        path_List_training = ['../test/testImage/', 'training.npy']
         image_width = 200
         image_height = 134
         train_d = CNN.EISDataImport.DataImporter_Training(self, k,
