@@ -18,7 +18,7 @@ class TestCNNModelTools(unittest.TestCase):
 
     def test_DataImporter_Training(self):
         k = 1
-        path_List_training = ['testImage', 'training.npy']
+        path_List_training = ['testImage/', 'training.npy']
         image_width = 200
         image_height = 134
         train_d = CNN.EISDataImport.DataImporter_Training(self, k,
@@ -35,7 +35,7 @@ class TestCNNModelTools(unittest.TestCase):
 
     def test_DataImporter_Predict(self):
         k = 1
-        path_List_predict = ['testImage', 'training.npy']
+        path_List_predict = ['testImage/', 'training.npy']
         image_width = 200
         image_height = 134
 
@@ -55,7 +55,7 @@ class TestCNNModelTools(unittest.TestCase):
         Training = True
         Predict = False
         k = 1
-        path_list = ['testImage', 'training.npy']
+        path_list = ['testImage/', 'training.npy']
         image_width = 200
         image_height = 134
 
@@ -190,7 +190,7 @@ class TestCNNModelTools(unittest.TestCase):
         input_size = 1
         image_width = 200
         image_height = 134
-        path_List_training = ['testImage', 'training.npy']
+        path_List_training = ['testImage/', 'training.npy']
         tensor_data = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
         input_data = []
         IMG = np.random.rand(134, 200)
