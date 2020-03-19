@@ -1,20 +1,17 @@
-#Following are all included in environment.yml 
+# Following are all included in environment.yml
 
 import os
 import cv2
 from tqdm import tqdm
-
 import numpy as np
 import matplotlib.pyplot as plt
-
-%matplotlib inline
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+%matplotlib inline
 
-class EISDataImport():
+  class EISDataImport():
     """Data Import and Pre-Processing"""
 
     def DataImporter_Training(self, k, path_List_training,
@@ -66,7 +63,7 @@ class EISDataImport():
         Import the testing image file (.png) into the model.
         Parameters
         ----------
-        k: The total number of path(folder) 
+        k: The total number of path(folder)
            (Setting the maximum value equal 10 by defult)
         path_list_training: A list containing the path of training folder.
                             One index for one path only.
@@ -76,7 +73,7 @@ class EISDataImport():
         """
         path_list = path_List_predict
         countImage_Predict = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        #training_data = []
+        training_data = []
         # Iterate the directory
         for label in range(len(path_list)):
             # Iterate all the image within the directory, f -> the file name
@@ -99,15 +96,15 @@ class EISDataImport():
         for i in range(len(path_list)):
             print(path_List_predict[i], ":", countImage_Predict[i])
 
-def Build_Data(Training, k, path_list, image_width, image_height):
+  def Build_Data(Training, k, path_list, image_width, image_height):
     '''This will allow us to use EISData() to preprocess train/test data.
     Parameters
     ----------
-    Training = True (Class.DataImporter_Training) will be used/ False (vice versa)
+    Training = True (Class.DataImporter_Training) will be used/ 
+    False (vice versa)
     k = the total number of path
     path_list = [string of folder path on local drive]
-    image_width/height for rescaling
-    
+    image_width/height for rescaling  
     Returns
     --------
     training data [path,numpy array for images, label(if Training=True)]
@@ -115,11 +112,10 @@ def Build_Data(Training, k, path_list, image_width, image_height):
     Class = EISData()
     if Training is True:
         Class.DataImporter_Training(k, path_list, image_width, image_height)
-    else :
+    else:
         Class.DataImporter_Predict(k, path_list, image_width, image_height)
 
-
-def load_training_data(np_ndarray_file):
+  def load_training_data(np_ndarray_file):
     """
     Load the data from the .npy file to check if all the images
     have been in the program.
@@ -152,7 +148,7 @@ def data_information(training_data):
     print("Size of image(after rescale):", training_data[0][1].shape[1],
           "x", training_data[0][1].shape[0])
 
-def plotting_data(training_data, k):
+  def plotting_data(training_data, k):
     """
     Show the assigned image with matplotlib package.
 
@@ -168,7 +164,7 @@ def plotting_data(training_data, k):
     plt.imshow(training_data[k][1])
     plt.show
 
-class Net(nn.Module):
+  class Net(nn.Module):
     """Convolutional Neural Network Model"""
     def __init__(self, input_size, image_width, image_height,
                  firstHidden, kernel_size, output_size):
@@ -247,7 +243,8 @@ class Net(nn.Module):
         return F.softmax(output, dim=1)
 
 
-    """Separate the training and testing data.
+    """
+    Separate the training and testing data.
     Parameters
     -------------
     data: A tensor. Tranformed image numpy array.
@@ -265,18 +262,18 @@ class Net(nn.Module):
     print("Testing Samples:", len(test_data))
     return test_data
 
-def image_to_tensor(training_data, image_height, image_width):
+  def image_to_tensor(training_data, image_height, image_width):
     """Transform the array image into tensor."""
     X = torch.Tensor([i[1] for i in training_data]
                      ).view(-1, image_height, image_width)
-    return X/255. #normalize X
+    return X/255.  #  normalize X
 
-def type_to_tensor(training_data):
+  def type_to_tensor(training_data):
     """Transform the array type into tensor."""
     y = torch.Tensor([i[2] for i in training_data])
     return y
 
-def learning(train_data1, train_data2, input_size, image_width, image_height,
+  def learning(train_data1, train_data2, input_size, image_width, image_height,
              firstHidden, kernel_size, output_size, learning_rate, BATCH_SIZE,
              EPOCHS):
     """
@@ -295,8 +292,8 @@ def learning(train_data1, train_data2, input_size, image_width, image_height,
     """
     optimizer = optim.Adam(Net(input_size, image_width, image_height,
                                firstHidden, kernel_size, output_size
-                               ).parameters(), lr=learning_rate) 
-    loss_function = nn.L1Loss() #L1Loss() used for our model (complicated cnn model)
+                               ).parameters(), lr=learning_rate)
+    loss_function = nn.L1Loss()  #  L1Loss() simple loss function
 
     for epoch in range(EPOCHS):
         for i in tqdm(range(0, len(train_data1), BATCH_SIZE)):
@@ -315,15 +312,17 @@ def learning(train_data1, train_data2, input_size, image_width, image_height,
 
         print(loss)
 
-def accuracy(test_data1, test_data2, input_size, image_width, image_height,
+  def accuracy(test_data1, test_data2, input_size, image_width, image_height,
              firstHidden, kernel_size, output_size):
     """
-    This function tells how well the predictions are made based on the correctness. 
+    This function tells how well the predictions are made based 
+    on the correctness.
     Parameters:
     --------------
     test_data1 = tensor. From image_to_tensor
     test_data2 = tensor. From type_to_tensor
-    input_size,image_width,image_height,firstHidden,kernel_size,output_size same as the function call for learning
+    input_size,image_width,image_height,firstHidden,kernel_size,output_size
+    same as the function call for learning
     """
     correct = 0
     total = 0
@@ -366,19 +365,20 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
     detailed information: Show the predicted type and file
                           name for each image or not
     """
-    passing_data=[]
+    passing_data = []
     countImage_predicted_type = [0, 0, 0, 0, 0, 0, 0]
     for i in range(len(Input_data)):
         net_out_predict = Net(input_size, image_width, image_height,
-                              firstHidden, kernel_size, output_size)(Input_data[i].view(-1, 1, image_height,image_width))[0]
+                              firstHidden, kernel_size, output_size)(Input_data[i].view(-1, 
+                              1, image_height, image_width))[0]
         predicted_type = torch.argmax(net_out_predict)
         for Type in range(k):
             if predicted_type == 0:
                 countImage_predicted_type[Type] += 1
                 # Print out the detailed information.
                 if detailed_information is True:
-                    #The following messages are optional. Mute for faster processing time.
-                    print("Warning! Type Prediction:", path_List_training[Type])
+                    #  The following messages are optional.
+                    print("Warning!Type Prediction:", path_List_training[Type])
                     print("Path and File Name", array_data[i][0])
             else:
                 countImage_predicted_type[Type] += 1
@@ -388,4 +388,4 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
         print(path_List_training[i], ":", countImage_predicted_type[i])
     
     np.save('processed.npy', passing_data)
-
+    
