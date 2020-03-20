@@ -68,7 +68,7 @@ class EISDataImport():
         k: The total number of path(folder)
            (Setting the maximum value equal 10 by defult)
         path_list_predict: A list containing the path of random image to 
-                            be predicted.
+                           be predicted.
                            One index for one path only.
                            Last index is the nparray file name (XXX.npy).
         image_width: The target width after resize
@@ -135,12 +135,12 @@ def load_array_data(np_ndarray_file):  # Data Status Check
     Parameter
     ----------
     np_ndarray_file: The XXX.npy file name.
-                      Should be identical to the last index in path list
+                     Should be identical to the last index in path list
 
     Return
     ----------
     training_data:  The dataset expressed in numpy array form.
-                     type -> numpy.ndarray
+                    type -> numpy.ndarray
 
     """
     array_data = np.load(np_ndarray_file, allow_pickle=True)
@@ -197,8 +197,8 @@ class Net(nn.Module):
                      Kernel_size must be an odd integer,
                      Usually not larger than 7.
         output_size: The number of final target type.
-                      (For the training part, it should be identical to
-                      the k value in DataImporter_Training function())
+                     (For the training part, it should be identical to
+                     the k value in DataImporter_Training function())
 
         """
         super(Net, self).__init__()
@@ -306,8 +306,8 @@ def data_separation(tensor_data, ratio_of_testing, TRAIN, TEST):
     tensor_data: the data in tensor form
     ratio_of_testing: ratio for the testing data
     TRAIN: determine which size of data will be printed out
-            if TRIAN is True, print out the training sample size
-            otherwise, print out the testing sample size
+           if TRIAN is True, print out the training sample size;
+           otherwise, print out the testing sample size
     """
     VAL_PCT = ratio_of_testing
     val_size = int(len(tensor_data)*VAL_PCT)
@@ -344,7 +344,7 @@ def learning(training_sample_image, training_sample_type, input_size,
     output_size: The number of final target type.
 
     learning_rate: The learning rate controls how quickly the model is adapted
-                    to the problem (often in the range between 0.0 and 1.0.)
+                   to the problem (often in the range between 0.0 and 1.0.)
                    
     BATCH_SIZE: Number of training examples utilized in one iteration.
     EPOCHS: Number of iterations in the whole training process
@@ -417,7 +417,7 @@ def accuracy(testing_sample_image, testing_sample_type, input_size,
 
 def type_prediction(k, path_List_training, tensor_data, array_data,
                     input_size, image_width, image_height, firstHidden,
-                    kernel_size, output_size, detailed_information):
+                    kernel_size, output_size, detailed_information, j):
     """
     Predict which type the input image is and print out the total number of
     each type.
@@ -426,10 +426,10 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
     Parameters
     ----------
     k: The total number of "TRAINING" folder.
-        Must be identical to the first parameter in 
-         DataImporter_Training function
+       Must be identical to the first parameter in "DataImporter_Training" 
+       function.
     path_list_training: Must be identical to the second parameter 
-                         in DataImporter_Training function
+                        in "DataImporter_Training function".
                         A list containing the path of "TRAINING" folder.
                         One index for one path only.
                         Last index is the nparray file name (XXX.npy).
@@ -441,11 +441,13 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
     image_height: The target height after resize
     firstHidden: The size of first hidden layer.
     kernel_size: It will form a subwindom with size of kernel to scan over
-                  the original image.
+                 the original image.
     output_size: The number of final target type.
 
     detailed information: Show the predicted type and file
-                           name for each image or not
+                          name for each image or not.
+
+    j: Determine how many images will print out the detailed information.
 
     """
     countImage_predicted_type = [0, 0, 0, 0, 0, 0, 0]
@@ -459,9 +461,10 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
             if predicted_type == Type:
                 countImage_predicted_type[Type] += 1
                 # Print out the detailed information.
-                if detailed_information is True:
-                    print("Type Prediction:", path_List_training[Type])
-                    print("Path and File Name", array_data[i][0])
+                if i < j:                    
+                    if detailed_information is True:
+                        print("Type Prediction:", path_List_training[Type])
+                        print("Path and File Name", array_data[i][0])
 
     for i in range(len(path_List_training)-1):
         print(path_List_training[i], ":", countImage_predicted_type[i])
