@@ -97,7 +97,7 @@ class TestCNNModelTools(unittest.TestCase):
         for j in range(5):
             input_data.append(['path', np.array(IMG), np.eye(4)[1]])
         i = 1
-        ploting_d = CNN.ploting_data(input_data, i)
+        ploting_d = CNN.plotting_data(input_data, i)
 
         assert i <= len(input_data), \
             'Invalid i. i should fall in the range of dataset size.'
