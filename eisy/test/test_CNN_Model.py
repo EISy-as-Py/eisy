@@ -91,7 +91,7 @@ class TestCNNModelTools(unittest.TestCase):
         assert type(array_data) == np.ndarray, \
             'Wrong type. The array_data should be a numpy array.'
 
-    def test_ploting_data(self):
+    def test_plotting_data(self):
         input_data = []
         IMG = np.random.rand(134, 200)
         for j in range(5):
