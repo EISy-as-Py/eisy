@@ -203,13 +203,14 @@ class TestCNNModelTools(unittest.TestCase):
         kernel_size = 5
         output_size = 4
         detailed_information = True
+        j = 1
 
         type_prediction = CNN.type_prediction(k, path_List_training,
                                               tensor_data, array_data,
                                               input_size, image_width,
                                               image_height, firstHidden,
                                               kernel_size, output_size,
-                                              detailed_information)
+                                              detailed_information, j)
         assert k == len(path_List_training) - 1, \
             'Incorrect number of folders/paths'
         assert k <= 10, 'Too many folders/paths.'
