@@ -427,7 +427,8 @@ def cir_Randles_simplified(angular_freq, solution_resistance,
     elif sigma == 'none':
         sigma = (1/(parallel_resistance*(2*np.pi*fs)**alpha))
     elif alpha == 'none':
-        alpha = np.log(constant_phase_element*parallel_resistance)/np.log(1/(2*np.pi*fs))
+        alpha = np.log(constant_phase_element*parallel_resistance
+                       )/np.log(1/(2*np.pi*fs))
 
     Z_Q = 1/(constant_phase_element*(angular_freq*1j)**alpha)
     Z_R = parallel_resistance

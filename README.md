@@ -1,70 +1,87 @@
 [![Build Status](https://travis-ci.org/EISy-as-Py/eisy.svg?branch=master)](https://travis-ci.org/EISy-as-Py/eisy)
+[![Documentation Status](https://readthedocs.org/projects/eisy-as-py/badge/?version=latest)](https://eisy-as-py.readthedocs.io/en/latest/?badge=latest)
+[![Coverage Status](https://coveralls.io/repos/github/EISy-as-Py/eisy/badge.svg?branch=master)](https://coveralls.io/github/EISy-as-Py/eisy?branch=master)
+![Conda Status](https://anaconda.org/politim/eisy/badges/installer/conda.svg)
+![Downloads](https://anaconda.org/politim/eisy/badges/downloads.svg)
+![License](https://anaconda.org/politim/eisy/badges/license.svg)
+[![Anaconda-Server Badge](https://anaconda.org/politim/eisy/badges/platforms.svg)](https://anaconda.org/politim/eisy)
 
-# EISy-as-Py
-UW DIRECT DataScience Project, to Import/Process/Store/Report Data related to Electrochemical Impedance Measurements
-**For further Information, Background, Plans, and Future goals, [CHECK THE WIKI!](https://github.com/EISy-as-Py/EISy-as-Py/wiki)**
+# eisy
+UW DIRECT DataScience Project, to Import/Process/Store/Report Data related to electrochemical impedance measurements.
+
+`eisy` is a Python module for simulating and classifying impedance data.
 
 <img src=https://github.com/EISy-as-Py/eisy/blob/master/doc/project_management/misc_design/Logo3_square.PNG width=400 p align="right">
 
-__**Readme Contents:**__
- * *"Da Rules"*
- * *GIT Folder Structure*
- * *Capabilities and Tutorials*
- * *Current Branches & WIP*
- * *Check the Wiki*
+Using different combinations of circuit elements and their expression for impedance, the simulation module is able to reproduce the overall impedance response of the selected circuit. Look into the `circuit.py` page to see which configurations are already supported.
+The `data_simulation.py` module allows to simulate the impedance response  in the frequency domain and saves the result as a `pandas.DataFrame` . The impedance response is  presented both in its complex form, as well as separated in its real and imaginary parts. Additionally, the `data_simulation.py` module allows for the creation of a .csv file containing metadata of the simulation just performed (i.e. circuit used, circuit elements values, etc.), as well as appending the raw data of the simulation. Finally, the simulation module provides option of generating a plot of the impedance response. This can be generated for immediate inspection of the data trend, or saved automatically in a .png file having the same file name as the raw `.csv` file.
 
-## "Da Rules" (WIP)
- * Discuss as group
- * Try not to Collaborate in Jupyter (it's a mess) - Only use your PERSONAL notebooks, And/Or claim it in a meeting!
- * DO collaborate in .py files! Open them in Spyder if you're cool! (Or Atom if you're a nerd). Or vim if you're evil.
- * Have fun!!
- * Have a beer! *(But don't commit-push with a beer!)*
+An SQL database was created to preserve the simulation files produced and to allow for long term storage of electrochemical impedance spectroscopy data, as well as any data generate from future features added to the package. There is a SQL-generating function which opens up a standardized schema. Once this database is set up, users should be able to query and add new experiments (either simulated or real life data sets) to the database. In the future, this schema should be declared in a YAML configuration file, so it can be set up exactly how a user wants it to be. (For now, it is a hard-coded schema designed for our uses). Furthermore, we don't yet have the database entries automated from after classification and processing, which should be a logical future feature to implement. In the mean time, standardized SQL query language can be used to add and inspect data.
 
-## GIT Folder Structure
- * Main Folder
-     * standard files (gitignore, readme, etc)
-     * Finished/ Tested Tutorials (Jupyter ok)
-     * Core files? TBD? (Folder rules are a future lecture)
- * Data
-     * SOME raw data files (only as examples)
-     * SOME mid-data files (meta and images?)
-     * SOME output data (again, examples to use)
-     * ReadMe / Config instructions on connecting to the Drive (?) to access ALL DA DATA
- * Planning
-     * Project Plan Docs, notes
-     * Images and ideas
-     * WIP or other Non-essential notebooks?
- * WIP_<*ProjectName*>
-     * New Folders as Required, especially for Work - In - Progress files. (Call them /WIP_whatever/)
-     * Can contain anything you want, but try and keep it organized!
-     * We may have to do a bunch of re-organization later... Talk to DBeck if that's a good idea.
+Deep learning is implemented in the project to identify the raw graph images in .png format whether the raw data is bad or worth taking a second look, then further classified into four different graph types: single semicircle, double semicircle, with a tail-end, and noisy. The classification infers important information for types and the nature of circuits the raw data is obtained.
 
-## Successes and Capabilities
- * **TBD LoL** We don't have those yet!
- * Actually, we have done some good investigations of PyEIS and ImpedancePy, the two big existing EIS Tools on GitHub!
- * We have a funny team image. we should make a better version and put it on github!
- * I drew a very pretty GUI (Just in time to decide we want a more online version... Fine... I suppose.)
 
-## WIP Items and Branches
- * __Data Generation and Modeling__: Branch "NewData" :
-     * Maria and Moeez are focusing on getting us data to use, and making sure it's tagged with the proper metadata so we can train using it
-     * They're using both Impedance.py and PyEIS to start, generating well modeled data to use
-     * Next they'll use Real + Nonlinear data *(as available? Dan+Victor only really have raw T*I*V data so we'd need to filter ALL of it (but maybe it wont be too bad?).*
-     * Another Later test-item will be to aquire or synthesize "Bad Data" which in various ways we want to catch and either flag or reject.
+Sample of Testing Data: [Data](https://drive.google.com/drive/u/0/folders/1pF7InGuDUZq4YwPFVXbHN07rwqbvfREP)
 
- * __Neural Network Classifying__: Branch "Classify" :
-      * Current Milestone: establish a pseudo code on importing image file using pillow and makesure we have ongoing image library.
-     * Create a pseudo code on image processing/training using library.
-     * Mihyun and Jo are doing the massive research work of setting up a Neural Network Framework, which we can then use to train a model to distinguish or classify the incoming NewData. This will be a big task that once they're set up, they'll teach us to help them and we'll probably make this into NEW branches!
-     * First classify task is to identify Noisy or other failed test (AKA: Researcher Must Re-Do - Possibly with Feedback re WHY)
-     * Second classify task is to identify the "Type" of data/test (AKA: Resistor? Simple RC? Battery? FuelCell?)
-     * Third classify task (Optional) is to judge the quality of the results (AKA: Good/Bad battery compared to most?)
 
- * __Data + Developer + User Integration__: Branch "DataBase" :
-     * David is working on Docs-API to Python setups, so we can directly(ish?) use data from the cloud and store results there
-     * There can be a team effort to sync up our various data importer work/ideas, since we've done some of that separately
-     * Then we'll make sure everyone can access data the way they want it, and we can store Raw + MetaData + Results together
-     * Then we'll work on SQL to do exactly-ish that^ (Followed by some sort of user interface)
+.. note::
+  `eisy` is a new Python model and will be continuously updated as more feature are developed.
 
-## [CHECK THE WIKI:](https://github.com/EISy-as-Py/EISy-as-Py/wiki)
-Like I said, why are you using a markdown readme for planning communication? This should be Instructions, not a planning sheet!
+For any suggestions or request for specific features, please visit the `eisy` [issue page](https://github.com/EISy-as-Py/eisy/issues) Otherwise, there is always the option of submitting a pull request `eisy` [pull request page](https://github.com/EISy-as-Py/eisy/pulls)
+
+How to install `eisy`
+--------------------------------
+
+The package can be easiliy installed by executing the following commands:
+
+```
+
+   conda install -c politim eisy
+
+```
+
+Dependencies
+-------------------------
+
+The following packages are required for using `eisy`
+
+- Python (>=3.5)
+- SciPy (>=1.0)
+- NumPy (>=1.14)
+- Matplotlib (>=3.0)
+
+Some notebooks are available in the `examples/` directory. In order to make use of them, `jupyter notebook` or alternatively `jupyter lab` will also be requred.
+
+More requirements can be found in the *requirements.txt* file.
+
+Deep Learning - Convoluted Neural Network
+---------------------------------------------------
+
+Deep learning is implemented in the project to identify the raw graph images in .png format whether the raw data is bad or worth taking a second look, then further classified into four different graph types: single hump, double humps, with tail, and noisy. The classification infers important information for types and the nature of circuits the raw data is obtained.  
+Convoluted Neural Network technology allows users to simply upload their raw Nyquist plots in .png format to determine whether or not the experiment has been performed considerably. Currently, the size of the image training data library for classification is very limited and our group has been aiming to enlarge the library to give users highly accurate results in sorting the raw data.
+At the current stage of development, the Nyquist plot images used for training the system is uploaded on google drive and is accessible by the URL below. After git-clone, it is required of our users to manually download the files on the google drive and make sure it is saved to a directory parallel to the jupyter notebook.
+
+Google Drive for images :
+Categorized Images for training: [training set](https://drive.google.com/drive/u/0/folders/1M4Q3K28A6JYoJ1LlvSKRh9UA5OhTtrt4)
+Random Images for testing:[testing set](https://drive.google.com/drive/u/0/folders/1pF7InGuDUZq4YwPFVXbHN07rwqbvfREP)
+
+Two python functions are available. Examples of how to use the functions are located as following:
+1) Raw image data sorting - bad or passing [examples notebook](https://github.com/EISy-as-Py/eisy/blob/master/examples/CNN_sorting_tutorial.ipynb)
+2) Sorted image data classification [example notebook](https://github.com/EISy-as-Py/eisy/blob/master/examples/CNN_Model_tutorial.ipynb)
+
+Important: If CNN_Model_Raw.py is used for processing, processed.npy should be created with data that has passed the cnn testing. Skip the pre-processing in CNN_Model.py. (def Build_Data).
+
+
+Future features
+----------------------
+
+The following are implementations that are planned for the `eisy` package:
+
+* Expand the `plotting.py` module to include *bode plots*, as well as *DRT*
+* Expand the `alterations.py` module to allow the simulation of *missing data points* and *interrupted data collection*.
+* Train the Neural Network to being able to categorize the above mentioned features.
+* Add a model fitting module to allow to predict the equivalent electrical circuit for experimental data
+* Rewrite some of the modules to broaden their scope and be more inclusive in functionalities
+* Complete the SQL database set up and start importing files in it
+
+Suggestions of modifications or additions are welcomed and encouraged. File an issue [here](https://github.com/EISy-as-Py/eisy/issues)

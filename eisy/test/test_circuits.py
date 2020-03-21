@@ -8,7 +8,7 @@ module_path = os.path.abspath(os.path.join('../data/simulation'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-import eisy.data.simulation.circuits as circuits
+import eisy.simulation.circuits as circuits
 
 import numpy as np
 import pandas as pd
@@ -56,6 +56,9 @@ class TestSimulationTools(unittest.TestCase):
             is invalid'
         assert np.positive(Capacitance), 'The input capacitance\
             is invalid'
+        assert isinstance(Capacitance, float), 'the capacitance should\
+ be a float, not an integer'
+        assert Capacitance <= 1, 'the capacitance value is probably too high.'
 
         response = circuits.cir_RC_parallel(f_range[1], Resistance,
                                             Capacitance)

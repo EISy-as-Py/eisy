@@ -1,0 +1,976 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>simulation package &mdash; eisy.py 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="simulation" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> eisy.py
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">simulation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">simulation package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulation.alterations">simulation.alterations module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulation.circuits">simulation.circuits module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulation.data_simulation">simulation.data_simulation module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulation.plotting">simulation.plotting module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulation.version">simulation.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-simulation">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">eisy.py</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">simulation</a> &raquo;</li>
+        
+      <li>simulation package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/simulation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="simulation-package">
+<h1>simulation package<a class="headerlink" href="#simulation-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-simulation.alterations">
+<span id="simulation-alterations-module"></span><h2>simulation.alterations module<a class="headerlink" href="#module-simulation.alterations" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="simulation.alterations.added_noise">
+<code class="sig-prename descclassname">simulation.alterations.</code><code class="sig-name descname">added_noise</code><span class="sig-paren">(</span><em class="sig-param">dataframe</em>, <em class="sig-param">noisescale</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.alterations.added_noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dataframe with noise</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.alterations.noise_to_dataframe">
+<code class="sig-prename descclassname">simulation.alterations.</code><code class="sig-name descname">noise_to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">dataframe</em>, <em class="sig-param">noisescale=0.4</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.alterations.noise_to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-simulation.circuits">
+<span id="simulation-circuits-module"></span><h2>simulation.circuits module<a class="headerlink" href="#module-simulation.circuits" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="simulation.circuits.cir_RC_parallel">
+<code class="sig-prename descclassname">simulation.circuits.</code><code class="sig-name descname">cir_RC_parallel</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">resistance='none'</em>, <em class="sig-param">capacitance='none'</em>, <em class="sig-param">peak_frequency='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circuits.cir_RC_parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a resistor and a
+capacitor in a parallel configuration.
+String representation for this circuit: -(RC)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Electrode capacitance [F]</p></li>
+<li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.circuits.cir_RC_series">
+<code class="sig-prename descclassname">simulation.circuits.</code><code class="sig-name descname">cir_RC_series</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">resistance='none'</em>, <em class="sig-param">capacitance='none'</em>, <em class="sig-param">peak_frequency='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circuits.cir_RC_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a resistor and a
+capacitor in a series configuration.
+This circuit configuration is used to simulate the response of an ideally
+polarizable electrode, also known as a blocking electrode.
+String representation for this circuit: -R-C-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface [F]</p></li>
+<li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.circuits.cir_RQ_parallel">
+<code class="sig-prename descclassname">simulation.circuits.</code><code class="sig-name descname">cir_RQ_parallel</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">resistance='none'</em>, <em class="sig-param">constant_phase_element='none'</em>, <em class="sig-param">alpha='none'</em>, <em class="sig-param">peak_frequency='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circuits.cir_RQ_parallel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a resistor and a
+constant phase element in a parallel configuration.
+String representation for this circuit: -(RQ)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [Ohm]</p></li>
+<li><p><strong>constant_phase_element</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Constant phase angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha</strong> (<em>single value -float</em>) – Exponent of the constant phase element. Should be a value between
+0 and 1 [-]</p></li>
+<li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.circuits.cir_RQ_series">
+<code class="sig-prename descclassname">simulation.circuits.</code><code class="sig-name descname">cir_RQ_series</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">resistance='none'</em>, <em class="sig-param">constant_phase_element='none'</em>, <em class="sig-param">alpha='none'</em>, <em class="sig-param">peak_frequency='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circuits.cir_RQ_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a resistor and a
+constant phase element in a series configuration.
+This circuit configuration is used to simulate the response of a
+blocking electrode with distribution of reactivity.
+String representation for this circuit: -R-Q-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>constant_phase_element</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Constant phase angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha</strong> (<em>single value -float</em>) – Exponent of the constant phase element. Should be a value between
+0 and 1 [-]</p></li>
+<li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of RC circuit [Hz]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Oom]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.circuits.cir_Randles_simplified">
+<code class="sig-prename descclassname">simulation.circuits.</code><code class="sig-name descname">cir_Randles_simplified</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">solution_resistance</em>, <em class="sig-param">parallel_resistance</em>, <em class="sig-param">alpha='none'</em>, <em class="sig-param">sigma='none'</em>, <em class="sig-param">constant_phase_element='none'</em>, <em class="sig-param">fs='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circuits.cir_Randles_simplified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the impedance of a Randles circuit with a simplified Warburg element
+This form of the Randles circuit is only meant for to simulate
+semi-infinate linear diffusion
+String representation for this circuit: -Rs-(Q-(RW)-)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – resistance of the element in parallel with
+the capacitor [ohm]</p></li>
+<li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface [F]</p></li>
+<li><p><strong>to add new parameters!!!!</strong><strong>]</strong><strong>]</strong> (<em>[</em><em>[</em><em>Need</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.circuits.cir_RsRC">
+<code class="sig-prename descclassname">simulation.circuits.</code><code class="sig-name descname">cir_RsRC</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">solution_resistance</em>, <em class="sig-param">parallel_resistance='none'</em>, <em class="sig-param">capacitance='none'</em>, <em class="sig-param">peak_frequency='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circuits.cir_RsRC" title="Permalink to this definition">¶</a></dt>
+<dd><p>‘
+Function that simulates the impedance response of a solution resistor in
+series with a resistor in parallel with a capacitor.
+This circuit configuration is used to simulate the response of an ideally
+polarizable electrode, also known as a blocking electrode.
+String representation for this circuit: -Rs-(RC)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – resistance of the element in parallel with
+the capacitor [ohm]</p></li>
+<li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface [F]</p></li>
+<li><p><strong>peak_frequency</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the parallel RC circuit [Hz]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.circuits.cir_RsRCRC">
+<code class="sig-prename descclassname">simulation.circuits.</code><code class="sig-name descname">cir_RsRCRC</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">solution_resistance</em>, <em class="sig-param">parallel_resistance_1='none'</em>, <em class="sig-param">capacitance_1='none'</em>, <em class="sig-param">parallel_resistance_2='none'</em>, <em class="sig-param">capacitance_2='none'</em>, <em class="sig-param">peak_frequency_1='none'</em>, <em class="sig-param">peak_frequency_2='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circuits.cir_RsRCRC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a solution resistor in
+series with two sets of a resistor in parallel with a capacitor.
+String representation for this circuit: -Rs-(RC)-(RC)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – first combination of resistor in parallel with
+capacitor [ohm]</p></li>
+<li><p><strong>capacitance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface whichi is part of the
+first combination of RC in parallel [F]</p></li>
+<li><p><strong>parallel_resistance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – second combination of resistor in parallel with
+capacitor [ohm]</p></li>
+<li><p><strong>capacitance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface whichi is part of the
+second combination of RC in parallel [F]</p></li>
+<li><p><strong>peak_frequency_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the first parallel RC circuit [Hz]</p></li>
+<li><p><strong>peak_frequency_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the second parallel RC circuit [Hz]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.circuits.cir_RsRQRQ">
+<code class="sig-prename descclassname">simulation.circuits.</code><code class="sig-name descname">cir_RsRQRQ</code><span class="sig-paren">(</span><em class="sig-param">angular_freq</em>, <em class="sig-param">solution_resistance='none'</em>, <em class="sig-param">parallel_resistance_1='none'</em>, <em class="sig-param">constant_phase_element_1='none'</em>, <em class="sig-param">alpha_1='none'</em>, <em class="sig-param">parallel_resistance_2='none'</em>, <em class="sig-param">constant_phase_element_2='none'</em>, <em class="sig-param">alpha_2='none'</em>, <em class="sig-param">peak_frequency_1='none'</em>, <em class="sig-param">peak_frequency_2='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circuits.cir_RsRQRQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that simulates the impedance response of a solution resistor in
+series with two sets of a resistor in parallel with a constant phase
+elements.
+String representation for this circuit: -Rs-(RQ)-(RQ)-</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_freq</strong> (<em>array-like</em>) – Angular frequency [1/s]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – first combination of resistor in parallel with
+constant phase element [ohm]</p></li>
+<li><p><strong>constant_phase_element_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – First constant phas angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha_1</strong> (<em>single value -float</em>) – Exponent of the first constant phase element.
+Should be a value between 0 and 1 [-]</p></li>
+<li><p><strong>parallel_resistance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Second combination of resistor in parallel with
+constant phase element [ohm]</p></li>
+<li><p><strong>constant_phase_element_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Second Constant phas angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha_2</strong> (<em>single value -float</em>) – Exponent of the second constant phase element.
+Should be a value between 0 and 1 [-]</p></li>
+<li><p><strong>peak_frequency_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the first parallel RQ circuit [Hz]</p></li>
+<li><p><strong>peak_frequency_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Peak frequency of the second parallel RQ circuit [Hz]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Z_complex</strong> – impedance response of the circuit under investigation [Ohm]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.circuits.freq_gen">
+<code class="sig-prename descclassname">simulation.circuits.</code><code class="sig-name descname">freq_gen</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades=7</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.circuits.freq_gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that generates the frequency range used to investigate the
+impedance response of an electrical circuit Frequency Generator with
+logspaced freqencies</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>[0] = frequency range [Hz]</em></p></li>
+<li><p><em>[1] = Angular frequency range [1/s]</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulation.data_simulation">
+<span id="simulation-data-simulation-module"></span><h2>simulation.data_simulation module<a class="headerlink" href="#module-simulation.data_simulation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="simulation.data_simulation.RC_file_writer">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">RC_file_writer</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades</em>, <em class="sig-param">resistance</em>, <em class="sig-param">capacitance</em>, <em class="sig-param">circuit_configuration</em>, <em class="sig-param">alteration=None</em>, <em class="sig-param">save_image=None</em>, <em class="sig-param">save_location='simulation_data/'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.RC_file_writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns a .csv file with metadata and simulated data</p>
+<p>Function that returns a .csv file containing metadata and simulated data
+of a resistor and a capacitor in two possible configuration: series or
+parallel.
+The filename contains a serial number composed by the date the funciton was
+run and the number of simuation for that day. If a file containing the
+Output plot of the simulation is created, it will have the same filename
+to allow for fast matching of the visual and table representation of the
+same dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Electrode capacitance [F]</p></li>
+<li><p><strong>circuit_configuration</strong> (<em>str</em>) – string containing the circuit configuration to be
+simulated. Allowed configurations are ‘series’or
+‘parallel’. [-]</p></li>
+<li><p><strong>alteration</strong> (<em>str</em>) – string indicating if the data simulated has been modified to
+add noise or other instrument artifacts. If present, this
+string will also be added to the file name to help keeping
+the data correctly labeled.</p></li>
+<li><p><strong>save_image</strong> (<em>True/False</em>) – Option to save the output of the simuation as a plot in a .png
+file format. The filename used for the file will be the same
+as the raw data file created in this function.</p></li>
+<li><p><strong>save_location</strong> (<em>str</em>) – String containing the path of the forlder to use when
+saving the data and the image. Default option is a
+folder called  ‘simulation_data’ which will be created
+in the current working directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>*.csv</strong> (<em>a .csv file containing metadata and raw data of the RC simulation.</em>)</p></li>
+<li><p><strong>*.png</strong> (<em>a .png file containing the plot of the simuated data. Default</em>) – plot is a nyquist plot.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.RC_simulation">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">RC_simulation</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades</em>, <em class="sig-param">resistance</em>, <em class="sig-param">capacitance</em>, <em class="sig-param">circuit_configuration</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.RC_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns a df containing simualated impedance data</p>
+<p>Function that takes imputs parameters to simulated the impedance response
+of a circuit composed by a resistor and a capacitor in series over the
+indicated frequency range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Resistance [Ohm]</p></li>
+<li><p><strong>capacitance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance [F]</p></li>
+<li><p><strong>circuit_configuration</strong> (<em>str</em>) – string indicating the configuration of the RC
+circuit to be simulated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>impedance_data_df</strong> – pandas dataframe containing frequency and imepedance
+data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.RQ_file_writer">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">RQ_file_writer</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades</em>, <em class="sig-param">resistance</em>, <em class="sig-param">constant_phase_element</em>, <em class="sig-param">alpha</em>, <em class="sig-param">circuit_configuration</em>, <em class="sig-param">alteration=None</em>, <em class="sig-param">save_image=None</em>, <em class="sig-param">save_location='simulation_data/'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.RQ_file_writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns a .csv file with metadata and simulated data</p>
+<p>Function that returns a .csv file containing metadata and simulated data
+of a resistor and a constant phase element in two possible configuration:
+series or parallel.
+The filename contains a serial number composed by the date the funciton was
+run and the number of simuation for that day. If a file containing the
+output plot of the simulation is created, it will have the same filename
+to allow for fast matching of the visual and table representation of the
+same dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [Ohm]</p></li>
+<li><p><strong>constant_phase_element</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Constant phase angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha</strong> (<em>single value -float</em>) – Exponent of the constant phase element. Should be a value between
+0 and 1 [-]</p></li>
+<li><p><strong>alteration</strong> (<em>str</em>) – string indicating if the data simulated has been modified to
+add noise or other instrument artifacts. If present, this
+string will also be added to the file name to help keeping
+the data correctly labeled.</p></li>
+<li><p><strong>save_image</strong> (<em>True/False</em>) – Option to save the output of the simuation as a plot in a .png
+file format. The filename used for the file will be the same
+as the raw data file created in this function.</p></li>
+<li><p><strong>save_location</strong> (<em>str</em>) – String containing the path of the forlder to use when
+saving the data and the image. Default option is a
+folder called  ‘simulation_data’ which will be created
+in the current working directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>*.csv</strong> (<em>a .csv file containing metadata and raw data of the RC simulation.</em>)</p></li>
+<li><p><strong>*.png</strong> (<em>a .png file containing the plot of the simuated data. Default</em>) – plot is a nyquist plot.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.RQ_simulation">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">RQ_simulation</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades</em>, <em class="sig-param">resistance</em>, <em class="sig-param">constant_phase_element</em>, <em class="sig-param">alpha</em>, <em class="sig-param">circuit_configuration</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.RQ_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns a df containing simualated impedance data</p>
+<p>Function that takes imputs parameters to simulated the impedance response
+of a circuit composed by a resistor and a capacitor in series over the
+indicated frequency range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+<li><p><strong>resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Resistance [Ohm]</p></li>
+<li><p><strong>constant_phase_element</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Constant phase angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha</strong> (<em>single value -float</em>) – Exponent of the constant phase element. Should be a value between
+0 and 1 [-]</p></li>
+<li><p><strong>circuit_configuration</strong> (<em>str</em>) – string indicating the configuration of the RC
+circuit to be simulated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>impedance_data_df</strong> – pandas dataframe containing frequency and imepedance
+data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.RsRCRC_file_writer">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">RsRCRC_file_writer</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades</em>, <em class="sig-param">sol_resistance</em>, <em class="sig-param">parallel_resistance_1</em>, <em class="sig-param">capacitance_1</em>, <em class="sig-param">parallel_resistance_2</em>, <em class="sig-param">capacitance_2</em>, <em class="sig-param">alteration=None</em>, <em class="sig-param">save_image=None</em>, <em class="sig-param">save_location='simulation_data/'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.RsRCRC_file_writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns a .csv file with metadata and simulated data</p>
+<p>Function that returns a .csv file containing metadata and simulated data
+of a resistor in series wihta two parallel circuits.
+Each circuit is composed by a resistor and a capacitor. The impedance
+response of the overall circuit is investigated over the indicated
+frequency range.
+The filename contains a serial number composed by the date the funciton was
+run and the number of simuation for that day. If a file containing the
+output plot of the simulation is created, it will have the same filename
+to allow for fast matching of the visual and table representation of the
+same dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – first combination of resistor in parallel with
+capacitor [ohm]</p></li>
+<li><p><strong>capacitance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface whichi is part of the
+first combination of RC in parallel [F]</p></li>
+<li><p><strong>parallel_resistance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – second combination of resistor in parallel with
+capacitor [ohm]</p></li>
+<li><p><strong>capacitance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface whichi is part of the
+second combination of RC in parallel [F]</p></li>
+<li><p><strong>alteration</strong> (<em>str</em>) – string indicating if the data simulated has been modified to
+add noise or other instrument artifacts. If present, this
+string will also be added to the file name to help keeping
+the data correctly labeled.</p></li>
+<li><p><strong>save_image</strong> (<em>True/False</em>) – Option to save the output of the simuation as a plot in a .png
+file format. The filename used for the file will be the same
+as the raw data file created in this function.</p></li>
+<li><p><strong>save_location</strong> (<em>str</em>) – String containing the path of the forlder to use when
+saving the data and the image. Default option is a
+folder called  ‘simulation_data’ which will be created
+in the current working directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>*.csv</strong> (<em>a .csv file containing metadata and raw data of the RC simulation.</em>)</p></li>
+<li><p><strong>*.png</strong> (<em>a .png file containing the plot of the simuated data. Default</em>) – plot is a nyquist plot.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.RsRCRC_simulation">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">RsRCRC_simulation</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades</em>, <em class="sig-param">sol_resistance</em>, <em class="sig-param">parallel_resistance_1</em>, <em class="sig-param">capacitance_1</em>, <em class="sig-param">parallel_resistance_2</em>, <em class="sig-param">capacitance_2</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.RsRCRC_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns a df containing simualated impedance data</p>
+<p>Function that takes imputs parameters to simulated the impedance response
+of a circuit composed by a resistor in series wihta two parallel circuits.
+Each circuit is composed by a resistor and a capacitor. The impedance
+response of the overall circuit is investigated over the indicated
+frequency range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – first combination of resistor in parallel with
+capacitor [ohm]</p></li>
+<li><p><strong>capacitance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface whichi is part of the
+first combination of RC in parallel [F]</p></li>
+<li><p><strong>parallel_resistance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – second combination of resistor in parallel with
+capacitor [ohm]</p></li>
+<li><p><strong>capacitance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Capacitance of an electrode surface whichi is part of the
+second combination of RC in parallel [F]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>impedance_data_df</strong> – pandas dataframe containing frequency and imepedance
+data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.RsRQRQ_file_writer">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">RsRQRQ_file_writer</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades</em>, <em class="sig-param">solution_resistance</em>, <em class="sig-param">parallel_resistance_1</em>, <em class="sig-param">constant_phase_element_1</em>, <em class="sig-param">alpha_1</em>, <em class="sig-param">parallel_resistance_2</em>, <em class="sig-param">constant_phase_element_2</em>, <em class="sig-param">alpha_2</em>, <em class="sig-param">alteration=None</em>, <em class="sig-param">save_image=None</em>, <em class="sig-param">save_location='simulation_data/'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.RsRQRQ_file_writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns a .csv file with metadata and simulated data</p>
+<p>Function that returns a .csv file containing metadata and simulated data
+of a resistor in series wihta two parallel circuits.
+Each parallel circuit is composed by a resistor and a constant phase
+element. The impedance response of the overall circuit is investigated
+over the indicated frequency range.</p>
+<p>The filename contains a serial number composed by the date the funciton was
+run and the number of simuation for that day. If a file containing the
+output plot of the simulation is created, it will have the same filename
+to allow for fast matching of the visual and table representation of the
+same dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – first combination of resistor in parallel with
+constant phase element [ohm]</p></li>
+<li><p><strong>constant_phase_element_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – First constant phas angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha_1</strong> (<em>single value -float</em>) – Exponent of the first constant phase element.
+Should be a value between 0 and 1 [-]</p></li>
+<li><p><strong>parallel_resistance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Second combination of resistor in parallel with
+constant phase element [ohm]</p></li>
+<li><p><strong>constant_phase_element_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Second Constant phas angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha_2</strong> (<em>single value -float</em>) – Exponent of the second constant phase element.
+Should be a value between 0 and 1 [-]</p></li>
+<li><p><strong>alteration</strong> (<em>str</em>) – string indicating if the data simulated has been modified to
+add noise or other instrument artifacts. If present, this
+string will also be added to the file name to help keeping
+the data correctly labeled.</p></li>
+<li><p><strong>save_image</strong> (<em>True/False</em>) – Option to save the output of the simuation as a plot in a .png
+file format. The filename used for the file will be the same
+as the raw data file created in this function.</p></li>
+<li><p><strong>save_location</strong> (<em>str</em>) – String containing the path of the forlder to use when
+saving the data and the image. Default option is a
+folder called  ‘simulation_data’ which will be created
+in the current working directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>*.csv</strong> (<em>a .csv file containing metadata and raw data of the RC simulation.</em>)</p></li>
+<li><p><strong>*.png</strong> (<em>a .png file containing the plot of the simuated data. Default</em>) – plot is a nyquist plot.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.RsRQRQ_simulation">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">RsRQRQ_simulation</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades</em>, <em class="sig-param">solution_resistance</em>, <em class="sig-param">parallel_resistance_1</em>, <em class="sig-param">constant_phase_element_1</em>, <em class="sig-param">alpha_1</em>, <em class="sig-param">parallel_resistance_2</em>, <em class="sig-param">constant_phase_element_2</em>, <em class="sig-param">alpha_2</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.RsRQRQ_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns a df containing simualated impedance data</p>
+<p>Function that takes imputs parameters to simulated the impedance response
+of a circuit composed by a resistor and a capacitor in series over the
+indicated frequency range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – first combination of resistor in parallel with
+constant phase element [ohm]</p></li>
+<li><p><strong>constant_phase_element_1</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – First constant phas angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha_1</strong> (<em>single value -float</em>) – Exponent of the first constant phase element.
+Should be a value between 0 and 1 [-]</p></li>
+<li><p><strong>parallel_resistance_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Second combination of resistor in parallel with
+constant phase element [ohm]</p></li>
+<li><p><strong>constant_phase_element_2</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Second Constant phas angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha_2</strong> (<em>single value -float</em>) – Exponent of the second constant phase element.
+Should be a value between 0 and 1 [-]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>impedance_data_df</strong> – pandas dataframe containing frequency and imepedance
+data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.impedance_array">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">impedance_array</code><span class="sig-paren">(</span><em class="sig-param">complex_impedance</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.impedance_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that breaks the impedance in its real and imaginary parts</p>
+<p>Function that breaks the complex impedance in its real and imaginary
+components. It also calculates the magnitude of the impedance, as well
+as its phase angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>complez_impedance</strong> (<em>array-like</em>) – the impedance in its complex form [ohm]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>impedance[0]</strong> (<em>The complex form of the impedance (input)[ohm]</em>)</p></li>
+<li><p><strong>impedance[1]</strong> (<em>Real part of the impedance [ohm]</em>)</p></li>
+<li><p><strong>impedance[2]</strong> (<em>Imaginary part of the impedance [ohm]</em>)</p></li>
+<li><p><strong>impedance[3]</strong> (<em>Magnitude of the impedance [ohm]</em>)</p></li>
+<li><p><strong>impedance[4]</strong> (<em>Phase angle [rad]</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.randles_file_writer">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">randles_file_writer</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades</em>, <em class="sig-param">solution_resistance</em>, <em class="sig-param">parallel_resistance</em>, <em class="sig-param">alpha=1</em>, <em class="sig-param">sigma='none'</em>, <em class="sig-param">constant_phase_element='none'</em>, <em class="sig-param">alteration=None</em>, <em class="sig-param">save_image=None</em>, <em class="sig-param">save_location='simulation_data/'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.randles_file_writer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function that returns a .csv file with metadata and simulated data</p>
+<p>Function that returns a .csv file containing metadata and simulated data
+of a resistor in series with a two parallel circuits.
+Each parallel circuit is composed by a resistor and a constant phase
+element. The impedance response of the overall circuit is investigated
+over the indicated frequency range.</p>
+<p>The filename contains a serial number composed by the date the funciton was
+run and the number of simuation for that day. If a file containing the
+output plot of the simulation is created, it will have the same filename
+to allow for fast matching of the visual and table representation of the
+same dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>high_freq</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – initial frequency value (high frequency domain) [Hz]</p></li>
+<li><p><strong>high_freq</strong> – final frequency value (low frequency domain) [Hz]</p></li>
+<li><p><strong>decades</strong> (<em>integer</em>) – number of frequency decades to be used as range. Default value
+is set to be 7 [-]</p></li>
+<li><p><strong>solution_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – Solution resistance [ohm]</p></li>
+<li><p><strong>parallel_resistance</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – first combination of resistor in parallel with
+constant phase element [ohm]</p></li>
+<li><p><strong>constant_phase_element</strong> (<em>single value</em><em> (</em><em>int</em><em> or </em><em>float</em><em>)</em>) – First constant phas angle [s^(alpha-1)/ohm]</p></li>
+<li><p><strong>alpha</strong> (<em>single value -float</em>) – Exponent of the first constant phase element.
+Should be a value between 0 and 1 [-]</p></li>
+<li><p><strong>alteration</strong> (<em>str</em>) – string indicating if the data simulated has been modified to
+add noise or other instrument artifacts. If present, this
+string will also be added to the file name to help keeping
+the data correctly labeled.</p></li>
+<li><p><strong>save_image</strong> (<em>True/False</em>) – Option to save the output of the simuation as a plot in a .png
+file format. The filename used for the file will be the same
+as the raw data file created in this function.</p></li>
+<li><p><strong>save_location</strong> (<em>str</em>) – String containing the path of the forlder to use when
+saving the data and the image. Default option is a
+folder called  ‘simulation_data’ which will be created
+in the current working directory.</p></li>
+<li><p><strong>----------</strong> – </p></li>
+<li><p><strong>*.csv</strong> (<em>a .csv file containing metadata and raw data of the RC simulation.</em>) – </p></li>
+<li><p><strong>*.png</strong> (<em>a .png file containing the plot of the simuated data. Default</em>) – plot is a nyquist plot.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.randles_simulation">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">randles_simulation</code><span class="sig-paren">(</span><em class="sig-param">high_freq</em>, <em class="sig-param">low_freq</em>, <em class="sig-param">decades</em>, <em class="sig-param">solution_resistance</em>, <em class="sig-param">parallel_resistace</em>, <em class="sig-param">alpha='none'</em>, <em class="sig-param">sigma='none'</em>, <em class="sig-param">constant_phase_element='none'</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.randles_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Add a paragraph with a description of the function.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="simulation.data_simulation.to_dataframe">
+<code class="sig-prename descclassname">simulation.data_simulation.</code><code class="sig-name descname">to_dataframe</code><span class="sig-paren">(</span><em class="sig-param">freq_range</em>, <em class="sig-param">impedance_array</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.data_simulation.to_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function returning a df with impedance and frequency data</p>
+<p>Function that creates a dataframe containing impedance data and the
+frequency range used to determine the impedance respose.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>freq_range</strong> (<em>array-like</em>) – an array containing the frequency and angular frequency values
+used to determine the corresponding impedance response.
+freq_range[0]- the frequency response [Hz]
+freq_range[1]- the angualr frequncy [1/s]</p></li>
+<li><p><strong>impedance_array</strong> (<em>array-like</em>) – an array containng the different parts of the impedance
+response just investigated. The expected content of the
+array should be: complex impedance, Re and Im parts,
+magnitude and phase angle of the complex impedance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>impedance_response_df</strong> – pandas dataframe containing frequency and imepedance
+data. Columns are labeled based on the dictionary’s
+keys.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulation.plotting">
+<span id="simulation-plotting-module"></span><h2>simulation.plotting module<a class="headerlink" href="#module-simulation.plotting" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="simulation.plotting.nyquist_plot">
+<code class="sig-prename descclassname">simulation.plotting.</code><code class="sig-name descname">nyquist_plot</code><span class="sig-paren">(</span><em class="sig-param">response</em>, <em class="sig-param">filename=None</em>, <em class="sig-param">save_location=None</em>, <em class="sig-param">alteration=None</em>, <em class="sig-param">save_image=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#simulation.plotting.nyquist_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Funciton that returns the nyquist plot of an impedance response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> (<em>pandas.DataFrame</em>) – a dataframe containing the impedance response to be plotted.</p></li>
+<li><p><strong>filename</strong> (<em>st</em>) – The filename contains a serial number composed by the date
+the funciton was run and the number of simuation for that day.
+The filename will be the same as the .csv file created from the
+impedance response used to create this plot.</p></li>
+<li><p><strong>save_location</strong> (<em>str</em>) – String containing the path of the forlder to use when
+saving the data and the image. Default option is a
+folder called  ‘simulation_data’ which will be created
+in the current working directory.</p></li>
+<li><p><strong>save_image</strong> (<em>True/False</em>) – Option to save the output of the simuation as a plot
+in a .png file format.
+The filename used for the file will be the same
+as the raw data file created in this function.</p></li>
+<li><p><strong>**kwargs</strong> (<em>optional arguments supported by matplotlib.pyplot</em>) – </p></li>
+<li><p><strong>Output</strong> – </p></li>
+<li><p><strong>----------</strong> – </p></li>
+<li><p><strong>nyquist plot of the impedance response to be investigated.</strong> (<em>The</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-simulation.version">
+<span id="simulation-version-module"></span><h2>simulation.version module<a class="headerlink" href="#module-simulation.version" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-simulation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-simulation" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="simulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Maria Politi, Abdul Moeez,              David Hurt, Mihyun Kim, Yao-Yu Li
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
