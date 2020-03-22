@@ -81,3 +81,62 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
         #            bbox_inches='tight')
     plt.show()
     return
+
+
+def bode_plot(response, phase_angle=None,  filename=None, save_location=None,
+              alteration=None, save_image=None, **kwargs):
+    """
+    Funciton that returns the bode plot of an impedance response.
+
+    Parameters
+    ----------
+    response : pandas.DataFrame
+               a dataframe containing the impedance response to be plotted.
+    filename : st
+               The filename contains a serial number composed by the date
+               the funciton was run and the number of simuation for that day.
+               The filename will be the same as the .csv file created from the
+               impedance response used to create this plot.
+    save_location : str
+                       String containing the path of the forlder to use when
+                       saving the data and the image. Default option is a
+                       folder called  'simulation_data' which will be created
+                       in the current working directory.
+    save_image : True/False
+                 Option to save the output of the simuation as a plot
+                 in a .png file format.
+                 The filename used for the file will be the same
+                 as the raw data file created in this function.
+
+    **kwargs : optional arguments supported by matplotlib.pyplot
+
+    Output
+    ----------
+    The bode plot of the impedance response to be investigated.
+    """
+    fig, ax = plt.subplots()
+    if alteration:
+        ax.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'], 'o--',
+                    response['freq [Hz]'], -response['Im_Z_noise [ohm]'],
+                    'o--', **kwargs)
+    else:
+        ax.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'], 'o--',
+                    response['freq [Hz]'], -response['Im_Z [ohm]'], 'o--',
+                    **kwargs)
+
+    # plt.ticklabel_format(style='sci', scilimits=(0, 0))
+    ax.set_xlabel(r'Frequency (Hz)')
+    ax.set_ylabel(r'Impedance [$\Omega$]')
+    ax.legend(('Real Z', 'Imag Z'))
+    # ax.set_xlim([0, 600])
+    # ax.set_ylim([0, 200])
+    # ax.set_aspect('equal')
+    # ax.xticks(np.arange(min(),
+    #                     max(response['Re_Z [Ohm]'])+1, 10))
+    if save_image:
+        filename = str(save_location+filename)
+        plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight')
+        # layout='tight',
+        #            bbox_inches='tight')
+    plt.show()
+    return
