@@ -208,8 +208,6 @@ def cir_RsRC(angular_freq, solution_resistance,
     ''''
     Function that simulates the impedance response of a solution resistor in
     series with a resistor in parallel with a capacitor.
-    This circuit configuration is used to simulate the response of an ideally
-    polarizable electrode, also known as a blocking electrode.
     String representation for this circuit: -Rs-(RC)-
 
     Parameters
