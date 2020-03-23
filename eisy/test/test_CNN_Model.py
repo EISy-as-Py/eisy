@@ -91,13 +91,13 @@ class TestCNNModelTools(unittest.TestCase):
         assert type(array_data) == np.ndarray, \
             'Wrong type. The array_data should be a numpy array.'
 
-    def test_ploting_data(self):
+    def test_plotting_data(self):
         input_data = []
         IMG = np.random.rand(134, 200)
         for j in range(5):
             input_data.append(['path', np.array(IMG), np.eye(4)[1]])
         i = 1
-        ploting_d = CNN.ploting_data(input_data, i)
+        ploting_d = CNN.plotting_data(input_data, i)
 
         assert i <= len(input_data), \
             'Invalid i. i should fall in the range of dataset size.'
@@ -203,13 +203,14 @@ class TestCNNModelTools(unittest.TestCase):
         kernel_size = 5
         output_size = 4
         detailed_information = True
+        j = 1
 
         type_prediction = CNN.type_prediction(k, path_List_training,
                                               tensor_data, array_data,
                                               input_size, image_width,
                                               image_height, firstHidden,
                                               kernel_size, output_size,
-                                              detailed_information)
+                                              detailed_information, j)
         assert k == len(path_List_training) - 1, \
             'Incorrect number of folders/paths'
         assert k <= 10, 'Too many folders/paths.'
