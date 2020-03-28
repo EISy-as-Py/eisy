@@ -29,7 +29,8 @@ rcParams['axes.unicode_minus'] = True
 
 
 def nyquist_plot(response, filename=None, save_location=None, alteration=None,
-                 save_image=None, **kwargs):
+                 save_image=None, axis_off=None, transparent=None,
+                 position=None, scatter=None, **kwargs):
     """
     Funciton that returns the nyquist plot of an impedance response.
 
@@ -60,25 +61,62 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
     The nyquist plot of the impedance response to be investigated.
     """
     fig, ax = plt.subplots()
-    if alteration:
-        ax.plot(response['Re_Z [ohm]'], -response['Im_Z_noise [ohm]'],
-                'o--', **kwargs)
+    if scatter:
+        if alteration:
+            ax.scatter(response['Re_Z [ohm]'], -response['Im_Z_noise [ohm]'],
+                       **kwargs)
+        else:
+            ax.scatter(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
+                       **kwargs)
     else:
-        ax.plot(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
-                'o--', **kwargs)
+        if alteration:
+            ax.plot(response['Re_Z [ohm]'], -response['Im_Z_noise [ohm]'],
+                    'o--', **kwargs)
+        else:
+            ax.plot(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
+                    'o--', **kwargs)
     # plt.ticklabel_format(style='sci', scilimits=(0, 0))
-    ax.set_xlabel(r'Z$_{real}$ [$\Omega$]')
-    ax.set_ylabel(r'-Z$_{imag}$ [$\Omega$]')
-    # ax.set_xlim([0, 600])
-    # ax.set_ylim([0, 200])
-    # ax.set_aspect('equal')
-    # ax.xticks(np.arange(min(),
-    #                     max(response['Re_Z [Ohm]'])+1, 10))
+    max_real = response['Re_Z [ohm]'].max()
+    ax.set_aspect('equal')
+
+    if position == 1:
+        # Upper left corner
+        ax.set_xlim([0, 2*max_real+0.1*max_real])
+        ax.set_ylim([-max_real, max_real+0.1*max_real])
+
+    elif position == 2:
+        # Upper right corner
+        ax.set_xlim([-max_real, max_real+0.1*max_real])
+        ax.set_ylim([-max_real, max_real+0.1*max_real])
+
+    elif position == 3:
+        # Bottom left corner
+        ax.set_xlim([0, 2*max_real+0.1*max_real])
+        ax.set_ylim([0, 2*max_real+0.1*max_real])
+
+    elif position == 4:
+        # Bottom right corner
+        ax.set_xlim([-max_real, max_real+0.1*max_real])
+        ax.set_ylim([0, 2*max_real+0.1*max_real])
+
+    else:
+        ax.set_xlim([0, max_real+0.1*max_real])
+        ax.set_ylim([0, max_real+0.1*max_real])
+    if axis_off:
+        ax.axis('off')
+        # ax.set_yticks([])
+        # ax.set_yticklabels([])
+        # ax.set_xticks([])
+        # ax.set_xticklabels([])
+    else:
+        ax.set_xlabel(r'Z$_{real}$ [$\Omega$]')
+        ax.set_ylabel(r'-Z$_{imag}$ [$\Omega$]')
+
     if save_image:
         filename = str(save_location+filename)
-        plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight')
-        # layout='tight',
-        #            bbox_inches='tight')
+        plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight',
+                    transparent=True)
+
     plt.show()
     return
 

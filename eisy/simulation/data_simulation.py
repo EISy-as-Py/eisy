@@ -11,7 +11,8 @@ from .circuits import *
 from .plotting import nyquist_plot
 
 
-def to_dataframe(freq_range, impedance_array):
+def to_dataframe(freq_range, impedance_array, alteration=None,
+                 noisescale=None):
     """ Function returning a df with impedance and frequency data
 
     Function that creates a dataframe containing impedance data and the
@@ -29,6 +30,14 @@ def to_dataframe(freq_range, impedance_array):
                      response just investigated. The expected content of the
                      array should be: complex impedance, Re and Im parts,
                      magnitude and phase angle of the complex impedance.
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
 
     Returns
     ----------
@@ -46,7 +55,13 @@ def to_dataframe(freq_range, impedance_array):
                       '|Z| [ohm]': impedance_array[3],
                       'phase_angle [rad]': impedance_array[4]}
     impedance_response_df = pd.DataFrame(impedance_dict)
-    return impedance_response_df
+    if alteration:
+        impedance_data_df = added_noise(impedance_response_df, noisescale)
+    elif alteration == 'random-noise':
+        impedance_data_df = random_noise(impedance_response_df, noisescale)
+    else:
+        impedance_data_df = impedance_response_df
+    return impedance_data_df
 
 
 def impedance_array(complex_impedance):
@@ -81,7 +96,7 @@ def impedance_array(complex_impedance):
 
 
 def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
-                  circuit_configuration):
+                  circuit_configuration, alteration=None, noisescale=0.4):
     """ Function that returns a df containing simualated impedance data
 
     Function that takes imputs parameters to simulated the impedance response
@@ -104,6 +119,14 @@ def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
     circuit_configuration : str
                             string indicating the configuration of the RC
                             circuit to be simulated
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
 
     Returns
     ----------
@@ -123,13 +146,17 @@ def RC_simulation(high_freq, low_freq, decades, resistance, capacitance,
     else:
         raise AssertionError('The inputted configuration is not supported')
     impedance_data = impedance_array(complex_impedance)
-    impedance_data_df = to_dataframe(freq_range, impedance_data)
+    impedance_data_df = to_dataframe(freq_range, impedance_data,
+                                     alteration=alteration,
+                                     noisescale=noisescale)
     return impedance_data_df
 
 
 def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
-                   circuit_configuration, alteration=None, save_image=None,
-                   save_location='simulation_data/'):
+                   circuit_configuration, alteration=None, noisescale=0.4,
+                   save_image=None, save_location='simulation_data/',
+                   axis_off=None, position=None, scatter=None,
+                   transparent=None):
     """ Function that returns a .csv file with metadata and simulated data
 
     Function that returns a .csv file containing metadata and simulated data
@@ -163,6 +190,9 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
                  add noise or other instrument artifacts. If present, this
                  string will also be added to the file name to help keeping
                  the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
     save_image : True/False
                  Option to save the output of the simuation as a plot in a .png
                  file format. The filename used for the file will be the same
@@ -172,6 +202,7 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
                     saving the data and the image. Default option is a
                     folder called  'simulation_data' which will be created
                     in the current working directory.
+
     Returns
     ----------
     *.csv : a .csv file containing metadata and raw data of the RC simulation.
@@ -188,11 +219,16 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
     i = 1
     while i < 9999:
         number = str(i).zfill(4)
-        if alteration:
+        if alteration and noisescale >= 0.2:
             filename = str('{}-{}_sim_one-{}'.format(date, number, alteration))
         else:
             filename = str('{}-{}_sim_one'.format(date, number))
-        if os.path.exists(save_location + filename + '.csv'):
+        serial_number = filename.split('_')[0]
+        if os.path.exists(save_location + filename + '.csv') or\
+           os.path.exists(save_location + filename.split('_')[0] + '_sim_one' +
+                          '.csv'):
+            # for fname in os.listdir(save_location):
+            #     if serial_number in fname:
             i += 1
         else:
             break
@@ -206,11 +242,11 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
                         .format(circuit_configuration)+'\n')
         data_file.write('Circuit elements:, [R={} ohm C={} F]'
                         .format(resistance, capacitance) + '\n')
-        if alteration:
+        if alteration and noisescale >= 0.2:
             data_file.write('Alteration :, {}'.format(alteration))
         else:
             data_file.write('Alteration :, None')
-        data_file.write('---'+'\n')
+        data_file.write('\n'+'---'+'\n')
         freq_range = freq_gen(high_freq, low_freq, decades)
         if circuit_configuration == 'series':
             circuit = cir_RC_series(freq_range[1], resistance,
@@ -223,23 +259,34 @@ def RC_file_writer(high_freq, low_freq, decades, resistance, capacitance,
         df = RC_simulation(high_freq, low_freq, decades, resistance,
                            capacitance, circuit_configuration)
         if alteration:
-            df = added_noise(df, 0.4)
+            df = added_noise(df, noisescale)
+        elif alteration == 'random-noise':
+            df = random_noise(df, noisescale)
         else:
             df = df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
+        save_location = save_location + 'plots/'
+        if not os.path.exists(save_location):
+            os.makedirs(save_location)
         if alteration:
-            nyquist_plot(df, filename, save_location, alteration=True,
-                         save_image=True)
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
         else:
-            nyquist_plot(df, filename, save_location, save_image=True)
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
 
     return
 
 
 def RQ_simulation(high_freq, low_freq, decades, resistance,
-                  constant_phase_element, alpha, circuit_configuration):
+                  constant_phase_element, alpha, circuit_configuration,
+                  alteration=None, noisescale=0.4):
     """ Function that returns a df containing simualated impedance data
 
     Function that takes imputs parameters to simulated the impedance response
@@ -265,6 +312,14 @@ def RQ_simulation(high_freq, low_freq, decades, resistance,
     circuit_configuration : str
                             string indicating the configuration of the RC
                             circuit to be simulated
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
 
     Returns
     ----------
@@ -286,14 +341,17 @@ def RQ_simulation(high_freq, low_freq, decades, resistance,
     else:
         raise AssertionError('The inputted configuration is not supported')
     impedance_data = impedance_array(complex_impedance)
-    impedance_data_df = to_dataframe(freq_range, impedance_data)
+    impedance_data_df = to_dataframe(freq_range, impedance_data,
+                                     alteration=alteration,
+                                     noisescale=noisescale)
     return impedance_data_df
 
 
 def RQ_file_writer(high_freq, low_freq, decades, resistance,
                    constant_phase_element, alpha, circuit_configuration,
-                   alteration=None, save_image=None,
-                   save_location='simulation_data/'):
+                   alteration=None, noisescale=0.4, save_image=None,
+                   save_location='simulation_data/', axis_off=None,
+                   position=None, scatter=None, transparent=None):
     """ Function that returns a .csv file with metadata and simulated data
 
     Function that returns a .csv file containing metadata and simulated data
@@ -326,6 +384,9 @@ def RQ_file_writer(high_freq, low_freq, decades, resistance,
                  add noise or other instrument artifacts. If present, this
                  string will also be added to the file name to help keeping
                  the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
     save_image : True/False
                  Option to save the output of the simuation as a plot in a .png
                  file format. The filename used for the file will be the same
@@ -350,11 +411,16 @@ def RQ_file_writer(high_freq, low_freq, decades, resistance,
     i = 1
     while i < 9999:
         number = str(i).zfill(4)
-        if alteration:
+        if alteration and noisescale >= 0.2:
             filename = str('{}-{}_sim_one-{}'.format(date, number, alteration))
         else:
             filename = str('{}-{}_sim_one'.format(date, number))
-        if os.path.exists(save_location + filename + '.csv'):
+        serial_number = filename.split('_')[0]
+        if os.path.exists(save_location + filename + '.csv') or\
+           os.path.exists(save_location + filename.split('_')[0] + '_sim_one' +
+                          '.csv'):
+            # for fname in os.listdir(save_location):
+            #     if serial_number in fname:
             i += 1
         else:
             break
@@ -369,11 +435,11 @@ def RQ_file_writer(high_freq, low_freq, decades, resistance,
         data_file.write('Circuit elements:, [R={} ohm Q={} [s^(alpha-1)/ohm]\
 alpha={}]'.format(resistance, constant_phase_element, alpha)
                         + '\n')
-        if alteration:
+        if alteration and noisescale >= 0.2:
             data_file.write('Alteration :, {}'.format(alteration))
         else:
             data_file.write('Alteration :, None')
-        data_file.write('---'+'\n')
+        data_file.write('\n'+'---'+'\n')
 
         freq_range = freq_gen(high_freq, low_freq, decades)
         if circuit_configuration == 'series':
@@ -390,23 +456,211 @@ alpha={}]'.format(resistance, constant_phase_element, alpha)
                            constant_phase_element, alpha,
                            circuit_configuration)
         if alteration:
-            df = added_noise(df, 0.4)
+            df = added_noise(df, noisescale)
+        elif alteration == 'random-noise':
+            df = random_noise(df, noisescale)
         else:
             df = df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
+        save_location = save_location + 'plots/'
+        if not os.path.exists(save_location):
+            os.makedirs(save_location)
         if alteration:
-            nyquist_plot(df, filename, save_location, alteration=True,
-                         save_image=True)
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
         else:
-            nyquist_plot(df, filename, save_location, save_image=True)
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
+
+    return
+
+
+def RsRC_simulation(high_freq, low_freq, decades, solution_resistance,
+                    parallel_resistance, capacitance, alteration=None,
+                    noisescale=0.4):
+    """ Function that returns a df containing simualated impedance data
+
+    Function that takes imputs parameters to simulated the impedance response
+    of a circuit composed by a resistor and a capacitor in series over the
+    indicated frequency range.
+
+    Parameters
+    ----------
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
+    solution_resistance : single value (int or float)
+                          Solution resistance [ohm]
+    parallel_resistance : single value (int or float)
+                   Parallel resistance [ohm]
+    capacitance : single value (int or float)
+                  Electrode capacitance [F]
+    circuit_configuration : str
+                            string indicating the configuration of the RC
+                            circuit to be simulated
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
+
+    Returns
+    ----------
+    impedance_data_df: pandas.DataFrame
+                           pandas dataframe containing frequency and imepedance
+                           data.
+    """
+    # Define the frequency range to be simulated
+    freq_range = freq_gen(high_freq, low_freq, decades)
+    # Obtain the impedance of the RC circuit
+    complex_impedance = cir_RsRC(freq_range[1], solution_resistance,
+                                 parallel_resistance, capacitance)
+    impedance_data = impedance_array(complex_impedance)
+    impedance_data_df = to_dataframe(freq_range, impedance_data,
+                                     alteration=alteration,
+                                     noisescale=noisescale)
+    return impedance_data_df
+
+
+def RsRC_file_writer(high_freq, low_freq, decades, solution_resistance,
+                     parallel_resistance, capacitance, alteration=None,
+                     noisescale=0.4, save_image=None,
+                     save_location='simulation_data/', axis_off=None,
+                     position=None, scatter=None, transparent=None):
+    """ Function that returns a .csv file with metadata and simulated data
+
+    Function that returns a .csv file containing metadata and simulated data
+    of a resistor and a capacitor in two possible configuration: series or
+    parallel.
+    The filename contains a serial number composed by the date the funciton was
+    run and the number of simuation for that day. If a file containing the
+    Output plot of the simulation is created, it will have the same filename
+    to allow for fast matching of the visual and table representation of the
+    same dataset.
+
+    Parameters
+    ----------
+    high_freq : single value (int or float)
+                initial frequency value (high frequency domain) [Hz]
+    high_freq : single value (int or float)
+                final frequency value (low frequency domain) [Hz]
+    decades : integer
+              number of frequency decades to be used as range. Default value
+              is set to be 7 [-]
+    solution_resistance : single value (int or float)
+                          Solution resistance [ohm]
+    parallel_resistance : single value (int or float)
+                          Parallel resistance [ohm]
+    capacitance : single value (int or float)
+                  Electrode capacitance [F]
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
+    save_image : True/False
+                 Option to save the output of the simuation as a plot in a .png
+                 file format. The filename used for the file will be the same
+                 as the raw data file created in this function.
+    save_location : str
+                    String containing the path of the forlder to use when
+                    saving the data and the image. Default option is a
+                    folder called  'simulation_data' which will be created
+                    in the current working directory.
+    Returns
+    ----------
+    *.csv : a .csv file containing metadata and raw data of the RC simulation.
+    *.png : a .png file containing the plot of the simuated data. Default
+            plot is a nyquist plot.
+
+    """
+    # Save the simulated data in a csv file to be exported in a database
+    # the format will be in the form of :
+    # yymmdd-serial#_sim_classifier.csv
+    date = time.strftime('%y%m%d', time.localtime())
+    if not os.path.exists(save_location):
+        os.makedirs(save_location)
+    i = 1
+    while i < 9999:
+        number = str(i).zfill(4)
+        if alteration and noisescale >= 0.2:
+            filename = str('{}-{}_sim_one-{}'.format(date, number, alteration))
+        else:
+            filename = str('{}-{}_sim_one'.format(date, number))
+        serial_number = filename.split('_')[0]
+        if os.path.exists(save_location + filename + '.csv') or\
+           os.path.exists(save_location + filename.split('_')[0] + '_sim_one' +
+                          '.csv'):
+            # for fname in os.listdir(save_location):
+            #     if serial_number in fname:
+            i += 1
+        else:
+            break
+    with open(save_location + filename + ".csv", mode='a',
+              newline='') as data_file:
+        data_file.write('Date:, {}'.format(date)+'\n')
+        data_file.write('Serial number:, {}'.format(number)+'\n')
+        data_file.write('Data Source:, simulation'+'\n')
+        data_file.write('Circuit type:, -Rs(RC)-'+'\n')
+        data_file.write('Circuit elements:, [Rs={} ohm Rp={} ohm C={} F]'
+                        .format(solution_resistance, parallel_resistance,
+                                capacitance) + '\n')
+        if alteration and noisescale >= 0.2:
+            data_file.write('Alteration :, {}'.format(alteration))
+        else:
+            data_file.write('Alteration :, None')
+        data_file.write('\n'+'---'+'\n')
+        freq_range = freq_gen(high_freq, low_freq, decades)
+        circuit = cir_RsRC(freq_range[1], solution_resistance,
+                           parallel_resistance, capacitance)
+        df = RsRC_simulation(high_freq, low_freq, decades, solution_resistance,
+                             parallel_resistance, capacitance)
+        if alteration:
+            df = added_noise(df, noisescale)
+        elif alteration == 'random-noise':
+            df = random_noise(df, noisescale)
+        else:
+            df = df
+        df.to_csv(data_file, mode='a')
+        data_file.close()
+    if save_image:
+        save_location = save_location + 'plots/'
+        if not os.path.exists(save_location):
+            os.makedirs(save_location)
+        if alteration:
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
+        else:
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
+
     return
 
 
 def RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
                       parallel_resistance_1, capacitance_1,
-                      parallel_resistance_2, capacitance_2):
+                      parallel_resistance_2, capacitance_2,
+                      alteration=None, noisescale=0.4):
     """ Function that returns a df containing simualated impedance data
 
     Function that takes imputs parameters to simulated the impedance response
@@ -438,6 +692,14 @@ def RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
     capacitance_2 : single value (int or float)
                     Capacitance of an electrode surface whichi is part of the
                     second combination of RC in parallel [F]
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
 
     Returns
     ----------
@@ -455,15 +717,18 @@ def RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
                                    parallel_resistance_2,
                                    capacitance_2)
     impedance_data = impedance_array(complex_impedance)
-    impedance_data_df = to_dataframe(freq_range, impedance_data)
+    impedance_data_df = to_dataframe(freq_range, impedance_data,
+                                     alteration=alteration,
+                                     noisescale=noisescale)
     return impedance_data_df
 
 
 def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
                        parallel_resistance_1, capacitance_1,
                        parallel_resistance_2, capacitance_2,
-                       alteration=None, save_image=None,
-                       save_location='simulation_data/'):
+                       alteration=None, noisescale=0.4, save_image=None,
+                       save_location='simulation_data/', axis_off=None,
+                       position=None, scatter=None, transparent=None):
     """ Function that returns a .csv file with metadata and simulated data
 
     Function that returns a .csv file containing metadata and simulated data
@@ -505,6 +770,9 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
                  add noise or other instrument artifacts. If present, this
                  string will also be added to the file name to help keeping
                  the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
     save_image : True/False
                  Option to save the output of the simuation as a plot in a .png
                  file format. The filename used for the file will be the same
@@ -529,13 +797,16 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
     i = 1
     while i < 9999:
         number = str(i).zfill(4)
-        if alteration:
+        if alteration and noisescale >= 0.2:
             filename = str('{}-{}_sim_spread-{}'.format(date,
                                                         number, alteration))
         else:
             filename = str('{}-{}_sim_spread'.format(date, number))
+        serial_number = filename.split('_')[0]
         if os.path.exists(save_location + filename + '.csv'):
-            i += 1
+            for fname in os.listdir(save_location):
+                if serial_number in fname:
+                    i += 1
         else:
             break
     with open(save_location + filename + ".csv", mode='a',
@@ -548,34 +819,47 @@ def RsRCRC_file_writer(high_freq, low_freq, decades, sol_resistance,
 R2={} ohm C2={} F]'.format(sol_resistance, parallel_resistance_1,
                            capacitance_1, parallel_resistance_2,
                            capacitance_2) + '\n')
-        if alteration:
+        if alteration and noisescale >= 0.2:
             data_file.write('Alteration :, {} \n'.format(alteration))
         else:
             data_file.write('Alteration :, None \n')
-        data_file.write('---'+'\n')
+        data_file.write('\n'+'---'+'\n')
 
         df = RsRCRC_simulation(high_freq, low_freq, decades, sol_resistance,
                                parallel_resistance_1, capacitance_1,
                                parallel_resistance_2, capacitance_2)
         if alteration:
-            df = added_noise(df, 0.4)
+            df = added_noise(df, noisescale)
+        elif alteration == 'random-noise':
+            df = random_noise(df, noisescale)
         else:
             df = df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
+        save_location = save_location + 'plots/'
+        if not os.path.exists(save_location):
+            os.makedirs(save_location)
         if alteration:
-            nyquist_plot(df, filename, save_location, alteration=True,
-                         save_image=True)
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
         else:
-            nyquist_plot(df, filename, save_location, save_image=True)
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
+
     return
 
 
 def RsRQRQ_simulation(high_freq, low_freq, decades, solution_resistance,
                       parallel_resistance_1, constant_phase_element_1,
                       alpha_1, parallel_resistance_2,
-                      constant_phase_element_2, alpha_2):
+                      constant_phase_element_2, alpha_2,
+                      alteration=None, noisescale=0.4,
+                      ):
     """ Function that returns a df containing simualated impedance data
 
     Function that takes imputs parameters to simulated the impedance response
@@ -609,6 +893,14 @@ def RsRQRQ_simulation(high_freq, low_freq, decades, solution_resistance,
     alpha_2 : single value -float
               Exponent of the second constant phase element.
               Should be a value between 0 and 1 [-]
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
 
     Returns
     ----------
@@ -628,7 +920,9 @@ def RsRQRQ_simulation(high_freq, low_freq, decades, solution_resistance,
                                    constant_phase_element_2,
                                    alpha_2)
     impedance_data = impedance_array(complex_impedance)
-    impedance_data_df = to_dataframe(freq_range, impedance_data)
+    impedance_data_df = to_dataframe(freq_range, impedance_data,
+                                     alteration=alteration,
+                                     noisescale=noisescale)
     return impedance_data_df
 
 
@@ -636,8 +930,9 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                        parallel_resistance_1, constant_phase_element_1,
                        alpha_1, parallel_resistance_2,
                        constant_phase_element_2, alpha_2,
-                       alteration=None, save_image=None,
-                       save_location='simulation_data/'):
+                       alteration=None, noisescale=0.4, save_image=None,
+                       save_location='simulation_data/', axis_off=None,
+                       position=None, scatter=None, transparent=None):
     """ Function that returns a .csv file with metadata and simulated data
 
     Function that returns a .csv file containing metadata and simulated data
@@ -684,6 +979,9 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                  add noise or other instrument artifacts. If present, this
                  string will also be added to the file name to help keeping
                  the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
     save_image : True/False
                  Option to save the output of the simuation as a plot in a .png
                  file format. The filename used for the file will be the same
@@ -708,12 +1006,15 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
     i = 1
     while i < 9999:
         number = str(i).zfill(4)
-        if alteration:
+        if alteration and noisescale >= 0.2:
             filename = str('{}-{}_sim_two-{}'.format(date, number, alteration))
         else:
             filename = str('{}-{}_sim_two'.format(date, number))
+        serial_number = filename.split('_')[0]
         if os.path.exists(save_location + filename + '.csv'):
-            i += 1
+            for fname in os.listdir(save_location):
+                if serial_number in fname:
+                    i += 1
         else:
             break
     with open(save_location + filename + ".csv", mode='a',
@@ -728,11 +1029,11 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                                 constant_phase_element_1, alpha_1,
                                 parallel_resistance_2,
                                 constant_phase_element_1, alpha_2) + '\n')
-        if alteration:
+        if alteration and noisescale >= 0.2:
             data_file.write('Alteration :, {}'.format(alteration))
         else:
             data_file.write('Alteration :, None')
-        data_file.write('---'+'\n')
+        data_file.write('\n'+'---'+'\n')
 
         df = RsRQRQ_simulation(high_freq, low_freq, decades,
                                solution_resistance,
@@ -740,25 +1041,35 @@ def RsRQRQ_file_writer(high_freq, low_freq, decades, solution_resistance,
                                alpha_1, parallel_resistance_2,
                                constant_phase_element_2, alpha_2)
         if alteration:
-            df = added_noise(df, 0.4)
+            df = added_noise(df, noisescale)
+        elif alteration == 'random-noise':
+            df = random_noise(df, noisescale)
         else:
             df = df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
+        save_location = save_location + 'plots/'
+        if not os.path.exists(save_location):
+            os.makedirs(save_location)
         if alteration:
-            nyquist_plot(df, filename, save_location, alteration=True,
-                         save_image=True)
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
         else:
-            nyquist_plot(df, filename, save_location, save_image=True)
-    return
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
 
-# Need to fix the following  functions before using them
+    return
 
 
 def randles_simulation(high_freq, low_freq, decades, solution_resistance,
-                       parallel_resistace, alpha='none',
-                       sigma='none', constant_phase_element='none'):
+                       parallel_resistace, alpha,
+                       sigma, constant_phase_element,
+                       alteration=None, noisescale=0.4):
     """
      Add a paragraph with a description of the function.
     Parameters
@@ -776,14 +1087,18 @@ def randles_simulation(high_freq, low_freq, decades, solution_resistance,
                                                constant_phase_element)
     # Separate the impedance into its real and imaginary components
     impedance_data = impedance_array(complex_impedance)
-    impedance_data_df = to_dataframe(freq_range, impedance_data)
+    impedance_data_df = to_dataframe(freq_range, impedance_data,
+                                     alteration=alteration,
+                                     noisescale=noisescale)
     return impedance_data_df
 
 
 def randles_file_writer(high_freq, low_freq, decades, solution_resistance,
-                        parallel_resistance, alpha=1, sigma='none',
-                        constant_phase_element='none', alteration=None,
-                        save_image=None, save_location='simulation_data/'):
+                        parallel_resistance, alpha, sigma,
+                        constant_phase_element, alteration,
+                        noisescale=0.4, save_image=None,
+                        save_location='simulation_data/', axis_off=None,
+                        position=None, scatter=None, transparent=None):
 
     """ Function that returns a .csv file with metadata and simulated data
 
@@ -823,6 +1138,9 @@ def randles_file_writer(high_freq, low_freq, decades, solution_resistance,
                  add noise or other instrument artifacts. If present, this
                  string will also be added to the file name to help keeping
                  the data correctly labeled.
+    noisescale : float
+                 Scale of the noise added to the data. This number should be
+                 contained betweed 0 and 1.
     save_image : True/False
                  Option to save the output of the simuation as a plot in a .png
                  file format. The filename used for the file will be the same
@@ -847,13 +1165,16 @@ def randles_file_writer(high_freq, low_freq, decades, solution_resistance,
     i = 1
     while i < 9999:
         number = str(i).zfill(4)
-        if alteration:
+        if alteration and noisescale >= 0.2:
             filename = str('{}-{}_randles_simp-{}'.format(date, number,
                                                           alteration))
         else:
             filename = str('{}-{}_randles_simp'.format(date, number))
+        serial_number = filename.split('_')[0]
         if os.path.exists(save_location + filename + '.csv'):
-            i += 1
+            for fname in os.listdir(save_location):
+                if serial_number in fname:
+                    i += 1
         else:
             break
     with open(save_location + filename + ".csv", mode='a',
@@ -867,11 +1188,11 @@ def randles_file_writer(high_freq, low_freq, decades, solution_resistance,
                         .format(solution_resistance, parallel_resistance,
                                 constant_phase_element, alpha,
                                 sigma) + '\n')
-        if alteration:
+        if alteration and noisescale >= 0.2:
             data_file.write('Alteration :, {}'.format(alteration))
         else:
             data_file.write('Alteration :, None')
-        data_file.write('---'+'\n')
+        data_file.write('\n'+'---'+'\n')
 
         df = randles_simulation(high_freq, low_freq, decades,
                                 solution_resistance,
@@ -879,15 +1200,26 @@ def randles_file_writer(high_freq, low_freq, decades, solution_resistance,
                                 alpha, sigma, constant_phase_element)
 
         if alteration:
-            df = added_noise(df, 0.4)
+            df = added_noise(df, noisescale)
+        elif alteration == 'random-noise':
+            df = random_noise(df, noisescale)
         else:
             df = df
         df.to_csv(data_file, mode='a')
         data_file.close()
     if save_image:
+        save_location = save_location + 'plots/'
+        if not os.path.exists(save_location):
+            os.makedirs(save_location)
         if alteration:
-            nyquist_plot(df, filename, save_location, alteration=True,
-                         save_image=True)
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
         else:
-            nyquist_plot(df, filename, save_location, save_image=True)
+            nyquist_plot(df, filename, save_location=save_location,
+                         alteration=alteration, position=position,
+                         axis_off=axis_off, save_image=save_image,
+                         scatter=scatter, transparent=transparent)
+
     return
