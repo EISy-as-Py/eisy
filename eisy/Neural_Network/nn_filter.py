@@ -10,6 +10,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
+REBUILD_DATA = True
 
 class EISDataImport():
     """Data Import and Pre-Processing"""
@@ -40,17 +41,20 @@ class EISDataImport():
             for f in tqdm(os.listdir(path_list[label])):
                 # Get the full path to the images
                 path = os.path.join(path_list[label], f)
-                if "jpg" in path:
-                    # Read images in the given path and turn into nparray.
-                    # Convert the iimage to gray scale (optional)
-                    img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
-                    img = cv2.resize(img, (image_width, image_height))
-                    # Label the image with np.eye() matrix.
-                    training_data.append([path, np.array(img),
-                                          np.eye(k)[label]])
-                    for i in range(k):
-                        if label == i:
-                            countImage_Training[i] += 1
+                if "png" or "jpg" in f:
+                    try:
+                        # Read images in the given path and turn into nparray.
+                        # Convert the iimage to gray scale (optional)
+                        img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+                        img = cv2.resize(img, (image_width, image_height))
+                        # Label the image with np.eye() matrix.
+                        training_data.append([path, np.array(img),
+                                              np.eye(k)[label]])
+                        for i in range(k):
+                            if label == i:
+                                countImage_Training[i] += 1
+                    except Exception as e:
+                        pass
 
         np.random.shuffle(training_data)
         np.save(path_list[-1], training_data)
@@ -84,7 +88,7 @@ class EISDataImport():
             for f in tqdm(os.listdir(path_list[label])):
                 # Get the full path to the image
                 path = os.path.join(path_list[label], f)
-                if "png" in path:
+                if "png" or "jpg" in f:
                     # Read images in the given path and turn into nparray.
                     # Convert the iimage to gray scale (optional)
                     img = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
@@ -205,15 +209,15 @@ class Net(nn.Module):
         self.conv2 = nn.Conv2d(firstHidden, firstHidden*2, kernel_size)
         self.conv3 = nn.Conv2d(firstHidden*2, firstHidden*4,
                                kernel_size)
-        self.conv4 = nn.Conv2d(firstHidden*4, firstHidden*8,
-                               kernel_size)
+        # self.conv4 = nn.Conv2d(firstHidden*4, firstHidden*8,
+        #                       kernel_size)
         #
         x = torch.randn(image_height, image_width).view(-1, 1, image_height,
                                                         image_width)
         conv_to_linear = self.last_conv_neuron(x)
 
-        self.fc1 = nn.Linear(conv_to_linear, 64)
-        self.fc2 = nn.Linear(64, output_size)
+        self.fc1 = nn.Linear(conv_to_linear, 32)
+        self.fc2 = nn.Linear(32, output_size)
 
     def last_conv_neuron(self, x):
         """
@@ -240,7 +244,7 @@ class Net(nn.Module):
         x = F.max_pool2d(F.relu(self.conv1(x)), (2, 2))
         x = F.max_pool2d(F.relu(self.conv2(x)), (2, 2))
         x = F.max_pool2d(F.relu(self.conv3(x)), (2, 2))
-        x = F.max_pool2d(F.relu(self.conv4(x)), (2, 2))
+        # x = F.max_pool2d(F.relu(self.conv4(x)), (2, 2))
         return x
 
     def forward(self, x):
@@ -255,7 +259,7 @@ class Net(nn.Module):
         # Put into the first fully connected layer
         output = F.relu(self.fc1(xF))
         output = self.fc2(output)
-        return F.softmax(output, dim=1)
+        return F.sigmoid(output)
 
 
 def image_to_tensor(array_data, image_width, image_height):
