@@ -90,10 +90,11 @@ Section 3: Export All Data into SQL Database as configured
 * SQL_setup()           Takes in instructions/configurations, and initiates
                         a new SQL database to interact with using
                         SQL Alchemy...
-
-* SQL_dataframe()       agvfgl;mlkjgfcvx bnm,,km
-                        (We're not here yet. no idea what this will actually
-                        need as inputs and outputs.)
+-----------------
+* SQL_dataframe()       With Open SQL Engine, I want to take any/all input data
+                        arrays, and construct the appropriate arrays for that
+                        Engine.
+                        Then append all the new data into that dataframe.
 
 
 
