@@ -2,6 +2,7 @@ import os
 import cv2
 import numpy as np
 from tqdm import tqdm
+import pickle
 
 import torch
 import torch.nn as nn
@@ -146,3 +147,12 @@ def test_accuracy(test_X, test_y, trained_network, IMG_SIZE):
                 correct += 1
             total += 1
     print("Accuracy: ", round(correct/total, 3))
+
+
+def save_load_model(filename, network=None, save=None, load=None):
+    if save:
+        pickle.dump(network, open(filename+'.sav', 'wb'))
+        return 0
+    elif load:
+        loaded_model = pickle.load(open(filename+'.sav', 'rb'))
+        return loaded_model
