@@ -9,6 +9,8 @@
 # eisy
 UW DIRECT DataScience Project, to Import/Process/Store/Report Data related to electrochemical impedance measurements.
 
+Feel free to [READ THE DOCS](https://eisy-as-py.readthedocs.io/en/latest/) to learn more, or [Visit the Wiki](https://github.com/EISy-as-Py/eisy/wiki) to learn more about the project!
+
 `eisy` is a Python module for simulating and classifying impedance data.
 
 <img src=https://github.com/EISy-as-Py/eisy/blob/master/doc/project_management/misc_design/Logo3_square.PNG width=400 p align="right">
