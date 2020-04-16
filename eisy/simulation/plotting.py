@@ -7,20 +7,14 @@ rcParams['figure.figsize'] = (8, 6)
 rcParams['savefig.dpi'] = 100
 rcParams['font.family'] = 'serif'
 rcParams['font.size'] = 12
-# rcParams['font.serif'] = 'Times New Roman'
-# rcParams['font.sans-serif'] = 'Arial'
-# rcParams['font.monospace'] = 'Courier New'
-# rcParams['mathtext.default'] = 'rm'
-# rcParams['mathtext.fontset'] = 'stix'
 rcParams['xtick.labelsize'] = 16
 rcParams['ytick.labelsize'] = 16
 rcParams['axes.titlesize'] = 20
 rcParams['axes.labelsize'] = 18
 rcParams['figure.subplot.hspace'] = 0.5
 rcParams['figure.subplot.wspace'] = 0.5
-rcParams['legend.numpoints'] = 1  # the number of points in the legend line
+rcParams['legend.numpoints'] = 1
 rcParams['legend.fontsize'] = 16
-# the relative size of legend markers vs. original
 rcParams['legend.markerscale'] = 1
 rcParams['lines.linewidth'] = 1
 rcParams['lines.markeredgewidth'] = 1
@@ -30,7 +24,7 @@ rcParams['axes.unicode_minus'] = True
 
 def nyquist_plot(response, filename=None, save_location=None, alteration=None,
                  save_image=None, axis_off=None, transparent=None,
-                 position=None, scatter=None, **kwargs):
+                 scatter=None, **kwargs):
     """
     Funciton that returns the nyquist plot of an impedance response.
 
@@ -38,21 +32,41 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
     ----------
     response : pandas.DataFrame
                a dataframe containing the impedance response to be plotted.
-    filename : st
+    filename : str
                The filename contains a serial number composed by the date
                the funciton was run and the number of simuation for that day.
                The filename will be the same as the .csv file created from the
                impedance response used to create this plot.
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
     save_location : str
-                       String containing the path of the forlder to use when
-                       saving the data and the image. Default option is a
-                       folder called  'simulation_data' which will be created
-                       in the current working directory.
-    save_image : True/False
+                    String containing the path of the forlder to use when
+                    saving the data and the image. Default option is a
+                    folder called  'simulation_data' which will be created
+                    in the current working directory.
+    save_image : bool
                  Option to save the output of the simuation as a plot
                  in a .png file format.
                  The filename used for the file will be the same
                  as the raw data file created in this function.
+    axis_off : bool
+               Option to remove the axis from a plot. This will allow to
+               display only the datapoints. This format is preferred for CNN
+               input.
+    plot_type : str
+                string indicating teh desired plot to use to visualize the data
+                Te options are 'nyquist', 'log_freq' or 'both', if both
+                representations are desired. An individual file per each type
+                of plot will be generated and saved in a separate folder.
+    scatter : bool
+              Changes the type of matplotlib fuction to use from 'plot' to
+              'scatter'.
+    transparent : bool
+                  Removes thebackground of the plot in the saving step. The
+                  resulting .png file(s) will have a transparent background.
 
     **kwargs : optional arguments supported by matplotlib.pyplot
 
@@ -79,29 +93,9 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
     max_real = response['Re_Z [ohm]'].max()
     ax.set_aspect('equal')
 
-    if position == 1:
-        # Upper left corner
-        ax.set_xlim([0, 2*max_real+0.1*max_real])
-        ax.set_ylim([-max_real, max_real+0.1*max_real])
+    ax.set_xlim([0, max_real+0.1*max_real])
+    ax.set_ylim([0, max_real+0.1*max_real])
 
-    elif position == 2:
-        # Upper right corner
-        ax.set_xlim([-max_real, max_real+0.1*max_real])
-        ax.set_ylim([-max_real, max_real+0.1*max_real])
-
-    elif position == 3:
-        # Bottom left corner
-        ax.set_xlim([0, 2*max_real+0.1*max_real])
-        ax.set_ylim([0, 2*max_real+0.1*max_real])
-
-    elif position == 4:
-        # Bottom right corner
-        ax.set_xlim([-max_real, max_real+0.1*max_real])
-        ax.set_ylim([0, 2*max_real+0.1*max_real])
-
-    else:
-        ax.set_xlim([0, max_real+0.1*max_real])
-        ax.set_ylim([0, max_real+0.1*max_real])
     if axis_off:
         ax.axis('off')
         # ax.set_yticks([])
@@ -115,14 +109,15 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
     if save_image:
         filename = str(save_location+filename)
         plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight',
-                    transparent=True)
+                    transparent=transparent)
 
     plt.show()
     return
 
 
-def bode_plot(response, phase_angle=None,  filename=None, save_location=None,
-              alteration=None, save_image=None, **kwargs):
+def log_freq_plot(response, filename=None, axis_off=None, scatter=None,
+                  save_location=None, alteration=None, transparent=None,
+                  save_image=None, **kwargs):
     """
     Funciton that returns the bode plot of an impedance response.
 
@@ -130,21 +125,41 @@ def bode_plot(response, phase_angle=None,  filename=None, save_location=None,
     ----------
     response : pandas.DataFrame
                a dataframe containing the impedance response to be plotted.
-    filename : st
+    filename : str
                The filename contains a serial number composed by the date
                the funciton was run and the number of simuation for that day.
                The filename will be the same as the .csv file created from the
                impedance response used to create this plot.
+    alteration : str
+                 string indicating if the data simulated has been modified to
+                 add noise or other instrument artifacts. If present, this
+                 string will also be added to the file name to help keeping
+                 the data correctly labeled.
     save_location : str
-                       String containing the path of the forlder to use when
-                       saving the data and the image. Default option is a
-                       folder called  'simulation_data' which will be created
-                       in the current working directory.
-    save_image : True/False
+                    String containing the path of the forlder to use when
+                    saving the data and the image. Default option is a
+                    folder called  'simulation_data' which will be created
+                    in the current working directory.
+    save_image : bool
                  Option to save the output of the simuation as a plot
                  in a .png file format.
                  The filename used for the file will be the same
                  as the raw data file created in this function.
+    axis_off : bool
+               Option to remove the axis from a plot. This will allow to
+               display only the datapoints. This format is preferred for CNN
+               input.
+    plot_type : str
+                string indicating teh desired plot to use to visualize the data
+                Te options are 'nyquist', 'log_freq' or 'both', if both
+                representations are desired. An individual file per each type
+                of plot will be generated and saved in a separate folder.
+    scatter : bool
+              Changes the type of matplotlib fuction to use from 'plot' to
+              'scatter'.
+    transparent : bool
+                  Removes thebackground of the plot in the saving step. The
+                  resulting .png file(s) will have a transparent background.
 
     **kwargs : optional arguments supported by matplotlib.pyplot
 
@@ -162,19 +177,17 @@ def bode_plot(response, phase_angle=None,  filename=None, save_location=None,
                     response['freq [Hz]'], -response['Im_Z [ohm]'], 'o--',
                     **kwargs)
 
-    # plt.ticklabel_format(style='sci', scilimits=(0, 0))
-    ax.set_xlabel(r'Frequency (Hz)')
-    ax.set_ylabel(r'Impedance [$\Omega$]')
-    ax.legend(('Real Z', 'Imag Z'))
-    # ax.set_xlim([0, 600])
-    # ax.set_ylim([0, 200])
-    # ax.set_aspect('equal')
-    # ax.xticks(np.arange(min(),
-    #                     max(response['Re_Z [Ohm]'])+1, 10))
+    if axis_off:
+        ax.axis('off')
+    else:
+        ax.set_xlabel(r'Frequency (Hz)')
+        ax.set_ylabel(r'Impedance [$\Omega$]')
+        ax.legend(('Real Z', 'Imag Z'))
+
     if save_image:
         filename = str(save_location+filename)
-        plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight')
-        # layout='tight',
-        #            bbox_inches='tight')
+        plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight',
+                    transparent=transparent)
+
     plt.show()
     return
