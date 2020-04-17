@@ -161,7 +161,15 @@ def simulation_filename(circuit_name, alteration=None,
         print('The indicated circuit in not support by the simuation module')
 
     date = time.strftime('%y%m%d', time.localtime())
+    assert isinstance(date, str), 'the date should be a string'
+    assert len(date) == 6, 'The date string should be 6 characters long'
+    assert len(number) == 4, 'the serial number should be four characters +\
+    long'
+
     i = 1
+    assert isinstance(i, int), 'the serial number counters should be an +\
+    integer'
+
     while i < 9999:
         number = str(i).zfill(4)
 
@@ -248,9 +256,10 @@ def write_metadata(data_file, serial_number, circuit_name,
             assert len(circuit_elements) == 3, 'the number of circuit +\
                                                 elements should be 3'
             data_file.write('Circuit elements:, [R={} ohm Q={} +\
-[s^(alpha-1)/ohm] alpha={}]'.format(circuit_elements['R'],
-                                    circuit_elements['Q'],
-                                    circuit_elements['alpha']) + '\n')
+            [s^(alpha-1)/ohm] alpha={}]'.format(circuit_elements['R'],
+                                                circuit_elements['Q'],
+                                                circuit_elements['alpha']
+                                                ) + '\n')
         if circuit_name == 'RsRC':
             assert len(circuit_elements) == 3, 'the number of circuit +\
                                                 elements should be 3'
@@ -261,34 +270,32 @@ def write_metadata(data_file, serial_number, circuit_name,
         if circuit_name == 'RsRCRC':
             assert len(circuit_elements) == 5, 'the number of circuit +\
                                                 elements should be 5'
-            data_file.write('Circuit elements: , [Rs={} ohm Rp1={} ohm C1={} F\
-Rp2={} ohm C2={} F]'.format(circuit_elements['Rs'],
-                            circuit_elements['Rp1'],
-                            circuit_elements['C1'],
-                            circuit_elements['Rp2'],
-                            circuit_elements['C2']) + '\n')
+            data_file.write('Circuit elements: , [Rs={} ohm Rp1={} ohm C1={} +\
+            F Rp2={} ohm C2={} F]'.format(circuit_elements['Rs'],
+                                          circuit_elements['Rp1'],
+                                          circuit_elements['C1'],
+                                          circuit_elements['Rp2'],
+                                          circuit_elements['C2']) + '\n')
         if circuit_name == 'RsRQRQ':
             assert len(circuit_elements) == 7, 'the number of circuit+\
                                                 elements should be 7'
-            data_file.write('Circuit elements: , [Rs={} ohm Rp1={} ohm Q1={}\
-[s^(alpha-1)/ohm] alpha_1={} Rp2={} ohm Q2={} [s^(alpha-1)/ohm] alpha_2={}]'
-                            .format(circuit_elements['Rs'],
-                                    circuit_elements['Rp1'],
-                                    circuit_elements['Q1'],
-                                    circuit_elements['alpha1'],
-                                    circuit_elements['Rp2'],
-                                    circuit_elements['Q2'],
-                                    circuit_elements['alpha2']) + '\n')
+            data_file.write('Circuit elements: , [Rs={} ohm Rp1={} ohm Q1={} +\
+            [s^(alpha-1)/ohm] alpha_1={} Rp2={} ohm Q2={} [s^(alpha-1)/ohm] +\
+            alpha_2={}]'.format(circuit_elements['Rs'],
+                                circuit_elements['Rp1'],
+                                circuit_elements['Q1'],
+                                circuit_elements['alpha1'],
+                                circuit_elements['Rp2'],
+                                circuit_elements['Q2'],
+                                circuit_elements['alpha2']) + '\n')
         if circuit_name == 'Randles':
             assert len(circuit_elements) == 5, 'the number of circuit+\
                                                 elements should be 5'
-            data_file.write('Circuit elements:, [Rs={} ohm Rp={} ohm Q={}\
-[s^(alpha-1)/ohm] alpha={} sigma={}]'.format(circuit_elements['Rs'],
-                                             circuit_elements['Rp'],
-                                             circuit_elements['Q'],
-                                             circuit_elements['alpha'],
-                                             circuit_elements['sigma']
-                                             ) + '\n')
+            data_file.write('Circuit elements:, [Rs={} ohm Rp={} ohm Q={} +\
+            [s^(alpha-1)/ohm] alpha={} sigma={}] +\
+            '.format(circuit_elements['Rs'], circuit_elements['Rp'],
+                     circuit_elements['Q'], circuit_elements['alpha'],
+                     circuit_elements['sigma']) + '\n')
     # Indication of alteration
     if alteration and noisescale >= 0.2:
         data_file.write('Alteration :, {}'.format(alteration))

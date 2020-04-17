@@ -135,7 +135,9 @@ class TestCNNModelTools(unittest.TestCase):
         TEST = False
         image_width = 200
         image_height = 134
-        tensor_data = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
+        tensor_data = torch.randn(image_height,
+                                  image_width).view(-1, 1,
+                                                    image_height, image_width)
 
         d_separation = CNN.data_separation(tensor_data, ratio_of_test,
                                            TRAIN, TEST)
@@ -149,7 +151,10 @@ class TestCNNModelTools(unittest.TestCase):
     def test_learning(self):
         image_width = 200
         image_height = 134
-        training_sample_image = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
+        training_sample_image = torch.randn(image_height,
+                                            image_width).view(-1, 1,
+                                                              image_height,
+                                                              image_width)
         training_sample_type = torch.randn(1, 4)
         input_size = 1
         firstHidden = 8
@@ -171,7 +176,10 @@ class TestCNNModelTools(unittest.TestCase):
     def test_accuracy(self):
         image_width = 200
         image_height = 134
-        testing_sample_image = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
+        testing_sample_image = torch.randn(image_height,
+                                           image_width).view(-1, 1,
+                                                             image_height,
+                                                             image_width)
         testing_sample_type = torch.randn(1, 4)
         input_size = 1
         firstHidden = 8
@@ -192,7 +200,10 @@ class TestCNNModelTools(unittest.TestCase):
         image_width = 200
         image_height = 134
         path_List_training = ['testImage.png', 'training.npy']
-        tensor_data = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
+        tensor_data = torch.randn(image_height,
+                                  image_width).view(-1, 1,
+                                                    image_height,
+                                                    image_width)
         input_data = []
         IMG = np.random.rand(134, 200)
         for i in range(1):

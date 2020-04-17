@@ -161,3 +161,33 @@ def iv_noise(dataframe, voltage_amplitude, amplitude):
     dataframe['Re_Z_noise [ohm]'] = complex_impedance.real
     dataframe['Im_Z_noise [ohm]'] = complex_impedance.imag
     return dataframe
+
+
+def normalize(impedance_array):
+    '''Function that returns a normalized impedance_array
+
+    The function takes the maximum value of an array and divides each entry of
+    the array by it. Additionally, if the minimum of the array is negative, it
+    shifts it to zero, so that the resulting normalized array will have a range
+    zero to one.
+
+    Parameters
+    ----------
+
+    impedance_array : array
+                      the array to be normalized.
+
+    Returns
+    -------
+
+    normalized_impedance_array :  array
+                                  the normalized array. This should have range
+                                  zero to one.
+    '''
+
+    if min(impedance_array) < 0:
+        impedance_array += abs(min(impedance_array))
+    if max(impedance_array) > 1:
+        normalized_impedance_array = impedance_array/max(impedance_array)
+
+    return normalized_impedance_array
