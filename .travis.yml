@@ -23,7 +23,7 @@ before_install:
     - export PATH=/home/travis/miniconda3/bin:$PATH
     - conda update --yes conda
     - source $(conda info --root)/etc/profile.d/conda.sh
-        
+
 # list of commands to run to setup the environment
 install:
     - conda env create -q -n test-environment python=$TRAVIS_PYTHON_VERSION --file environment.yml
@@ -32,12 +32,12 @@ install:
 
 # a list of commands to run before the main script
 before_script:
-    - flake8 eisy_as_py
+    - flake8 eisy
 
 # the actual commands to run
 script:
     - coverage run -m unittest discover
- 
+
 # generate a coverage report to send to back to user
 after_success:
     - coverage report
