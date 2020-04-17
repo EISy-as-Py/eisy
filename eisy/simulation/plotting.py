@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from .alterations import normalize
 from matplotlib import rcParams
 
 rcParams['figure.figsize'] = (8, 6)
@@ -220,36 +221,36 @@ def rgb_plot(red_array, green_array=[0, 0], blue_array=[0, 0], plot=True):
                 Plot representing the data as a color gradient on the x-axis
                 in one of the three basic colors: red, blue or green
     '''
-    r = len(r_array)
-    g = len(g_array)
-    b = len(b_array)
+    r = len(red_array)
+    g = len(green_array)
+    b = len(blue_array)
 
     if r != g:
-        g_array = r_array * 0
+        green_array = red_array * 0
         print("Green Array Failed? (Or none given)")
     if r != b:
-        b_array = r_array * 0
+        blue_array = red_array * 0
         print("Blue  Array Failed? (Or none given)")
 
     # Normalize Data from 0 to 1 (aka RGB readable)
-    r_array = norm_01(r_array)
-    g_array = norm_01(g_array)
-    b_array = norm_01(b_array)
+    red_array = normalize(red_array)
+    green_array = normalize(green_array)
+    blue_array = normalize(blue_array)
 
     # Two types of Meshes: One 10 larger than the other
     # (Smaller used for Individual 1D arrays, Larger for combined)
     # FOR LATER--> MAKE BIG MATRIX A SQUARE! EASY TO COMBINE
     arb_big = np.linspace(0, 1, r)
     arb_small = np.linspace(0, 1, int(r/10))
-    x_later = np.linspace(0, r, r)
+    # x_later = np.linspace(0, r, r)
 
-    r_small, a = np.meshgrid(r_array, arb_small)
-    g_small, a = np.meshgrid(g_array, arb_small)
-    b_small, a = np.meshgrid(b_array, arb_small)
+    r_small, a = np.meshgrid(red_array, arb_small)
+    g_small, a = np.meshgrid(green_array, arb_small)
+    b_small, a = np.meshgrid(blue_array, arb_small)
 
-    r_big, a = np.meshgrid(r_array, arb_big)
-    g_big, a = np.meshgrid(g_array, arb_big)
-    b_big, a = np.meshgrid(b_array, arb_big)
+    r_big, a = np.meshgrid(red_array, arb_big)
+    g_big, a = np.meshgrid(green_array, arb_big)
+    b_big, a = np.meshgrid(blue_array, arb_big)
 
     big_plot = np.ndarray(shape=(r, r, 3))
     r_plot = np.ndarray(shape=(int(r/10), r, 3))
@@ -276,11 +277,11 @@ def rgb_plot(red_array, green_array=[0, 0], blue_array=[0, 0], plot=True):
         # ax[0].imshow(r_plot)
         # ax[1].imshow(g_plot)
         # ax[2].imshow(b_plot)
-        # ax[0].plot(x_later,r_array)
+        # ax[0].plot(x_later,red_array)
 
         bax.axis('off')
         # for i in [0,1,2]:
         #    ax[i].axis('off')
-    big_plot = rgb2hsv(bigplot)
+    # big_plot = rgb2hsv(big_plot)
 
     return big_plot

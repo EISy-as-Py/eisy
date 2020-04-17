@@ -52,7 +52,7 @@ def cir_RC_parallel(angular_freq, **circuit_elements):
     Z_complex : array-like
                 impedance response of the circuit under investigation [ohm]
     '''
-    circuit_string = '-(RC)-'
+    # circuit_string = '-(RC)-'
     # define the elements from the input dictionary
     if len(circuit_elements) != 2:
         raise AssertionError('The wrong number of circuit elements was'
@@ -89,7 +89,7 @@ def cir_RC_series(angular_freq, **circuit_elements):
     Z_complex : array-like
                 impedance response of the circuit under investigation [ohm]
     '''
-    circuit_string = '-RC-'
+    # circuit_string = '-RC-'
 
     if len(circuit_elements) != 2:
         raise AssertionError('The wrong number of circuit elements was'
@@ -127,7 +127,7 @@ def cir_RQ_parallel(angular_freq, **circuit_elements):
     Z_complex : array-like
                 impedance response of the circuit under investigation [Ohm]
     '''
-    circuit_string = '-(RQ)-'
+    # circuit_string = '-(RQ)-'
     if len(circuit_elements) != 3:
         raise AssertionError('The wrong number of circuit elements was'
                              'inputted')
@@ -169,7 +169,7 @@ def cir_RQ_series(angular_freq, **circuit_elements):
     Z_complex : array-like
                 impedance response of the circuit under investigation [Oom]
     '''
-    circuit_string = '-R-Q-'
+    # circuit_string = '-R-Q-'
 
     if len(circuit_elements) != 3:
         raise AssertionError('The wrong number of circuit elements was'
@@ -211,7 +211,7 @@ def cir_RsRC(angular_freq, **circuit_elements):
     Z_complex : array-like
                 impedance response of the circuit under investigation [Ohm]
     '''
-    circuit_string = '-Rs-(RC)-'
+    # circuit_string = '-Rs-(RC)-'
 
     if len(circuit_elements) != 3:
         raise AssertionError('The wrong number of circuit elements was'
@@ -266,7 +266,7 @@ def cir_RsRQRQ(angular_freq, **circuit_elements):
     Z_complex : array-like
                 impedance response of the circuit under investigation [Ohm]
     '''
-    circuit_string = '-Rs-(RQ)-(RQ)-'
+    # circuit_string = '-Rs-(RQ)-(RQ)-'
 
     if len(circuit_elements) != 7:
         raise AssertionError('The wrong number of circuit elements was'
@@ -325,7 +325,7 @@ def cir_RsRCRC(angular_freq, **circuit_elements):
     Z_complex : array-like
                 impedance response of the circuit under investigation [Ohm]
     '''
-    circuit_string = '-Rs-(RC)-(RC)-'
+    # circuit_string = '-Rs-(RC)-(RC)-'
 
     if len(circuit_elements) != 5:
         raise AssertionError('The wrong number of circuit elements was'
@@ -377,7 +377,7 @@ def cir_Randles_simplified(angular_freq, **circuit_elements):
     Z_complex : array-like
                 impedance response of the circuit under investigation [Ohm]
     '''
-    circuit_string = '-Rs-(Q-(RW))-'
+    # circuit_string = '-Rs-(Q-(RW))-'
 
     if len(circuit_elements) != 5:
         raise AssertionError('The wrong number of circuit elements was'

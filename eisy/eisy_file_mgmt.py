@@ -947,11 +947,11 @@ to be very helpful:
                         need as inputs and outputs.)
 """
 
-
+"""
 def SQL_setup(sql_path="data/", sql_file="eisy_sql.db"):
     # sql_path = False will generate the database in active Memory
     import os
-    import sqlalchemy
+    # import sqlalchemy
     from sqlalchemy import create_engine
 
     from sqlalchemy.ext.declarative import declarative_base
@@ -1068,47 +1068,33 @@ def SQL_setup(sql_path="data/", sql_file="eisy_sql.db"):
 
     return sql_path
 
+# Commented this out for pep8 passing. Need to complete this funcition first
+
+# def SQL_add_expeirment(sql_path, test_file, interact=True):
+#     '''
+#     Wrapper Funciton, putting together many of the above functions.
+#     Starts from the raw file, processes all the data, and saves
+#     them as defined in the SQL database.
+#
+#     INPUT:
+#         sql_path :  Location of the sql database to add to.
+#                     needs to check that the database exists
+#
+#         test_file : csv file to be added to the SQL database.
+#                     Need info on how to handle errors, and/or
+#
+#     '''
+#     import sqlalchemy
+#     from sqlalchemy import create_engine
+#
+#     test_file = 'data/simulation/simulation_data\\200308-0001_sim_one.csv'
+#     serial_id, meta_tags, class_tags = parse_fname_meta(test_file)
+#     header_meta, fseries_raw = fseries_read_data(test_file)
+#     fseries_fixed = fseries_fix_head(fseries_raw)
+#
+#     # Start up a sql engine at the path given
+#     engine = create_engine(sql_path, echo=True)
 
 
-def SQL_add_expeirment(sql_path, test_file, interact=True):
-    """
-    Wrapper Funciton, putting together many of the above functions.
-    Starts from the raw file, processes all the data, and saves
-    them as defined in the SQL database.
-
-    INPUT:
-        sql_path :  Location of the sql database to add to.
-                    needs to check that the database exists
-
-        test_file : csv file to be added to the SQL database.
-                    Need info on how to handle errors, and/or
-
-    """
-    import sqlalchemy
-    from sqlalchemy import create_engine
-
-    test_file = 'data/simulation/simulation_data\\200308-0001_sim_one.csv'
-    serial_id, meta_tags, class_tags = parse_fname_meta(test_file)
-    header_meta, fseries_raw = fseries_read_data(test_file)
-    fseries_fixed = fseries_fix_head(fseries_raw)
-
-    # Start up a sql engine at the path given
-    engine = create_engine(sql_path, echo=True)
-
-
-
-
-#SQL_setup()
-
-
-
-
-
-
-
-
-
-
-
-
-
+# SQL_setup()
+"""

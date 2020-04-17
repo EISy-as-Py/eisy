@@ -1,7 +1,8 @@
 import math
 import numpy as np
-import pandas as pd
+# import pandas as pd
 import random
+from scipy.special import erfinv
 
 
 def imag_noise(dataframe, noisescale=0.4):
@@ -92,8 +93,8 @@ def real_noise(dataframe, noisescale=0.4):
 def complex_noise(dataframe, noisescale=0.4):
     '''Returns a dataframe with random noise in the real adn imaginary
        part of the impedance'''
-    dataframe_y = added_noise(dataframe, noisescale)
-    dataframe = added_xnoise(dataframe_y, noisescale)
+    dataframe_y = imag_noise(dataframe, noisescale)
+    dataframe = real_noise(dataframe_y, noisescale)
     return dataframe
 
 
@@ -143,7 +144,7 @@ def iv_noise(dataframe, voltage_amplitude, amplitude):
        part of the impedance'''
 
     current = voltage_amplitude/dataframe['complex_Z [ohm]']
-    nois = []
+    noise = []
     real = []
     imag = []
     current_noise = []
