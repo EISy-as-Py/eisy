@@ -36,7 +36,7 @@ be a string'
                                                       alteration=alteration,
                                                       save_location=save_loc,
                                                       noisescale=0)
-        with open(filename + '.csv', mode='r',
+        with open(save_loc + filename + '.csv', mode='r',
                   newline='') as data_file:
             reader = csv.reader(data_file, delimiter=',')
             rows = [row for row in reader]
@@ -48,7 +48,7 @@ the file'
             assert 'angular_freq [1/s]' in rows[6][2], 'the raw data should be\
  contained in the generated file'
             data_file.close()
-            os.remove(filename + '.csv')
+        os.remove(save_loc + filename + '.csv')
 
     def test_simulation_filename(self):
         save_loc = './'
@@ -94,7 +94,7 @@ values should be indicated'
 break of the metadata part of the files need to be present '
 
             data_file.close()
-            os.remove('test'+filename + ".csv")
+        os.remove('test'+filename + ".csv")
 
     def test_write_data(self):
         freq_range = circuits.freq_gen(10**6, 0.01)
