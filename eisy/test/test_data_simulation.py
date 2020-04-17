@@ -24,8 +24,6 @@ class TestSimulationTools(unittest.TestCase):
         decades = 7
         R = 100  # ohm
         C = 10E-6  # F
-        n_points = np.round(decades * np.log10(int(high_freq)) -
-                            np.log10(low_freq))
         f_range = circuits.freq_gen(high_freq, low_freq, decades=10)
         circuit = circuits.cir_RC_parallel(f_range[1], R=R, C=C)
         impedance_arr = impedance_array(circuit)
@@ -35,13 +33,13 @@ class TestSimulationTools(unittest.TestCase):
  contain the frequency respose.'
         assert dataframe.columns[1] == 'angular_freq [1/s]', 'the second\
  column should contain the angular frequency respose.'
-        assert dataframe.columns[2] == 'Re_Z [ohm]', 'the fourth column should\
+        assert dataframe.columns[3] == 'Re_Z [ohm]', 'the fourth column should\
  contain the real impedance part.'
-        assert dataframe.columns[3] == 'Im_Z [ohm]', 'the fifth column\
+        assert dataframe.columns[4] == 'Im_Z [ohm]', 'the fifth column\
  should contain the imaginary impedance part.'
-        assert dataframe.columns[4] == '|Z| [ohm]', 'the sixth column\
+        assert dataframe.columns[5] == '|Z| [ohm]', 'the sixth column\
  should contain the magnitude of the impedance.'
-        assert dataframe.columns[5] == 'phase_angle [rad]', 'the seventh\
+        assert dataframe.columns[6] == 'phase_angle [rad]', 'the seventh\
  column should contain the phase angle of the impedance.'
         assert dataframe['freq [Hz]'][0] == f_range[0][0], 'the first column\
  should contain the frequency respose. Check again'
@@ -61,8 +59,6 @@ class TestSimulationTools(unittest.TestCase):
         decades = 10
         R = 100  # ohm
         C = 10E-6  # F
-        n_points = np.round(decades * np.log10(int(high_freq)) -
-                            np.log10(low_freq))
         f_range = circuits.freq_gen(high_freq, low_freq, decades=10)
         circuit = circuits.cir_RC_parallel(f_range[1], R=R, C=C)
         impedance = impedance_array(circuit)
@@ -91,8 +87,6 @@ class TestSimulationTools(unittest.TestCase):
         decades = 10
         R = 100  # ohm
         C = 10E-6  # F
-        n_points = np.round(decades * (np.log10(int(high_freq)) -
-                            np.log10(low_freq)))
         freq_range = circuits.freq_gen(high_freq, low_freq, decades=10)
         circuit_name = 'RC_parallel'
         impedance_data = circuit_simulation(freq_range, circuit_name, C=C, R=R)

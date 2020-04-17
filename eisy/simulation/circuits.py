@@ -55,8 +55,8 @@ def cir_RC_parallel(angular_freq, **circuit_elements):
     circuit_string = '-(RC)-'
     # define the elements from the input dictionary
     if len(circuit_elements) != 2:
-        raise AssertionError('The wrong number of circuit elements was+\
-                              inputted')
+        raise AssertionError('The wrong number of circuit elements was'
+                             'inputted')
     resistance = circuit_elements['R']
     capacitance = circuit_elements['C']
     # compute the impedance response as a complex array
@@ -92,8 +92,8 @@ def cir_RC_series(angular_freq, **circuit_elements):
     circuit_string = '-RC-'
 
     if len(circuit_elements) != 2:
-        raise AssertionError('The wrong number of circuit elements was+\
-                              inputted')
+        raise AssertionError('The wrong number of circuit elements was'
+                             'inputted')
     resistance = circuit_elements['R']
     capacitance = circuit_elements['C']
     # compute the impedance response as a complex array
@@ -129,8 +129,8 @@ def cir_RQ_parallel(angular_freq, **circuit_elements):
     '''
     circuit_string = '-(RQ)-'
     if len(circuit_elements) != 3:
-        raise AssertionError('The wrong number of circuit elements was+\
-                              inputted')
+        raise AssertionError('The wrong number of circuit elements was'
+                             'inputted')
     resistance = circuit_elements['R']
     constant_phase_element = circuit_elements['Q']
     alpha = circuit_elements['alpha']
@@ -172,8 +172,8 @@ def cir_RQ_series(angular_freq, **circuit_elements):
     circuit_string = '-R-Q-'
 
     if len(circuit_elements) != 3:
-        raise AssertionError('The wrong number of circuit elements was+\
-                              inputted')
+        raise AssertionError('The wrong number of circuit elements was'
+                             'inputted')
     resistance = circuit_elements['R']
     constant_phase_element = circuit_elements['Q']
     alpha = circuit_elements['alpha']
@@ -214,10 +214,10 @@ def cir_RsRC(angular_freq, **circuit_elements):
     circuit_string = '-Rs-(RC)-'
 
     if len(circuit_elements) != 3:
-        raise AssertionError('The wrong number of circuit elements was+\
-                              inputted')
+        raise AssertionError('The wrong number of circuit elements was'
+                             'inputted')
     solution_resistance = circuit_elements['Rs']
-    parallel_resistace = circuit_elements['Rp']
+    parallel_resistance = circuit_elements['Rp']
     capacitance = circuit_elements['C']
 
     # compute the impedance response as a complex array
@@ -269,8 +269,8 @@ def cir_RsRQRQ(angular_freq, **circuit_elements):
     circuit_string = '-Rs-(RQ)-(RQ)-'
 
     if len(circuit_elements) != 7:
-        raise AssertionError('The wrong number of circuit elements was+\
-                              inputted')
+        raise AssertionError('The wrong number of circuit elements was'
+                             'inputted')
     solution_resistance = circuit_elements['Rs']
     parallel_resistance_1 = circuit_elements['Rp1']
     constant_phase_element_1 = circuit_elements['Q1']
@@ -328,8 +328,8 @@ def cir_RsRCRC(angular_freq, **circuit_elements):
     circuit_string = '-Rs-(RC)-(RC)-'
 
     if len(circuit_elements) != 5:
-        raise AssertionError('The wrong number of circuit elements was+\
-                              inputted')
+        raise AssertionError('The wrong number of circuit elements was'
+                             'inputted')
     solution_resistance = circuit_elements['Rs']
     parallel_resistance_1 = circuit_elements['Rp1']
     capacitance_1 = circuit_elements['C1']
@@ -380,8 +380,8 @@ def cir_Randles_simplified(angular_freq, **circuit_elements):
     circuit_string = '-Rs-(Q-(RW))-'
 
     if len(circuit_elements) != 5:
-        raise AssertionError('The wrong number of circuit elements was+\
-                              inputted')
+        raise AssertionError('The wrong number of circuit elements was'
+                             'inputted')
     solution_resistance = circuit_elements['Rs']
     parallel_resistance = circuit_elements['Rp']
     constant_phase_element = circuit_elements['Q']

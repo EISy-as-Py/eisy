@@ -50,14 +50,14 @@ def to_dataframe(freq_range, impedance_array, alteration=None,
     np.testing.assert_almost_equal(len(freq_range[1]),
                                    impedance_array[0].shape[0], decimal=18,
                                    err_msg='the impedance is not correclty\
-computed. The number of points in the array is not correct.')
-    assert len(freq_range[1]) == impedance_array[0].shape[0],\
-        'the frequency and the impedance respons do not match in length.\
-Check again.'
-    assert len(impedance_arr) == 5, 'the impedance array inputted is not\
-    the right dimensions. The number of columns exceed the expected value (5)'
-    assert isinstance(impedance_arr[0][1], complex), 'the first column of\
-    the impedance response should be populated by complex numberes'
+                                   computed. The number of points in the\
+                                   array is not correct.')
+    assert len(freq_range[1]) == impedance_array[0].shape[0], 'the frequency\
+and the impedance respons do not match in length. '
+    assert len(impedance_array) == 5, 'the impedance array inputted is not\
+the right dimensions. The number of columns exceed the expected value (5)'
+    assert isinstance(impedance_array[0][1], complex), 'the first column of\
+the impedance response should be populated by complex numberes'
     # Create a dictionary containng the keys and values of data to be
     # converted ina pandas dataframe. The 'keys' will be used as column names.
     impedance_dict = {'freq [Hz]': freq_range[0],
@@ -143,9 +143,9 @@ def circuit_simulation(freq_range, circuit_name, alteration=None,
                  Scale of the noise added to the data. This number should be
                  contained betweed 0 and 1.
     circuit_elements : dictionary or keyword arguments
-                       input argument composed by the circuit elements +\
-                       composing the called circuit. Refer to the circuits +\
-                       module for the correct list of arguments that can be +\
+                       input argument composed by the circuit elements
+                       composing the called circuit. Refer to the circuits
+                       module for the correct list of arguments that can be
                        added to this input.
 
     Returns
@@ -161,30 +161,28 @@ def circuit_simulation(freq_range, circuit_name, alteration=None,
     assert isinstance(circuit_name, str), 'the circuit name should be a string'
 
     if circuit_name.split('_')[0] == 'RC':
-        assert len(circuit_elements) == 2, 'the number of circuit +\
-                                            elements should be 2'
+        assert len(circuit_elements) == 2, 'the number of circuit\
+elements should be 2'
     if circuit_name.split('_')[0] == 'RQ':
-        assert len(circuit_elements) == 3, 'the number of circuit +\
-                                            elements should be 3'
+        assert len(circuit_elements) == 3, 'the number of circuit\
+elements should be 3'
     if circuit_name == 'RsRC':
-        assert len(circuit_elements) == 3, 'the number of circuit +\
-                                            elements should be 3'
+        assert len(circuit_elements) == 3, 'the number of circuit\
+elements should be 3'
     if circuit_name == 'RsRCRC':
-        assert len(circuit_elements) == 5, 'the number of circuit +\
-                                            elements should be 5'
+        assert len(circuit_elements) == 5, 'the number of circuit\
+elements should be 5'
     if circuit_name == 'RsRQRQ':
-        assert len(circuit_elements) == 7, 'the number of circuit +\
-                                            elements should be 7'
+        assert len(circuit_elements) == 7, 'the number of circuit\
+elements should be 7'
     if circuit_name == 'Randles':
-        assert len(circuit_elements) == 5, 'the number of circuit +\
-                                            elements should be 5'
+        assert len(circuit_elements) == 5, 'the number of circuit\
+elements should be 5'
 
     circuit_function = getattr(circuits, circuit_function_name)
 
-    assert callable(circuit_function_name) is True, 'the module name is +\
-    not correct'
     assert circuit_function != 0, 'The function could not be found in the\
-    indicated module.'
+indicated module.'
 
     complex_impedance = circuit_function(freq_range[1], **circuit_elements)
 

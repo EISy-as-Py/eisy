@@ -57,7 +57,7 @@ class TestSimulationTools(unittest.TestCase):
         assert np.positive(Capacitance), 'The input capacitance\
             is invalid'
         assert isinstance(Capacitance, float), 'the capacitance should\
- be a float, not an integer'
+            be a float, not an integer'
         assert Capacitance <= 1, 'the capacitance value is probably too high.'
 
         response = circuits.cir_RC_parallel(f_range[1], R=Resistance,
@@ -191,9 +191,9 @@ class TestSimulationTools(unittest.TestCase):
         assert np.positive(Capacitance), 'The input capacitance\
             is invalid'
 
-        response = circuits.cir_RQ_series(f_range[1], Rs=Solution_Resistance,
-                                          Rp=Parallel_Resistance,
-                                          C=Capacitance)
+        response = circuits.cir_RsRC(f_range[1], Rs=Solution_Resistance,
+                                     Rp=Parallel_Resistance,
+                                     C=Capacitance)
 
         assert len(response) == len(f_range[1]), 'The returned response\
             is not valid'
@@ -244,10 +244,10 @@ class TestSimulationTools(unittest.TestCase):
         response = circuits.cir_RsRQRQ(f_range[1], Rs=Solution_Resistance,
                                        Rp1=Parallel_Resistance_1,
                                        Q1=Constant_phase_element_1,
-                                       alpha_1=alpha_1,
+                                       alpha1=alpha_1,
                                        Rp2=Parallel_Resistance_2,
                                        Q2=Constant_phase_element_2,
-                                       alpha_2=alpha_2)
+                                       alpha2=alpha_2)
 
         assert len(response) == len(f_range[1]), 'The returned response\
             is not valid'
