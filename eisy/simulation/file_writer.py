@@ -1,17 +1,18 @@
-import csv
+# import csv
 import glob
 import os
-import sys
+# import sys
 import time
 
 
-import numpy as np
-import pandas as pd
+# import numpy as np
+# import pandas as pd
 
 from . import alterations
-from . import circuits
-from .data_simulation import *
-from .plotting import *
+# from . import circuits
+from .data_simulation import (to_dataframe, impedance_array,
+                              circuit_simulation)
+from .plotting import nyquist_plot, log_freq_plot
 
 
 def file_writer(freq_range, circuit_name, alteration=None, noisescale=None,
@@ -198,7 +199,7 @@ characters long'
     return filename, serial_number
 
 
-def write_metadata(data_file, serial_number, circuit_name,
+def write_metadata(data_file, serial_number, circuit_name, noisescale=None,
                    alteration=None, source='simulation', **circuit_elements):
     """ Function used to write the metadata section of the .csv file containing
     impedance spectroscopy data.

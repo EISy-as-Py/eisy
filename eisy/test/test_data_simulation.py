@@ -1,30 +1,31 @@
-import os
-import sys
-import csv
-import time
+# import os
+# import sys
+# import csv
+# import time
 import unittest
-
-module_path = os.path.abspath(os.path.join('../simulation'))
-if module_path not in sys.path:
-    sys.path.append(module_path)
 
 import numpy as np
 import pandas as pd
 
-import eisy.simulation.alterations as alterations
+# import eisy.simulation.alterations as alterations
 import eisy.simulation.circuits as circuits
-from eisy.simulation.data_simulation import *
+from eisy.simulation.data_simulation import (to_dataframe, impedance_array,
+                                             circuit_simulation)
 
+
+# module_path = os.path.abspath(os.path.join('../simulation'))
+# if module_path not in sys.path:
+#     sys.path.append(module_path)
 
 class TestSimulationTools(unittest.TestCase):
 
     def test_to_dataframe(self):
         high_freq = 10**8  # Hz
         low_freq = 0.01  # Hz
-        decades = 7
+        decades = 10
         R = 100  # ohm
         C = 10E-6  # F
-        f_range = circuits.freq_gen(high_freq, low_freq, decades=10)
+        f_range = circuits.freq_gen(high_freq, low_freq, decades)
         circuit = circuits.cir_RC_parallel(f_range[1], R=R, C=C)
         impedance_arr = impedance_array(circuit)
         dataframe = to_dataframe(f_range, impedance_arr)
@@ -59,7 +60,7 @@ class TestSimulationTools(unittest.TestCase):
         decades = 10
         R = 100  # ohm
         C = 10E-6  # F
-        f_range = circuits.freq_gen(high_freq, low_freq, decades=10)
+        f_range = circuits.freq_gen(high_freq, low_freq, decades)
         circuit = circuits.cir_RC_parallel(f_range[1], R=R, C=C)
         impedance = impedance_array(circuit)
         assert isinstance(decades, int), 'the number of decades should\
@@ -87,7 +88,7 @@ class TestSimulationTools(unittest.TestCase):
         decades = 10
         R = 100  # ohm
         C = 10E-6  # F
-        freq_range = circuits.freq_gen(high_freq, low_freq, decades=10)
+        freq_range = circuits.freq_gen(high_freq, low_freq, decades)
         circuit_name = 'RC_parallel'
         impedance_data = circuit_simulation(freq_range, circuit_name, C=C, R=R)
 

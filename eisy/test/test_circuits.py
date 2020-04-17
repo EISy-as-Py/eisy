@@ -1,17 +1,16 @@
-import os
-import sys
-import csv
-import time
+# import os
+# import sys
+# import time
 import unittest
-
-module_path = os.path.abspath(os.path.join('../data/simulation'))
-if module_path not in sys.path:
-    sys.path.append(module_path)
 
 import eisy.simulation.circuits as circuits
 
 import numpy as np
-import pandas as pd
+# import pandas as pd
+
+# module_path = os.path.abspath(os.path.join('../data/simulation'))
+# if module_path not in sys.path:
+#     sys.path.append(module_path)
 
 
 class TestSimulationTools(unittest.TestCase):

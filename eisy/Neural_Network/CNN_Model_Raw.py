@@ -9,15 +9,16 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-#%matplotlib inline
+# %matplotlib inline
+
 
 class EISDataImport():
-    
+
     """Data Import and Pre-Processing"""
 
     def DataImporter_Training(self, k, path_List_training,
                               image_width, image_height):
-        
+
         """
         Import the training image file (.png) into the model.
         Parameters
@@ -30,7 +31,7 @@ class EISDataImport():
         image_width: The target width after resize
         image_height: The target height after resize
         """
-        
+
         path_list = path_List_training
         countImage_Training = [0, 0, 0, 0, 0, 0, 0]
         training_data = []
@@ -62,7 +63,7 @@ class EISDataImport():
 
     def DataImporter_Predict(self, k, path_List_predict,
                              image_width, image_height):
-        
+
         """
         Import the testing image file (.png) into the model.
         Parameters
@@ -75,7 +76,7 @@ class EISDataImport():
         image_width: The target width after resize
         image_height: The target height after resize
         """
-        
+
         path_list = path_List_predict
         countImage_Predict = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         training_data = []
@@ -101,29 +102,31 @@ class EISDataImport():
         for i in range(len(path_list)):
             print(path_List_predict[i], ":", countImage_Predict[i])
 
+
 def Build_Data(Training, k, path_list, image_width, image_height):
-    
+
     '''This will allow us to use EISData() to preprocess train/test data.
     Parameters
     ----------
-    Training = True (Class.DataImporter_Training) will be used/ 
+    Training = True (Class.DataImporter_Training) will be used/
     False (vice versa)
     k = the total number of path
     path_list = [string of folder path on local drive]
-    image_width/height for rescaling  
+    image_width/height for rescaling
     Returns
     --------
     training data [path,numpy array for images, label(if Training=True)]
     '''
-    
+
     Class = EISData()
     if Training is True:
         Class.DataImporter_Training(k, path_list, image_width, image_height)
     else:
         Class.DataImporter_Predict(k, path_list, image_width, image_height)
 
+
 def load_training_data(np_ndarray_file):
-    
+
     """
     Load the data from the .npy file to check if all the images
     have been in the program.
@@ -139,12 +142,13 @@ def load_training_data(np_ndarray_file):
                     type -> numpy.ndarray
 
     """
-    
+
     training_data = np.load(np_ndarray_file, allow_pickle=True)
     return training_data
 
+
 def data_information(training_data):
-    
+
     """
     Check the size of image and dataset.
 
@@ -153,14 +157,15 @@ def data_information(training_data):
     training_data: the data loading from "eis_training_data.npy"
 
     """
-    
+
     print("Type of training_data:", type(training_data))
     print("Size of training_data:", len(training_data))
     print("Size of image(after rescale):", training_data[0][1].shape[1],
           "x", training_data[0][1].shape[0])
 
+
 def plotting_data(training_data, k):
-    
+
     """
     Show the assigned image with matplotlib package.
 
@@ -172,18 +177,19 @@ def plotting_data(training_data, k):
         Rang: 0-size of training data
 
     """
-    
+
     print(training_data[k][0])
     plt.imshow(training_data[k][1])
     plt.show
 
+
 class Net(nn.Module):
-    
+
     """Convolutional Neural Network Model"""
-    
+
     def __init__(self, input_size, image_width, image_height,
                  firstHidden, kernel_size, output_size):
-        
+
         """
 
         Parameters
@@ -204,7 +210,7 @@ class Net(nn.Module):
         output_size: The number of final target category.
 
         """
-        
+
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(input_size, firstHidden, kernel_size)
         self.conv2 = nn.Conv2d(firstHidden, firstHidden*2, kernel_size)
@@ -219,7 +225,7 @@ class Net(nn.Module):
         self.fc2 = nn.Linear(64, output_size)
 
     def last_conv_neuron(self, x):
-        
+
         """
         Calculate how many neurons that the last convolutional layer will
         connect to the linear hidden layer
@@ -230,20 +236,20 @@ class Net(nn.Module):
         Ex: x = torch.randn(image_height, image_width
                             ).view(-1, 1, image_height, image_width)
         """
-        
+
         x = self.convs(x)
         conv_to_linear = x[0].shape[0]*x[0].shape[1]*x[0].shape[2]
         return conv_to_linear
 
     def convs(self, x):
-        
+
         """
         Put the image into the convolutional hidden layer. Scan over the
         original image to and use the max pooling function (with size 2) to
         determine the one number to represent the sub-image.
 
         """
-        
+
         x = F.max_pool2d(F.relu(self.conv1(x)), (2, 2))
         x = F.max_pool2d(F.relu(self.conv2(x)), (2, 2))
         x = F.max_pool2d(F.relu(self.conv3(x)), (2, 2))
@@ -260,8 +266,9 @@ class Net(nn.Module):
         output = self.fc2(output)
         return F.softmax(output, dim=1)
 
+
 def data_separation(data, ratio_of_testing, TRAIN):
-    
+
     """
     Separate the training and testing data.
     Parameters
@@ -270,7 +277,7 @@ def data_separation(data, ratio_of_testing, TRAIN):
     ratio_of_testing. Float. 0.2 = 20% of data is stored as testing data
     Train: True/False
     """
-    
+
     VAL_PCT = ratio_of_testing
     val_size = int(len(data)*VAL_PCT)
 
@@ -282,25 +289,28 @@ def data_separation(data, ratio_of_testing, TRAIN):
     print("Testing Samples:", len(test_data))
     return test_data
 
+
 def image_to_tensor(training_data, image_height, image_width):
-    
+
     """Transform the array image into tensor."""
-    
+
     X = torch.Tensor([i[1] for i in training_data]
                      ).view(-1, image_height, image_width)
-    return X/255.  #  normalize X
+    return X/255.  # normalize X
+
 
 def type_to_tensor(training_data):
-    
+
     """Transform the array type into tensor."""
-    
+
     y = torch.Tensor([i[2] for i in training_data])
     return y
+
 
 def learning(train_data1, train_data2, input_size, image_width, image_height,
              firstHidden, kernel_size, output_size, learning_rate, BATCH_SIZE,
              EPOCHS):
-    
+
     """
     parameter
     ---------
@@ -315,11 +325,11 @@ def learning(train_data1, train_data2, input_size, image_width, image_height,
     BATCH_SIZE = 10 the number of images used for training at a time
     EPOCHS = 1
     """
-    
+
     optimizer = optim.Adam(Net(input_size, image_width, image_height,
                                firstHidden, kernel_size, output_size
                                ).parameters(), lr=learning_rate)
-    loss_function = nn.L1Loss()  #  L1Loss() simple loss function
+    loss_function = nn.L1Loss()  # L1Loss() simple loss function
 
     for epoch in range(EPOCHS):
         for i in tqdm(range(0, len(train_data1), BATCH_SIZE)):
@@ -338,11 +348,12 @@ def learning(train_data1, train_data2, input_size, image_width, image_height,
 
         print(loss)
 
+
 def accuracy(test_data1, test_data2, input_size, image_width, image_height,
              firstHidden, kernel_size, output_size):
-    
+
     """
-    This function tells how well the predictions are made based 
+    This function tells how well the predictions are made based
     on the correctness.
     Parameters:
     --------------
@@ -351,7 +362,7 @@ def accuracy(test_data1, test_data2, input_size, image_width, image_height,
     input_size,image_width,image_height,firstHidden,kernel_size,output_size
     same as the function call for learning
     """
-    
+
     correct = 0
     total = 0
     with torch.no_grad():
@@ -369,10 +380,11 @@ def accuracy(test_data1, test_data2, input_size, image_width, image_height,
 
     print("Accuracy:", round(correct/total, 3))
 
+
 def type_prediction(k, path_List_training, tensor_data, array_data,
                     input_size, image_width, image_height, firstHidden,
                     kernel_size, output_size, detailed_information):
-    
+
     """
     Predict which type the input image is and print out the total number of
     each type.
@@ -393,13 +405,14 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
     detailed information: Show the predicted type and file
                           name for each image or not
     """
-    
+
     passing_data = []
     countImage_predicted_type = [0, 0, 0, 0, 0, 0, 0]
     for i in range(len(Input_data)):
         net_out_predict = Net(input_size, image_width, image_height,
-                              firstHidden, kernel_size, output_size)(Input_data[i].view(-1, 
-                              1, image_height, image_width))[0]
+                              firstHidden, kernel_size, output_size
+                              )(Input_data[i].view(-1, 1, image_height,
+                                                   image_width))[0]
         predicted_type = torch.argmax(net_out_predict)
         for Type in range(k):
             if predicted_type == 0:
@@ -412,9 +425,8 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
             else:
                 countImage_predicted_type[Type] += 1
                 passing_data.append([array_data[i][0], array_data[i][1]])
-                
+
     for i in range(len(path_List_training)-1):
         print(path_List_training[i], ":", countImage_predicted_type[i])
-    
+
     np.save('processed.npy', passing_data)
-    

@@ -11,6 +11,7 @@ import unittest
 
 import eisy.Neural_Network.CNN_Model_Raw as CNN
 
+
 class TestCNNModelTools(unittest.TestCase):
     def test_DataImporter_Training(self):
         k = 1
@@ -45,6 +46,7 @@ class TestCNNModelTools(unittest.TestCase):
         assert image_width <= 1000, 'Image size is too large.'
         assert image_height <= 1000, 'Image size is too large.'
 
+
 def test_Build_Data(self):
     Training = True
     k = 1
@@ -63,12 +65,14 @@ def test_Build_Data(self):
     assert image_width <= 1000, 'Image size is too large.'
     assert image_height <= 1000, 'Image size is too large.'
 
+
 def test_load_training_data(self):
     np_ndarray_file = 'training.npy'
     load_array_d = CNN.load_array_data(np_ndarray_file)
     assert type(np_ndarray_file) == str, \
         'Wrong type. The np_ndarray_file should be a string.'
-    
+
+
 def test_data_information(self):
     input_data = []
     IMG = np.random.rand(134, 200)
@@ -80,6 +84,7 @@ def test_data_information(self):
     assert type(array_data) == np.ndarray, \
         'Wrong type. The array_data should be a numpy array.'
 
+
 def test_plotting_data(self):
     input_data = []
     IMG = np.random.rand(134, 200)
@@ -89,6 +94,7 @@ def test_plotting_data(self):
     ploting_d = CNN.ploting_data(input_data, i)
     assert i <= len(input_data), \
         'Invalid i. i should fall in the range of dataset size.'
+
 
 def test_image_to_tensor(self):
     input_data = []
@@ -103,8 +109,8 @@ def test_image_to_tensor(self):
                                           image_height)
     assert type(array_data) == np.ndarray, \
         'Wrong type. The array_data should be a numpy array.'
-    assert max(image_to_tensor) >= 1, \
-	'normalization failed'
+    assert max(image_to_tensor) >= 1, 'normalization failed'
+
 
 def test_type_to_tensor(self):
     input_data = []
@@ -117,13 +123,15 @@ def test_type_to_tensor(self):
     assert type(array_data) == np.ndarray, \
         'Wrong type. The array_data should be a numpy array.'
 
+
 def test_data_separation(self):
     ratio_of_test = 0.2
     TRAIN = True
     TEST = False
     image_width = 200
     image_height = 134
-    tensor_data = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
+    tensor_data = torch.randn(image_height, image_width
+                              ).view(-1, 1, image_height, image_width)
     d_separation = CNN.data_separation(tensor_data, ratio_of_test,
                                        TRAIN, TEST)
     assert type(tensor_data) == torch.Tensor, \
@@ -132,10 +140,13 @@ def test_data_separation(self):
         'Invalid ratio. ratio_of_test should be in between 0 and 1.'
     assert TRAIN != TEST, 'Return only one type of sample in one time.'
 
+
 def test_learning(self):
     image_width = 200
     image_height = 134
-    training_sample_image = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
+    training_sample_image = torch.randn(image_height, image_width
+                                        ).view(-1, 1, image_height,
+                                               image_width)
     training_sample_type = torch.randn(1, 4)
     input_size = 1
     firstHidden = 8
@@ -154,10 +165,13 @@ def test_learning(self):
     assert kernel_size % 2 == 1, 'kernel_size should be an odd integer'
     assert learning <= 1, 'loss must be less than 1'
 
+
 def test_accuracy(self):
     image_width = 200
     image_height = 134
-    testing_sample_image = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
+    testing_sample_image = torch.randn(image_height, image_width
+                                       ).view(-1, 1, image_height,
+                                              image_width)
     testing_sample_type = torch.randn(1, 4)
     input_size = 1
     firstHidden = 8
@@ -172,13 +186,15 @@ def test_accuracy(self):
     assert kernel_size % 2 == 1, 'kernel_size should be an odd integer'
     assert accuracy <= 1, 'Maximum accuracy is set as 1'
 
+
 def test_type_prediction(self):
     k = 1
     input_size = 1
     image_width = 200
     image_height = 134
     path_List_training = ['testImage.png', 'training.npy']
-    tensor_data = torch.randn(image_height, image_width).view(-1, 1, image_height, image_width)
+    tensor_data = torch.randn(image_height, image_width
+                              ).view(-1, 1, image_height, image_width)
     input_data = []
     IMG = np.random.rand(134, 200)
     for i in range(1):
@@ -198,7 +214,8 @@ def test_type_prediction(self):
     assert k == len(path_List_training) - 1, \
         'Incorrect number of folders/paths'
     assert len(path_List_training) == 2, \
-        'Incorrect number of folders/paths.Classification/ Data Input must be 2; Bad, Passing'
+        'Incorrect number of folders/paths.Classification/ \
+        Data Input must be 2; Bad, Passing'
     assert k <= 10, 'Too many folders/paths.'
     assert type(path_List_training) == list, \
         'path_List_predict should be a list'
