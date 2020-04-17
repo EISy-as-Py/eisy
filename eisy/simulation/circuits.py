@@ -384,7 +384,7 @@ def cir_Randles_simplified(angular_freq, **circuit_elements):
                               inputted')
     solution_resistance = circuit_elements['Rs']
     parallel_resistance = circuit_elements['Rp']
-    constant_phase_elemen = circuit_elements['Q']
+    constant_phase_element = circuit_elements['Q']
     alpha = circuit_elements['alpha']
     sigma = circuit_elements['sigma']
 

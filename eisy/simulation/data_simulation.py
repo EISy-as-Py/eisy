@@ -47,11 +47,6 @@ def to_dataframe(freq_range, impedance_array, alteration=None,
                            keys.
     """
 
-    assert isinstance(decades, int),\
-        'the number of decades should be an integer'
-    assert high_freq >= low_freq,\
-        'the low frequency should be smaller than the high\
-frequency limit value. Check again.'
     np.testing.assert_almost_equal(len(freq_range[1]),
                                    impedance_array[0].shape[0], decimal=18,
                                    err_msg='the impedance is not correclty\
@@ -186,7 +181,8 @@ def circuit_simulation(freq_range, circuit_name, alteration=None,
 
     circuit_function = getattr(circuits, circuit_function_name)
 
-    assert callable(circuits) is True, 'the module name is not correct'
+    assert callable(circuit_function_name) is True, 'the module name is +\
+    not correct'
     assert circuit_function != 0, 'The function could not be found in the\
     indicated module.'
 

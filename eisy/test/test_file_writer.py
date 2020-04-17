@@ -70,7 +70,7 @@ class TestSimulationTools(unittest.TestCase):
         filename, serial_number = simulation_filename('RC_parallel',
                                                       save_location='./')
 
-        with open('test'+filename + ".csv", mode='r', newline='') as data_file:
+        with open('test'+filename + ".csv", mode='w', newline='') as data_file:
             write_metadata(data_file, serial_number, 'RC_parallel',
                            source='sim', C=1E-5, R=100)
             reader = csv.reader(data_file, delimiter=',')
@@ -94,7 +94,7 @@ class TestSimulationTools(unittest.TestCase):
         filename, serial_number = simulation_filename('RC_parallel',
                                                       save_location='./')
 
-        with open('test'+filename + ".csv", mode='r', newline='') as data_file:
+        with open('test'+filename + ".csv", mode='w', newline='') as data_file:
             write_data(data_file, freq_range, 'RC_parallel', C=1E-5, R=100)
         assert isinstance(freq_gen, np.ndarray), 'the frequency should be +\
         inputted as an array'

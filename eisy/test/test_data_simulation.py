@@ -93,7 +93,7 @@ class TestSimulationTools(unittest.TestCase):
         C = 10E-6  # F
         n_points = np.round(decades * (np.log10(int(high_freq)) -
                             np.log10(low_freq)))
-        f_range = circuits.freq_gen(high_freq, low_freq, decades=10)
+        freq_range = circuits.freq_gen(high_freq, low_freq, decades=10)
         circuit_name = 'RC_parallel'
         impedance_data = circuit_simulation(freq_range, circuit_name, C=C, R=R)
 
