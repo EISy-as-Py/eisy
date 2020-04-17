@@ -60,8 +60,8 @@ class TestSimulationTools(unittest.TestCase):
  be a float, not an integer'
         assert Capacitance <= 1, 'the capacitance value is probably too high.'
 
-        response = circuits.cir_RC_parallel(f_range[1], Resistance,
-                                            Capacitance)
+        response = circuits.cir_RC_parallel(f_range[1], R=Resistance,
+                                            C=Capacitance)
 
         assert len(response) == len(f_range[1]), 'The returned response\
             is not valid'
@@ -91,8 +91,8 @@ class TestSimulationTools(unittest.TestCase):
         assert np.positive(Capacitance), 'The input capacitance\
             is invalid'
 
-        response = circuits.cir_RC_series(f_range[1], Resistance,
-                                          Capacitance)
+        response = circuits.cir_RC_series(f_range[1], R=Resistance,
+                                          C=Capacitance)
 
         assert len(response) == len(f_range[1]), 'The returned response\
             is not valid'
@@ -123,8 +123,9 @@ class TestSimulationTools(unittest.TestCase):
         assert np.positive(Constant_phase_element), 'The input phase element\
             is invalid'
 
-        response = circuits.cir_RQ_parallel(f_range[1], Resistance,
-                                            Constant_phase_element, alpha)
+        response = circuits.cir_RQ_parallel(f_range[1], R=Resistance,
+                                            Q=Constant_phase_element,
+                                            alpha=alpha)
 
         assert len(response) == len(f_range[1]), 'The returned response\
             is not valid'
@@ -155,8 +156,9 @@ class TestSimulationTools(unittest.TestCase):
         assert np.positive(Constant_phase_element), 'The input phase element\
             is invalid'
 
-        response = circuits.cir_RQ_series(f_range[1], Resistance,
-                                          Constant_phase_element, alpha)
+        response = circuits.cir_RQ_series(f_range[1], R=Resistance,
+                                          Q=Constant_phase_element,
+                                          alpha=alpha)
 
         assert len(response) == len(f_range[1]), 'The returned response\
             is not valid'
@@ -189,8 +191,9 @@ class TestSimulationTools(unittest.TestCase):
         assert np.positive(Capacitance), 'The input capacitance\
             is invalid'
 
-        response = circuits.cir_RQ_series(f_range[1], Solution_Resistance,
-                                          Parallel_Resistance, Capacitance)
+        response = circuits.cir_RQ_series(f_range[1], Rs=Solution_Resistance,
+                                          Rp=Parallel_Resistance,
+                                          C=Capacitance)
 
         assert len(response) == len(f_range[1]), 'The returned response\
             is not valid'
@@ -238,11 +241,13 @@ class TestSimulationTools(unittest.TestCase):
         assert alpha_1 > 0 or alpha_1 <= 1, 'The values of alpha is invalid'
         assert alpha_2 > 0 or alpha_2 <= 1, 'The values of alpha is invalid'
 
-        response = circuits.cir_RsRQRQ(f_range[1], Solution_Resistance,
-                                       Parallel_Resistance_1,
-                                       Constant_phase_element_1, alpha_1,
-                                       Parallel_Resistance_2,
-                                       Constant_phase_element_2, alpha_2)
+        response = circuits.cir_RsRQRQ(f_range[1], Rs=Solution_Resistance,
+                                       Rp1=Parallel_Resistance_1,
+                                       Q1=Constant_phase_element_1,
+                                       alpha_1=alpha_1,
+                                       Rp2=Parallel_Resistance_2,
+                                       Q2=Constant_phase_element_2,
+                                       alpha_2=alpha_2)
 
         assert len(response) == len(f_range[1]), 'The returned response\
             is not valid'
@@ -286,11 +291,11 @@ class TestSimulationTools(unittest.TestCase):
         assert np.positive(Capacitance_2), 'The input capacitance\
             is invalid'
 
-        response = circuits.cir_RsRCRC(f_range[1], Solution_Resistance,
-                                       Parallel_Resistance_1,
-                                       Capacitance_1,
-                                       Parallel_Resistance_2,
-                                       Capacitance_2)
+        response = circuits.cir_RsRCRC(f_range[1], Rs=Solution_Resistance,
+                                       Rp1=Parallel_Resistance_1,
+                                       C1=Capacitance_1,
+                                       Rp2=Parallel_Resistance_2,
+                                       C2=Capacitance_2)
 
         assert len(response) == len(f_range[1]), 'The returned response\
             is not valid'
@@ -334,11 +339,11 @@ class TestSimulationTools(unittest.TestCase):
         assert np.positive(sigma), 'The input coefficient is non-positive'
 
         response = circuits.cir_Randles_simplified(f_range[1],
-                                                   Solution_Resistance,
-                                                   Parallel_Resistance,
-                                                   alpha,
-                                                   sigma,
-                                                   Constant_phase_element)
+                                                   Rs=Solution_Resistance,
+                                                   Rp=Parallel_Resistance,
+                                                   alpha=alpha,
+                                                   sigma=sigma,
+                                                   Q=Constant_phase_element)
 
         assert len(response) == len(f_range[1]), 'The returned response\
             is not valid'

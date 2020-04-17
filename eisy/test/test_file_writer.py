@@ -68,12 +68,11 @@ class TestSimulationTools(unittest.TestCase):
 
     def test_write_metadata(self):
         filename, serial_number = simulation_filename('RC_parallel',
-                                                      source='sim',
                                                       save_location='./')
 
         with open('test'+filename + ".csv", mode='r', newline='') as data_file:
             write_metadata(data_file, serial_number, 'RC_parallel',
-                           C=1E-5, R=100)
+                           source='sim', C=1E-5, R=100)
             reader = csv.reader(data_file, delimiter=',')
             rows = [row for row in reader]
             assert serial_number in rows[0][1], 'the first row of the +\
@@ -93,7 +92,6 @@ class TestSimulationTools(unittest.TestCase):
     def test_write_data(self):
         freq_range = np.array([1, 100, 10])
         filename, serial_number = simulation_filename('RC_parallel',
-                                                      source='sim',
                                                       save_location='./')
 
         with open('test'+filename + ".csv", mode='r', newline='') as data_file:

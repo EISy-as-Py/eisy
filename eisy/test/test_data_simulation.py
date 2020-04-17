@@ -26,8 +26,8 @@ class TestSimulationTools(unittest.TestCase):
         C = 10E-6  # F
         n_points = np.round(decades * np.log10(int(high_freq)) -
                             np.log10(low_freq))
-        f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
-        circuit = circuits.cir_RC_parallel(f_range[1], R, C)
+        f_range = circuits.freq_gen(high_freq, low_freq, decades=10)
+        circuit = circuits.cir_RC_parallel(f_range[1], R=R, C=C)
         impedance_arr = impedance_array(circuit)
         dataframe = to_dataframe(f_range, impedance_arr)
 
@@ -58,13 +58,13 @@ class TestSimulationTools(unittest.TestCase):
     def test_impedance_array(self):
         high_freq = 10**8  # Hz
         low_freq = 0.01  # Hz
-        decades = 7
+        decades = 10
         R = 100  # ohm
         C = 10E-6  # F
         n_points = np.round(decades * np.log10(int(high_freq)) -
                             np.log10(low_freq))
-        f_range = circuits.freq_gen(high_freq, low_freq, decades=7)
-        circuit = circuits.cir_RC_parallel(f_range[1], R, C)
+        f_range = circuits.freq_gen(high_freq, low_freq, decades=10)
+        circuit = circuits.cir_RC_parallel(f_range[1], R=R, C=C)
         impedance = impedance_array(circuit)
         assert isinstance(decades, int), 'the number of decades should\
  be an integer'
@@ -88,6 +88,7 @@ class TestSimulationTools(unittest.TestCase):
     def test_circuit_simulation(self):
         high_freq = 10**6  # Hz
         low_freq = 0.01  # Hz
+        decades = 10
         R = 100  # ohm
         C = 10E-6  # F
         n_points = np.round(decades * (np.log10(int(high_freq)) -

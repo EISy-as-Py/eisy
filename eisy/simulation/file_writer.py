@@ -163,8 +163,6 @@ def simulation_filename(circuit_name, alteration=None,
     date = time.strftime('%y%m%d', time.localtime())
     assert isinstance(date, str), 'the date should be a string'
     assert len(date) == 6, 'The date string should be 6 characters long'
-    assert len(number) == 4, 'the serial number should be four characters +\
-    long'
 
     i = 1
     assert isinstance(i, int), 'the serial number counters should be an +\
@@ -172,6 +170,8 @@ def simulation_filename(circuit_name, alteration=None,
 
     while i < 9999:
         number = str(i).zfill(4)
+        assert len(number) == 4, 'the serial number should be four +\
+        characters long'
 
         if alteration and noisescale >= 0.2:
             filename = str('{}-{}_sim_{}_{}'.format(date, number,
