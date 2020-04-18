@@ -57,6 +57,7 @@ class EISDataImport():
         np.save(path_list[-1], training_data)
         for i in range(len(path_list)-1):
             print(path_List_training[i], ":", countImage_Training[i])
+        return training_data
 
     def DataImporter_Predict(self, k, path_List_predict,
                              image_width, image_height):
@@ -100,6 +101,7 @@ class EISDataImport():
         np.save(path_list[-1], training_data)
         for i in range(len(path_list)-1):
             print(path_List_predict[i], ":", countImage_Predict[i])
+        return training_data
 
 
 def Build_Data(Training, Predict, k, path_list, image_width, image_height):
@@ -122,9 +124,13 @@ def Build_Data(Training, Predict, k, path_list, image_width, image_height):
     """
     Class = EISDataImport()
     if Training is True:
-        Class.DataImporter_Training(k, path_list, image_width, image_height)
+        training_data = Class.DataImporter_Training(k, path_list, image_width,
+                                                    image_height)
+        return training_data
     if Predict is True:
-        Class.DataImporter_Predict(k, path_list, image_width, image_height)
+        training_data = Class.DataImporter_Predict(k, path_list, image_width,
+                                                   image_height)
+        return training_data
 
 
 def load_array_data(np_ndarray_file):  # Data Status Check
@@ -160,6 +166,7 @@ def data_information(array_data):
     print("Size of imput_data:", len(array_data))
     print("Size of image(after rescale):", array_data[0][1].shape[1],
           "x", array_data[0][1].shape[0])
+    return
 
 
 def plotting_data(input_data, i):
@@ -176,6 +183,7 @@ def plotting_data(input_data, i):
     print(input_data[i][0])  # Print out the file name (path).
     plt.imshow(input_data[i][1])
     plt.show()
+    return
 
 
 class Net(nn.Module):
@@ -370,6 +378,7 @@ def learning(training_sample_image, training_sample_type, input_size,
             optimizer.step()
 
         print(loss)
+    return loss
 
 
 def accuracy(testing_sample_image, testing_sample_type, input_size,
@@ -468,3 +477,4 @@ def type_prediction(k, path_List_training, tensor_data, array_data,
 
     for i in range(len(path_List_training)-1):
         print(path_List_training[i], ":", countImage_predicted_type[i])
+    return predicted_type

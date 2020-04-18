@@ -1,6 +1,6 @@
-from .CNN_Model import *
+# from .CNN_Model import *
 from .version import __version__
 
 __all__ = [__version__]
 
-name = 'Neural_Network'
+# name = 'Neural_Network'

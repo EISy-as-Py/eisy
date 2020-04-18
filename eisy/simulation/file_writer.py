@@ -10,8 +10,7 @@ import time
 
 from . import alterations
 # from . import circuits
-from .data_simulation import (to_dataframe, impedance_array,
-                              circuit_simulation)
+from .data_simulation import circuit_simulation
 from .plotting import nyquist_plot, log_freq_plot
 
 
@@ -358,7 +357,7 @@ def write_data(data_file, freq_range, circuit_name, alteration=None,
 
     if alteration:
         noise_function = getattr(alterations, alteration)
-        dataframe = noise_function(df, noisescale)
+        dataframe = noise_function(dataframe, noisescale)
     else:
         dataframe = dataframe
     dataframe.to_csv(data_file, mode='a')

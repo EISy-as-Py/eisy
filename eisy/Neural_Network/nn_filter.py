@@ -57,7 +57,7 @@ def make_training_data(IMG_SIZE, NOISE, IDEAL):
                     elif label == IDEAL:
                         idealcount += 1
 
-                except Exception as e:
+                except Exception:
                     pass
 
     np.random.shuffle(training_data)

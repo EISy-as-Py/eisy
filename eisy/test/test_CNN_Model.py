@@ -19,7 +19,7 @@ class TestCNNModelTools(unittest.TestCase):
 
     def test_DataImporter_Training(self):
         k = 1
-        path_List_training = ['.', 'training.npy']
+        path_List_training = ['./eisy/test/', 'training.npy']
         image_width = 200
         image_height = 134
         train_d = CNN.EISDataImport.DataImporter_Training(self, k,
@@ -33,6 +33,8 @@ class TestCNNModelTools(unittest.TestCase):
             'path_List_training should be a list'
         assert image_width <= 1000, 'Image size is too large'
         assert image_height <= 1000, 'Image size is too large'
+        assert isinstance(train_d, list), 'The images are not \
+        imported in the correct format'
 
     def test_DataImporter_Predict(self):
         k = 1
@@ -51,6 +53,8 @@ class TestCNNModelTools(unittest.TestCase):
             'path_List_predict should be a list'
         assert image_width <= 1000, 'Image size is too large.'
         assert image_height <= 1000, 'Image size is too large.'
+        assert isinstance(predict_d, list), 'The images are not \
+        imported in the correct format'
 
     def test_Build_Data(self):
         Training = True
@@ -71,6 +75,8 @@ class TestCNNModelTools(unittest.TestCase):
         assert type(path_list) == list, 'path_list should be a list.'
         assert image_width <= 1000, 'Image size is too large.'
         assert image_height <= 1000, 'Image size is too large.'
+        assert isinstance(Build_d, list), 'The images are not \
+        in the correct format'
 
     def test_load_array_data(self):
         np_ndarray_file = 'training.npy'
@@ -78,6 +84,8 @@ class TestCNNModelTools(unittest.TestCase):
         load_array_d = CNN.load_array_data(np_ndarray_file)
         assert type(np_ndarray_file) == str, \
             'Wrong type. The np_ndarray_file should be a string.'
+        assert isinstance(load_array_d, np.ndarray), 'the correct format \
+        should be a numpy array'
 
     def test_data_information(self):
         input_data = []
@@ -87,7 +95,7 @@ class TestCNNModelTools(unittest.TestCase):
         np.save('training.npy', input_data)
         array_data = np.load('training.npy', allow_pickle=True)
 
-        data_information = CNN.data_information(array_data)
+        # data_information = CNN.data_information(array_data)
         assert type(array_data) == np.ndarray, \
             'Wrong type. The array_data should be a numpy array.'
 
@@ -97,10 +105,11 @@ class TestCNNModelTools(unittest.TestCase):
         for j in range(5):
             input_data.append(['path', np.array(IMG), np.eye(4)[1]])
         i = 1
-        ploting_d = CNN.plotting_data(input_data, i)
+        # ploting_d = CNN.plotting_data(input_data, i)
 
         assert i <= len(input_data), \
             'Invalid i. i should fall in the range of dataset size.'
+        assert isinstance(input_data, list), 'the input_data should be a list'
 
     def test_image_to_tensor(self):
         input_data = []
@@ -116,6 +125,8 @@ class TestCNNModelTools(unittest.TestCase):
                                               image_height)
         assert type(array_data) == np.ndarray, \
             'Wrong type. The array_data should be a numpy array.'
+        assert isinstance(image_to_tensor, torch.Tensor), 'the correct format \
+        should be a tensor'
 
     def test_type_to_tensor(self):
         input_data = []
@@ -128,6 +139,8 @@ class TestCNNModelTools(unittest.TestCase):
         type_to_tensor = CNN.type_to_tensor(array_data)
         assert type(array_data) == np.ndarray, \
             'Wrong type. The array_data should be a numpy array.'
+        assert isinstance(type_to_tensor, torch.Tensor), 'the correct format \
+        should be a tensor'
 
     def test_data_separation(self):
         ratio_of_test = 0.2
@@ -147,6 +160,8 @@ class TestCNNModelTools(unittest.TestCase):
         assert 0 <= ratio_of_test <= 1, \
             'Invalid ratio. ratio_of_test should be in between 0 and 1.'
         assert TRAIN != TEST, 'Return only one type of sample in one time.'
+        assert isinstance(d_separation, torch.Tensor), 'the correct format \
+        should be a tensor'
 
     def test_learning(self):
         image_width = 200
@@ -168,10 +183,13 @@ class TestCNNModelTools(unittest.TestCase):
                                 input_size, image_width, image_height,
                                 firstHidden, kernel_size, output_size,
                                 learning_rate, BATCH_SIZE, EPOCHS)
+
         assert len(training_sample_image) == len(training_sample_type), \
             'The number of image should equals to the number of label.'
         assert kernel_size <= 7, 'Maximum kernel_size is set as 7.'
         assert kernel_size % 2 == 1, 'kernel_size should be an odd integer'
+        assert isinstance(learning, torch.Tensor), 'the returned loss value \
+        should be a numerical value'
 
     def test_accuracy(self):
         image_width = 200
@@ -189,10 +207,13 @@ class TestCNNModelTools(unittest.TestCase):
         accuracy = CNN.accuracy(testing_sample_image, testing_sample_type,
                                 input_size, image_width, image_height,
                                 firstHidden, kernel_size, output_size)
+
         assert len(testing_sample_image) == len(testing_sample_type), \
             'The number of image should equals to the number of label'
         assert kernel_size <= 7, 'Maximum kernel_size is set as 7.'
         assert kernel_size % 2 == 1, 'kernel_size should be an odd integer'
+        assert isinstance(accuracy, float), 'the returned accuracy value \
+        should be a numerical value'
 
     def test_type_prediction(self):
         k = 1
@@ -222,6 +243,7 @@ class TestCNNModelTools(unittest.TestCase):
                                               image_height, firstHidden,
                                               kernel_size, output_size,
                                               detailed_information, j)
+
         assert k == len(path_List_training) - 1, \
             'Incorrect number of folders/paths'
         assert k <= 10, 'Too many folders/paths.'
@@ -235,3 +257,5 @@ class TestCNNModelTools(unittest.TestCase):
         assert image_height <= 1000, 'Image size is too large.'
         assert kernel_size <= 7, 'Maximum kernel_size is set as 7.'
         assert kernel_size % 2 == 1, 'kernel_size should be an odd integer'
+        assert isinstance(type_prediction, torch.Tensor), 'the predicted \
+        type should be a string'

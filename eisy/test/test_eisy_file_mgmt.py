@@ -35,17 +35,13 @@ class TestFileManagement(unittest.TestCase):
 
         # Test if it catches a bad path
         try:
-            a = eisy_file_mgmt.new_config_import("/badpath/",
-                                                 save=False,
-                                                 interact=False,
-                                                 popup=False)
+            eisy_file_mgmt.new_config_import("/badpath/",
+                                             save=False,
+                                             interact=False,
+                                             popup=False)
             raise AssertionError("Didn't catch Bad YAML config Path")
         except AssertionError:
             pass
-
-        # Now run the save=True in order to move on
-        a = eisy_file_mgmt.new_config_import(save=True, interact=False,
-                                             popup=False)
 
     def test_get_config_import(self):
         """
@@ -70,7 +66,6 @@ class TestFileManagement(unittest.TestCase):
         # Otherwise, function should pass using defaults
         config_dict = eisy_file_mgmt.get_config_import(interact=False)
 
-
     def test_set_config_import(self):
         """
 
@@ -88,6 +83,8 @@ class TestFileManagement(unittest.TestCase):
                     "badpath/config.yaml")
         except IsADirectoryError:
             pass
+        assert isinstance(config_dict, dict), 'the configuration dictionary\
+        should be a dictionary'
 
     def test_get_file_list(self):
         """
@@ -98,8 +95,9 @@ class TestFileManagement(unittest.TestCase):
         # Ask for list of test files in the test directory
         test_dir = "eisy/test/data/"
         files, file_path = eisy_file_mgmt.get_file_list(dir_path=test_dir,
-                                    str_has=['.'], str_inc=['.'],
-                                    interact=False)
+                                                        str_has=['.'],
+                                                        str_inc=['.'],
+                                                        interact=False)
         assert isinstance(files, tuple), "File list must be tuple"
 
         assert os.path.isdir(file_path), "File Path has failed!"
@@ -119,9 +117,3 @@ class TestFileManagement(unittest.TestCase):
             b, msg2, = eisy_file_mgmt.check_dir_path("badpath/")
         except AssertionError:
             pass
-
-
-
-
-
-
