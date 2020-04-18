@@ -65,6 +65,7 @@ class TestFileManagement(unittest.TestCase):
 
         # Otherwise, function should pass using defaults
         config_dict = eisy_file_mgmt.get_config_import(interact=False)
+        assert isinstance(config_dict, dict), "config file is not a dictionary"
 
     def test_set_config_import(self):
         """
