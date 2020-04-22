@@ -1,14 +1,8 @@
-# import csv
-# import os
-# import sys
-# import time
-
 import numpy as np
 import pandas as pd
 
 from . import circuits
 from . import alterations
-# from .circuits import *
 
 
 def to_dataframe(freq_range, impedance_array, alteration=None,
@@ -76,10 +70,8 @@ the impedance response should be populated by complex numberes'
         noise_function = getattr(alterations, alteration)
         impedance_response_df = noise_function(impedance_response_df,
                                                noisescale)
-    else:
-        impedance_data_df = impedance_response_df
 
-    return impedance_data_df
+    return impedance_response_df
 
 
 def impedance_array(complex_impedance):
@@ -190,4 +182,12 @@ indicated module.'
     impedance_data_df = to_dataframe(freq_range, impedance_data,
                                      alteration=alteration,
                                      noisescale=noisescale)
+    if alteration == 'freq_noise':
+        complex_impedance_noise = circuit_function(
+                                impedance_data_df['angular_freq_noise [1/s]'],
+                                **circuit_elements)
+        impedance_data_df['Im_Z_noise [ohm]'] = \
+            complex_impedance_noise.to_numpy().imag
+        impedance_data_df['Re_Z_noise [ohm]'] = \
+            complex_impedance_noise.to_numpy().real
     return impedance_data_df

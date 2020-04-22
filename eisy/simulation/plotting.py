@@ -1,11 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
-# import pandas as pd
 
 from .alterations import normalize
 from matplotlib import rcParams
 
-rcParams['figure.figsize'] = (8, 6)
+# rcParams['figure.figsize'] = (8, 6)
 rcParams['savefig.dpi'] = 100
 rcParams['font.family'] = 'serif'
 rcParams['font.size'] = 12
@@ -76,33 +75,49 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
     -------
     The nyquist plot of the impedance response to be investigated.
     '''
-    fig, ax = plt.subplots()
+    plt.figure(figsize=(6, 6))
     if scatter:
         if alteration:
-            ax.scatter(response['Re_Z [ohm]'], -response['Im_Z_noise [ohm]'],
-                       **kwargs)
+            if 'Im_Z_noise [ohm]' in list(response) and\
+                 'Re_Z_noise [ohm]' in list(response):
+                plt.scatter(response['Re_Z_noise [ohm]'],
+                            -response['Im_Z_noise [ohm]'], **kwargs)
+            elif ('Im_Z_noise [ohm]') in list(response):
+                plt.scatter(response['Re_Z [ohm]'],
+                            -response['Im_Z_noise [ohm]'], **kwargs)
+            elif ('Re_Z_noise [ohm]') in list(response):
+                plt.scatter(response['Re_Z_noise [ohm]'],
+                            -response['Im_Z [ohm]'], **kwargs)
         else:
-            ax.scatter(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
-                       **kwargs)
+            plt.scatter(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
+                        **kwargs)
     else:
         if alteration:
-            ax.plot(response['Re_Z [ohm]'], -response['Im_Z_noise [ohm]'],
-                    'o--', **kwargs)
+            if 'Im_Z_noise [ohm]' in list(response) and\
+                 'Re_Z_noise [ohm]' in list(response):
+                plt.plot(response['Re_Z_noise [ohm]'],
+                         -response['Im_Z_noise [ohm]'], 'o--', **kwargs)
+            elif ('Im_Z_noise [ohm]') in list(response):
+                plt.plot(response['Re_Z [ohm]'],
+                         -response['Im_Z_noise [ohm]'], 'o--',  **kwargs)
+            elif ('Re_Z_noise [ohm]') in list(response):
+                plt.plot(response['Re_Z_noise [ohm]'],
+                         -response['Im_Z [ohm]'], 'o--', **kwargs)
         else:
-            ax.plot(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
-                    'o--', **kwargs)
+            plt.plot(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
+                     'o--', **kwargs)
 
     max_real = response['Re_Z [ohm]'].max()
-    ax.set_aspect('equal')
+    # ax.set_aspect('equal')
 
-    ax.set_xlim([0, max_real+0.1*max_real])
-    ax.set_ylim([0, max_real+0.1*max_real])
+    plt.xlim([0, max_real+0.1*max_real])
+    plt.ylim([0, max_real+0.1*max_real])
 
     if axis_off:
-        ax.axis('off')
+        plt.axis('off')
     else:
-        ax.set_xlabel(r'Z$_{real}$ [$\Omega$]')
-        ax.set_ylabel(r'-Z$_{imag}$ [$\Omega$]')
+        plt.xlabel(r'Z$_{real}$ [$\Omega$]')
+        plt.ylabel(r'-Z$_{imag}$ [$\Omega$]')
 
     if save_image:
         filename = str(save_location+filename)
@@ -167,33 +182,51 @@ def log_freq_plot(response, filename=None, axis_off=None, scatter=None,
                    plot of the real and imaginary parts of the impedance
                    response to be investigated versus the frequency.
     '''
-    fig, ax = plt.subplots()
+    plt.figure(figsize=(6, 5))
     if alteration:
-        ax.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'], 'o--',
-                    response['freq [Hz]'], -response['Im_Z_noise [ohm]'],
-                    'o--', **kwargs)
+        if 'Im_Z_noise [ohm]' in list(response) and\
+           'Re_Z_noise [ohm]' in list(response):
+            plt.semilogx(response['freq [Hz]'], response['Re_Z_noise [ohm]'],
+                         'o--', response['freq [Hz]'],
+                         -response['Im_Z_noise [ohm]'], 'o--', **kwargs)
+        elif ('freq_noise [Hz]') in list(response):
+            plt.semilogx(response['freq_noise [Hz]'],
+                         response['Re_Z_noise [ohm]'], 'o--',
+                         response['freq_noise [Hz]'],
+                         -response['Im_Z_noise [ohm]'], 'o--', **kwargs)
+        elif ('Re_Z_noise [ohm]') in list(response) and 'Im_Z_noise [ohm]' \
+                not in list(response):
+            plt.semilogx(response['freq [Hz]'], response['Re_Z_noise [ohm]'],
+                         'o--', response['freq [Hz]'],
+                         -response['Im_Z [ohm]'], 'o--', **kwargs)
+        elif ('Im_Z_noise [ohm]') in list(response) and 'Re_Z_noise [ohm]' \
+                not in list(response):
+            plt.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'],
+                         'o--', response['freq [Hz]'],
+                         -response['Im_Z_noise [ohm]'], 'o--', **kwargs)
     else:
-        ax.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'], 'o--',
-                    response['freq [Hz]'], -response['Im_Z [ohm]'], 'o--',
-                    **kwargs)
+        plt.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'], 'o--',
+                     response['freq [Hz]'], -response['Im_Z [ohm]'], 'o--',
+                     **kwargs)
 
     if axis_off:
-        ax.axis('off')
+        plt.axis('off')
     else:
-        ax.set_xlabel(r'Frequency (Hz)')
-        ax.set_ylabel(r'Impedance [$\Omega$]')
-        ax.legend(('Real Z', 'Imag Z'))
+        plt.xlabel(r'Frequency (Hz)')
+        plt.ylabel(r'Impedance [$\Omega$]')
+        plt.legend(('Real Z', 'Imag Z'))
 
     if save_image:
         filename = str(save_location+filename)
         plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight',
                     transparent=transparent)
 
-    plt.show()
-    return
+    plot_show = plt.show()
+    return plot_show
 
 
-def rgb_plot(red_array, green_array=[0, 0], blue_array=[0, 0], plot=True):
+def rgb_plot(red_array, green_array=[0, 0], blue_array=[0, 0], plot=True,
+             save_image=None, filename=None, save_location=None):
     '''Returns a plot which represents the input data as a color gradient of
     one of the three color channels available: red, blue or green.
 
@@ -283,5 +316,8 @@ def rgb_plot(red_array, green_array=[0, 0], blue_array=[0, 0], plot=True):
         # for i in [0,1,2]:
         #    ax[i].axis('off')
     # big_plot = rgb2hsv(big_plot)
+    if save_image:
+        filename = str(save_location+filename)
+        plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight')
 
-    return big_plot
+    return

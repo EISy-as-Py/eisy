@@ -1,13 +1,12 @@
 import math
 import numpy as np
-# import pandas as pd
 import random
 from scipy.special import erfinv
 
 
 def imag_noise(dataframe, noisescale=0.4):
     '''Returns a dataframe with noise'''
-    fibonacci = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+    fibonacci = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]
 
     y_noise = []
     for i in range(dataframe.shape[0]):
@@ -25,25 +24,29 @@ def imag_noise(dataframe, noisescale=0.4):
     return dataframe
 
 
-def random_imag_noise(dataframe, noisescale=0.4):
-    fibonacci = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
-    rd_number = random.choice(fibonacci)
-    y_noise = []
-    pts = dataframe.shape[0]
-    for i in range(pts):
-        yactual = dataframe['Im_Z [ohm]'][i]
+def real_noise(dataframe, noisescale=0.4):
+    '''Returns a dataframe with noise'''
+    fibonacci = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]
 
-        y_noise.append(yactual+noisescale*(yactual.max()-yactual.min()
-                                           )*np.random.normal(rd_number))
+    x_noise = []
+    for i in range(dataframe.shape[0]):
+        rd_number = random.choice(fibonacci)
+        if rd_number % 2 == 0:
+            x_noise.append(dataframe['Re_Z [ohm]'][i] + noisescale *
+                           (dataframe['Re_Z [ohm]'][i]) *
+                           math.cos(dataframe['Re_Z [ohm]'][i]))
+        else:
+            x_noise.append(dataframe['Re_Z [ohm]'][i] + noisescale *
+                           (dataframe['Re_Z [ohm]'][i]) *
+                           math.sin(dataframe['Re_Z [ohm]'][i]))
 
-    dataframe['Im_Z_noise [ohm]'] = y_noise
-    # dataframe['Re_Z_noise [ohm]'] = y_noise
+    dataframe['Re_Z_noise [ohm]'] = x_noise
     return dataframe
 
 
 def freq_noise(dataframe, noisescale=0.4):
     '''Returns a dataframe with noise'''
-    fibonacci = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+    fibonacci = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]
 
     f_noise = []
     w_noise = []
@@ -70,35 +73,28 @@ def freq_noise(dataframe, noisescale=0.4):
     return dataframe
 
 
-def real_noise(dataframe, noisescale=0.4):
-    '''Returns a dataframe with noise'''
-    fibonacci = [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
-
-    x_noise = []
-    for i in range(dataframe.shape[0]):
-        rd_number = random.choice(fibonacci)
-        if rd_number % 2 == 0:
-            x_noise.append(dataframe['Re_Z [ohm]'][i] + noisescale *
-                           (dataframe['Re_Z [ohm]'][i]) *
-                           math.cos(dataframe['Re_Z [ohm]'][i]))
-        else:
-            x_noise.append(dataframe['Re_Z [ohm]'][i] + noisescale *
-                           (dataframe['Re_Z [ohm]'][i]) *
-                           math.sin(dataframe['Re_Z [ohm]'][i]))
-
-    dataframe['Re_Z_noise [ohm]'] = x_noise
-    return dataframe
-
-
-def complex_noise(dataframe, noisescale=0.4):
-    '''Returns a dataframe with random noise in the real adn imaginary
+def complex_noise(dataframe, noisescale):
+    '''Returns a dataframe with noise in the real and imaginary +
        part of the impedance'''
-    dataframe_y = imag_noise(dataframe, noisescale)
-    dataframe = real_noise(dataframe_y, noisescale)
+
+    noise = []
+    real_noisy = []
+    imag_noisy = []
+    for i in range(len(dataframe.index)):
+        rdm1 = random.random()
+        noise.append(np.sqrt(2)*noisescale*erfinv(2*rdm1-1))
+        rdm2 = random.random()
+        real_noisy.append(dataframe['Re_Z [ohm]'][i] +
+                          noise[i]*np.cos(rdm2*2*np.pi))
+        imag_noisy.append(dataframe['Im_Z [ohm]'][i] +
+                          noise[i]*np.sin(rdm2*2*np.pi))
+
+    dataframe['Re_Z_noise [ohm]'] = real_noisy
+    dataframe['Im_Z_noise [ohm]'] = imag_noisy
     return dataframe
 
 
-def current_noise(dataframe, voltage_amplitude, amplitude):
+def current_noise(dataframe, noisescale, voltage_amplitude=0.01):
     '''Returns a dataframe with random noise in the real adn imaginary +
        part of the impedance'''
 
@@ -109,7 +105,7 @@ def current_noise(dataframe, voltage_amplitude, amplitude):
     current_noise = []
     for i in range(len(current)):
         rdm1 = random.random()
-        noise.append(np.sqrt(2)*amplitude*erfinv(2*rdm1-1))
+        noise.append(np.sqrt(2)*noisescale*erfinv(2*rdm1-1))
         rdm2 = random.random()
         real.append(current.to_numpy().real[i]+noise[i]*np.cos(rdm2*2*np.pi))
         imag.append(current.to_numpy().imag[i]+noise[i]*np.sin(rdm2*2*np.pi))
@@ -121,7 +117,7 @@ def current_noise(dataframe, voltage_amplitude, amplitude):
     return dataframe
 
 
-def voltage_noise(dataframe, voltage_amplitude, amplitude):
+def voltage_noise(dataframe, noisescale, voltage_amplitude=0.01):
     '''Returns a dataframe with random noise in the real adn imaginary +
        part of the impedance'''
 
@@ -130,7 +126,7 @@ def voltage_noise(dataframe, voltage_amplitude, amplitude):
     voltage_noise = []
     for i in range(len(current)):
         rdm1 = random.random()
-        noise.append(np.sqrt(2)*amplitude*erfinv(2*rdm1-1))
+        noise.append(np.sqrt(2)*noisescale*erfinv(2*rdm1-1))
         voltage_noise.append(voltage_amplitude+noise[i])
 
     complex_impedance = voltage_noise/current
@@ -139,7 +135,7 @@ def voltage_noise(dataframe, voltage_amplitude, amplitude):
     return dataframe
 
 
-def iv_noise(dataframe, voltage_amplitude, amplitude):
+def iv_noise(dataframe, noisescale, voltage_amplitude=0.01):
     '''Returns a dataframe with random noise in the real adn imaginary +
        part of the impedance'''
 
@@ -151,7 +147,7 @@ def iv_noise(dataframe, voltage_amplitude, amplitude):
     voltage_noise = []
     for i in range(len(current)):
         rdm1 = random.random()
-        noise.append(np.sqrt(2)*amplitude*erfinv(2*rdm1-1))
+        noise.append(np.sqrt(2)*noisescale*erfinv(2*rdm1-1))
         voltage_noise.append(voltage_amplitude+noise[i])
         rdm2 = random.random()
         real.append(current.to_numpy().real[i]+noise[i]*np.cos(rdm2*2*np.pi))
@@ -190,5 +186,6 @@ def normalize(impedance_array):
         impedance_array += abs(min(impedance_array))
     if max(impedance_array) > 1:
         normalized_impedance_array = impedance_array/max(impedance_array)
-
+    else:
+        normalized_impedance_array = impedance_array
     return normalized_impedance_array

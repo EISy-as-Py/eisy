@@ -1,17 +1,12 @@
-# import csv
 import glob
 import os
-# import sys
 import time
 
-
-# import numpy as np
-# import pandas as pd
+import numpy as np
 
 from . import alterations
-# from . import circuits
 from .data_simulation import circuit_simulation
-from .plotting import nyquist_plot, log_freq_plot
+from .plotting import nyquist_plot, log_freq_plot, rbg_plot
 
 
 def file_writer(freq_range, circuit_name, alteration=None, noisescale=None,
@@ -437,7 +432,7 @@ def save_plots(response, filename, save_location='simuation_data/',
                      alteration=alteration, transparent=transparent,
                      axis_off=axis_off, save_image=save_image,
                      scatter=scatter)
-    if plot_type == 'log_freq':
+    elif plot_type == 'log_freq':
         filename = filename + '_log-freq'
 
         save_location = save_location + 'log_freq/'
@@ -448,7 +443,32 @@ def save_plots(response, filename, save_location='simuation_data/',
                       alteration=alteration,  save_image=save_image,
                       axis_off=axis_off, scatter=None, transparent=transparent)
 
-    if plot_type == 'both':
+    elif plot_type == 'rgb':
+        filename = filename + '_rgb'
+        save_location = save_location + 'rgb/'
+        if not os.path.exists(save_location):
+            os.makedirs(save_location)
+        rbg_plot(np.log10(response['freq [Hz]']), response['Re_Z_noise [ohm]'],
+                 response['Im_Z [ohm]'])
+    elif plot_type == 'two':
+        filename = filename + '_nyquist'
+        save_location = save_location + 'nyquist/'
+        if not os.path.exists(save_location):
+            os.makedirs(save_location)
+        nyquist_plot(response, filename=filename, save_location=save_location,
+                     alteration=alteration, transparent=transparent,
+                     axis_off=axis_off, save_image=save_image,
+                     scatter=scatter)
+
+        filename = filename + '_log-freq'
+        save_location = save_location + '../log_freq/'
+        if not os.path.exists(save_location):
+            os.makedirs(save_location)
+
+        log_freq_plot(response, filename=filename, save_location=save_location,
+                      alteration=alteration, save_image=save_image,
+                      axis_off=axis_off, scatter=None, transparent=transparent)
+    elif plot_type == 'all':
         filename = filename + '_nyquist'
         save_location = save_location + 'nyquist/'
         if not os.path.exists(save_location):
@@ -467,4 +487,12 @@ def save_plots(response, filename, save_location='simuation_data/',
                       alteration=alteration, save_image=save_image,
                       axis_off=axis_off, scatter=None, transparent=transparent)
 
+        filename = filename + '_rgb'
+        save_location = save_location + '../rgb/'
+        if not os.path.exists(save_location):
+            os.makedirs(save_location)
+
+        rbg_plot(np.log10(response['freq [Hz]']), response['Re_Z_noise [ohm]'],
+                 response['Im_Z [ohm]'], save_image=save_image,
+                 save_location=save_location, filename=filename)
     return
