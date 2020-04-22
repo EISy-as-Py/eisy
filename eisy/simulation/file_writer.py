@@ -6,7 +6,7 @@ import numpy as np
 
 from . import alterations
 from .data_simulation import circuit_simulation
-from .plotting import nyquist_plot, log_freq_plot, rbg_plot
+from .plotting import nyquist_plot, log_freq_plot, rgb_plot
 
 
 def file_writer(freq_range, circuit_name, alteration=None, noisescale=None,
@@ -448,7 +448,7 @@ def save_plots(response, filename, save_location='simuation_data/',
         save_location = save_location + 'rgb/'
         if not os.path.exists(save_location):
             os.makedirs(save_location)
-        rbg_plot(np.log10(response['freq [Hz]']), response['Re_Z_noise [ohm]'],
+        rgb_plot(np.log10(response['freq [Hz]']), response['Re_Z_noise [ohm]'],
                  response['Im_Z [ohm]'])
     elif plot_type == 'two':
         filename = filename + '_nyquist'
@@ -492,7 +492,7 @@ def save_plots(response, filename, save_location='simuation_data/',
         if not os.path.exists(save_location):
             os.makedirs(save_location)
 
-        rbg_plot(np.log10(response['freq [Hz]']), response['Re_Z_noise [ohm]'],
+        rgb_plot(np.log10(response['freq [Hz]']), response['Re_Z_noise [ohm]'],
                  response['Im_Z [ohm]'], save_image=save_image,
                  save_location=save_location, filename=filename)
     return
