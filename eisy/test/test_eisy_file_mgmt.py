@@ -1,16 +1,8 @@
-import os
-import sys
 import unittest
 
 from eisy import eisy_file_mgmt
-# from eisy.eisy_file_mgmt import *
 
-module_path = os.path.abspath(os.path.join('../'))
-if module_path not in sys.path:
-    sys.path.append(module_path)
 
-# import eisy.simulation.circuits as circuits
-# from eisy.simulation.plotting import nyquist_plot
 """
 Unit Testing for "EISy As Py" File Management tools
  * Note: A significant amount of the logic and programming here involves

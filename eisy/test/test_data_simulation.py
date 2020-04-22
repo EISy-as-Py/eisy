@@ -1,21 +1,12 @@
-# import os
-# import sys
-# import csv
-# import time
 import unittest
 
 import numpy as np
 import pandas as pd
 
-# import eisy.simulation.alterations as alterations
 import eisy.simulation.circuits as circuits
 from eisy.simulation.data_simulation import (to_dataframe, impedance_array,
                                              circuit_simulation)
 
-
-# module_path = os.path.abspath(os.path.join('../simulation'))
-# if module_path not in sys.path:
-#     sys.path.append(module_path)
 
 class TestSimulationTools(unittest.TestCase):
 
