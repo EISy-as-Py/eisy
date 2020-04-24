@@ -12,7 +12,7 @@ from .plotting import nyquist_plot, log_freq_plot, rgb_plot
 def file_writer(freq_range, circuit_name, alteration=None, noisescale=None,
                 axis_off=None, save_location='simulation_data/',
                 source='simulation', scatter=None, plot_type='nyquist',
-                transparent=None, save_image=None,
+                transparent=None, save_image=None, scaling=None,
                 **circuit_elements):
     ''' Function used to write a .csv file containing the metadata and raw data
      of the simulated impedance response.
@@ -85,15 +85,18 @@ def file_writer(freq_range, circuit_name, alteration=None, noisescale=None,
         os.makedirs(save_location)
     filename, serial_num = simulation_filename(circuit_name,
                                                alteration=alteration,
-                                               save_location=save_location)
+                                               noisescale=noisescale,
+                                               save_location=save_location,
+                                               scaling=scaling)
     with open(save_location + filename + ".csv", mode='a',
               newline='') as data_file:
-        write_metadata(data_file, serial_num, circuit_name,
-                       alteration=alteration, source=source,
+        write_metadata(data_file, serial_num, circuit_name, source=source,
+                       alteration=alteration, noisescale=noisescale,
                        **circuit_elements)
         df = write_data(data_file, freq_range, circuit_name,
                         alteration=alteration, noisescale=noisescale,
                         **circuit_elements)
+        data_file.close()
     if save_image:
         save_plots(df, filename, plot_type=plot_type, alteration=alteration,
                    save_location=save_location,
@@ -104,7 +107,7 @@ def file_writer(freq_range, circuit_name, alteration=None, noisescale=None,
 
 
 def simulation_filename(circuit_name, alteration=None, noisescale=None,
-                        save_location='simulation_data/'):
+                        save_location='simulation_data/', scaling=None):
     """ Functiongenerates the filename of the simulation run and associates it
     with both the .csv and the .png files.
 
@@ -166,29 +169,26 @@ def simulation_filename(circuit_name, alteration=None, noisescale=None,
     assert isinstance(i, int), 'the serial number counters should be an\
 integer'
 
-    while i < 9999:
-        number = str(i).zfill(4)
-        assert len(number) == 4, 'the serial number should be four\
+    # Check if the serial number already exhists.
+    # If so, the counter adds one to the simulation counter 'i'
+
+    list_of_csv = [n for n in os.listdir(save_location) if n.endswith('.csv')]
+    if len(list_of_csv) != 0:
+        latest_file = list_of_csv[-1]
+        if latest_file.split('-')[0] == date:
+            i = int(latest_file.split('_')[0].split('-')[1]) + 1
+
+    number = str(i).zfill(4)
+    assert len(number) == 4, 'the serial number should be four\
 characters long'
 
-        if alteration and noisescale >= 0.2:
-            filename = str('{}-{}_sim_{}_{}'.format(date, number,
-                                                    name, alteration))
-        else:
-            filename = str('{}-{}_sim_{}'.format(date, number, name))
+    if alteration == 'complex_noise' and noisescale/scaling >= 0.16:
+        filename = str('{}-{}_sim_{}_{}'.format(date, number,
+                                                name, alteration))
+    else:
+        filename = str('{}-{}_sim_{}'.format(date, number, name))
 
-        serial_number, *rest = filename.split('_')
-
-        # Need to figure this out
-        list_of_files = glob.glob(save_location + '*.csv')
-        if len(list_of_files) != 0:
-            latest_file = max(list_of_files, key=os.path.getctime)
-            if serial_number == latest_file.split('\\')[-1].split('_')[0]:
-                i += 1
-            else:
-                break
-        else:
-            break
+    serial_number, *rest = filename.split('_')
 
     return filename, serial_number
 
@@ -300,7 +300,7 @@ elements should be 5'
                                       circuit_elements['alpha'],
                                       circuit_elements['sigma']) + '\n')
     # Indication of alteration
-    if alteration and noisescale >= 0.2:
+    if alteration == 'complex_noise' and noisescale >= 16:
         data_file.write('Alteration :, {}'.format(alteration))
     else:
         data_file.write('Alteration :, None')
@@ -427,72 +427,73 @@ def save_plots(response, filename, save_location='simuation_data/',
         save_location = save_location + 'nyquist/'
         if not os.path.exists(save_location):
             os.makedirs(save_location)
-        filename = filename + '_nyquist'
-        nyquist_plot(response, filename=filename, save_location=save_location,
+        filename_n = filename + '_nyquist'
+        nyquist_plot(response, filename=filename_n, save_image=save_image,
                      alteration=alteration, transparent=transparent,
-                     axis_off=axis_off, save_image=save_image,
+                     axis_off=axis_off, save_location=save_location,
                      scatter=scatter)
     elif plot_type == 'log_freq':
-        filename = filename + '_log-freq'
+        filename_lg = filename + '_log-freq'
 
         save_location = save_location + 'log_freq/'
         if not os.path.exists(save_location):
             os.makedirs(save_location)
 
-        log_freq_plot(response, filename=filename, save_location=save_location,
-                      alteration=alteration,  save_image=save_image,
+        log_freq_plot(response, filename=filename_lg, save_image=save_image,
+                      alteration=alteration, save_location=save_location,
                       axis_off=axis_off, scatter=None, transparent=transparent)
 
     elif plot_type == 'rgb':
-        filename = filename + '_rgb'
+        filename_rgb = filename + '_rgb'
         save_location = save_location + 'rgb/'
         if not os.path.exists(save_location):
             os.makedirs(save_location)
         rgb_plot(np.log10(response['freq [Hz]']), response['Re_Z_noise [ohm]'],
-                 response['Im_Z [ohm]'])
+                 response['Im_Z [ohm]'], filename=filename_rgb,
+                 save_location=save_location, save_image=save_image)
     elif plot_type == 'two':
-        filename = filename + '_nyquist'
+        filename_n = filename + '_nyquist'
         save_location = save_location + 'nyquist/'
         if not os.path.exists(save_location):
             os.makedirs(save_location)
-        nyquist_plot(response, filename=filename, save_location=save_location,
+        nyquist_plot(response, filename=filename_n, save_image=save_image,
                      alteration=alteration, transparent=transparent,
-                     axis_off=axis_off, save_image=save_image,
+                     axis_off=axis_off, save_location=save_location,
                      scatter=scatter)
 
-        filename = filename + '_log-freq'
+        filename_lg = filename + '_log-freq'
         save_location = save_location + '../log_freq/'
         if not os.path.exists(save_location):
             os.makedirs(save_location)
 
-        log_freq_plot(response, filename=filename, save_location=save_location,
-                      alteration=alteration, save_image=save_image,
+        log_freq_plot(response, filename=filename_lg, save_image=save_image,
+                      alteration=alteration, save_location=save_location,
                       axis_off=axis_off, scatter=None, transparent=transparent)
     elif plot_type == 'all':
-        filename = filename + '_nyquist'
+        filename_n = filename + '_nyquist'
         save_location = save_location + 'nyquist/'
         if not os.path.exists(save_location):
             os.makedirs(save_location)
-        nyquist_plot(response, filename=filename, save_location=save_location,
+        nyquist_plot(response, filename=filename_n, save_image=save_image,
                      alteration=alteration, transparent=transparent,
-                     axis_off=axis_off, save_image=save_image,
+                     axis_off=axis_off, save_location=save_location,
                      scatter=scatter)
 
-        filename = filename + '_log-freq'
+        filename_lg = filename + '_log-freq'
         save_location = save_location + '../log_freq/'
         if not os.path.exists(save_location):
             os.makedirs(save_location)
 
-        log_freq_plot(response, filename=filename, save_location=save_location,
-                      alteration=alteration, save_image=save_image,
+        log_freq_plot(response, filename=filename_lg, save_image=save_image,
+                      alteration=alteration, save_location=save_location,
                       axis_off=axis_off, scatter=None, transparent=transparent)
 
-        filename = filename + '_rgb'
+        filename_rgb = filename + '_rgb'
         save_location = save_location + '../rgb/'
         if not os.path.exists(save_location):
             os.makedirs(save_location)
 
         rgb_plot(np.log10(response['freq [Hz]']), response['Re_Z_noise [ohm]'],
                  response['Im_Z [ohm]'], save_image=save_image,
-                 save_location=save_location, filename=filename)
+                 save_location=save_location, filename=filename_rgb)
     return
