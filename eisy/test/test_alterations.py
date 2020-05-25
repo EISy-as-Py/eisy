@@ -28,8 +28,8 @@ class TestSimulationTools(unittest.TestCase):
         noisy_dataframe = alterations.freq_noise(circuit_response,
                                                  noise_amplitude)
 
-        assert isinstance(noise_amplitude, (int, float, np.int32, np.float64)),
-        \ 'the noiscale should be a number'
+        assert isinstance(noise_amplitude, (int, float, np.int32, np.float64)
+                          ), 'the noiscale should be a number'
         assert isinstance(circuit_response, pd.DataFrame), \
             'the input data should be contained in a pandas dataframe'
         assert isinstance(noisy_dataframe, pd.DataFrame), \
@@ -44,8 +44,8 @@ class TestSimulationTools(unittest.TestCase):
         noisy_dataframe = alterations.complex_noise(circuit_response,
                                                     noise_amplitude)
 
-        assert isinstance(noise_amplitude, (int, float, np.int32, np.float64)), \
-            'the noiscale should be a number'
+        assert isinstance(noise_amplitude, (int, float, np.int32, np.float64)
+                          ), 'the noiscale should be a number'
         assert isinstance(circuit_response, pd.DataFrame), \
             'the input data should be contained in a pandas dataframe'
         assert isinstance(noisy_dataframe, pd.DataFrame), \
@@ -77,7 +77,7 @@ class TestSimulationTools(unittest.TestCase):
 
     def test_voltage_noise(self):
         noise_amplitude = 0.5
-        voltage_amplitude = 0.02  # V
+        current_amplitude = 0.02  # V
         noisy_dataframe = alterations.voltage_noise(circuit_response,
                                                     noise_amplitude,
                                                     current_amplitude)
