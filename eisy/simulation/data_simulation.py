@@ -6,7 +6,7 @@ from . import alterations
 
 
 def to_dataframe(freq_range, impedance_array, alteration=None,
-                 noisescale=None, **kwargs):
+                 noise_amplitude=None, **kwargs):
     """ Function returning a df with impedance and frequency data
 
     Function that creates a dataframe containing impedance data and the
@@ -29,7 +29,7 @@ def to_dataframe(freq_range, impedance_array, alteration=None,
                  add noise or other instrument artifacts. If present, this
                  string will also be added to the file name to help keeping
                  the data correctly labeled.
-    noisescale : float
+    noise_amplitude : float
                  Scale of the noise added to the data. This number should be
                  contained betweed 0 and 1.
 
@@ -69,7 +69,7 @@ the impedance response should be populated by complex numberes'
     if alteration:
         noise_function = getattr(alterations, alteration)
         impedance_response_df = noise_function(impedance_response_df,
-                                               noisescale)
+                                               noise_amplitude)
 
     return impedance_response_df
 
@@ -106,7 +106,7 @@ def impedance_array(complex_impedance):
 
 
 def circuit_simulation(freq_range, circuit_name, alteration=None,
-                       noisescale=None, **circuit_elements):
+                       noise_amplitude=None, **circuit_elements):
     '''Function that returns a df containing simualated impedance data
 
     Function that takes imputs parameters to simulated the impedance response
@@ -131,7 +131,7 @@ def circuit_simulation(freq_range, circuit_name, alteration=None,
                  add noise or other instrument artifacts. If present, this
                  string will also be added to the file name to help keeping
                  the data correctly labeled.
-    noisescale : float
+    noise_amplitude : float
                  Scale of the noise added to the data. This number should be
                  contained betweed 0 and 1.
     circuit_elements : dictionary or keyword arguments
@@ -181,7 +181,7 @@ indicated module.'
     impedance_data = impedance_array(complex_impedance)
     impedance_data_df = to_dataframe(freq_range, impedance_data,
                                      alteration=alteration,
-                                     noisescale=noisescale)
+                                     noise_amplitude=noise_amplitude)
     if alteration == 'freq_noise':
         complex_impedance_noise = circuit_function(
                                 impedance_data_df['angular_freq_noise [1/s]'],

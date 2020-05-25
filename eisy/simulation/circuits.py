@@ -187,8 +187,7 @@ def cir_RsRC(angular_freq, **circuit_elements):
     ''''
     Function that simulates the impedance response of a solution resistor in
     series with a resistor in parallel with a capacitor.
-    This circuit configuration is used to simulate the response of an ideally
-    polarizable electrode, also known as a blocking electrode.
+
     String representation for this circuit: -Rs-(RC)-
 
     Parameters
@@ -223,6 +222,54 @@ def cir_RsRC(angular_freq, **circuit_elements):
     # compute the impedance response as a complex array
     Z_parallel = (parallel_resistance/(1 + parallel_resistance *
                                        capacitance * (angular_freq*1j)))
+    Z_complex = solution_resistance + Z_parallel
+    return Z_complex
+
+
+def cir_RsRQ(angular_freq, **circuit_elements):
+    ''''
+    Function that simulates the impedance response of a solution resistor in
+    series with a resistor in parallel with a constant phase element.
+
+    String representation for this circuit: -Rs-(RQ)-
+
+    Parameters
+    ----------
+    angular_freq : array-like
+                   Angular frequency [1/s]
+
+    **circuit_elements : dictionary or keyword arguments
+
+        solution_resistance : single value (int or float)
+                              Solution resistance [ohm]
+        parallel_resistance : single value (int or float)
+                              resistance of the element in parallel with
+                              the capacitor [ohm]
+        constant_phase_element : single value (int or float)
+                                 Constant phase angle [s^(alpha-1)/ohm]
+        alpha : single value -float
+                Exponent of the constant phase element. Should be a value
+                between 0 and 1 [-]
+
+    Returns
+    ---------
+    Z_complex : array-like
+                impedance response of the circuit under investigation [Ohm]
+    '''
+    # circuit_string = '-Rs-(RC)-'
+
+    if len(circuit_elements) != 4:
+        raise AssertionError('The wrong number of circuit elements was'
+                             'inputted')
+    solution_resistance = circuit_elements['Rs']
+    parallel_resistance = circuit_elements['Rp']
+    constant_phase_element = circuit_elements['Q']
+    alpha = circuit_elements['alpha']
+
+    # compute the impedance response as a complex array
+    Z_parallel = (parallel_resistance/(1 + parallel_resistance *
+                                       constant_phase_element*(
+                                        angular_freq*1j)**alpha))
     Z_complex = solution_resistance + Z_parallel
     return Z_complex
 

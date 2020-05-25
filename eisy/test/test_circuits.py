@@ -129,6 +129,35 @@ class TestSimulationTools(unittest.TestCase):
                 'The Impedance value returned is lower than the' +\
                 'Solution Resistance'
 
+    def test_RsRQ(self):
+
+        response = circuits.cir_RsRQ(f_range[1], Rs=Resistance,
+                                     Rp=Parallel_Resistance,
+                                     Q=Constant_phase_element,
+                                     alpha=alpha)
+
+        assert np.positive(Resistance), \
+            'The input resistance is invalid'
+        assert np.positive(Parallel_Resistance), \
+            'The input resistance is invalid'
+        assert np.positive(Constant_phase_element), \
+            'The input phase element is invalid'
+        assert len(response) == len(f_range[1]), \
+            'The returned response is not valid'
+
+        assert len(response) == len(f_range[1]), \
+            'The returned response is not valid'
+
+        for item in response:
+            assert isinstance(item, complex), \
+                'The returned response includes invalid impedance'
+            real_Z = item.real
+            imag_Z = item.imag
+            total_Z = np.sqrt((real_Z**2) + (imag_Z**2))
+            assert total_Z > Resistance,\
+                'The Impedance value returned is lower than the' +\
+                'Solution Resistance'
+
     def test_RsRQRQ(self):
 
         response = circuits.cir_RsRQRQ(f_range[1], Rs=Resistance,

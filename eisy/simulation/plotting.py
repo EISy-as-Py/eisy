@@ -81,37 +81,39 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
             if 'Im_Z_noise [ohm]' in list(response) and\
                  'Re_Z_noise [ohm]' in list(response):
                 plt.scatter(response['Re_Z_noise [ohm]'],
-                            -response['Im_Z_noise [ohm]'], **kwargs)
+                            -response['Im_Z_noise [ohm]'], c='b', **kwargs)
             elif ('Im_Z_noise [ohm]') in list(response):
                 plt.scatter(response['Re_Z [ohm]'],
-                            -response['Im_Z_noise [ohm]'], **kwargs)
+                            -response['Im_Z_noise [ohm]'], c='b', **kwargs)
             elif ('Re_Z_noise [ohm]') in list(response):
                 plt.scatter(response['Re_Z_noise [ohm]'],
-                            -response['Im_Z [ohm]'], **kwargs)
+                            -response['Im_Z [ohm]'], c='b', **kwargs)
         else:
-            plt.scatter(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
+            plt.scatter(response['Re_Z [ohm]'], -response['Im_Z [ohm]'], c='b',
                         **kwargs)
     else:
         if alteration:
             if 'Im_Z_noise [ohm]' in list(response) and\
                  'Re_Z_noise [ohm]' in list(response):
                 plt.plot(response['Re_Z_noise [ohm]'],
-                         -response['Im_Z_noise [ohm]'], 'o--', **kwargs)
+                         -response['Im_Z_noise [ohm]'], 'bo--', **kwargs)
             elif ('Im_Z_noise [ohm]') in list(response):
                 plt.plot(response['Re_Z [ohm]'],
-                         -response['Im_Z_noise [ohm]'], 'o--',  **kwargs)
+                         -response['Im_Z_noise [ohm]'], 'bo--',  **kwargs)
             elif ('Re_Z_noise [ohm]') in list(response):
                 plt.plot(response['Re_Z_noise [ohm]'],
-                         -response['Im_Z [ohm]'], 'o--', **kwargs)
+                         -response['Im_Z [ohm]'], 'bo--', **kwargs)
         else:
             plt.plot(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
                      'o--', **kwargs)
 
     max_real = response['Re_Z [ohm]'].max()
-    # ax.set_aspect('equal')
+    # plt.axes().set_aspect('auto')
 
-    plt.xlim([0, max_real+0.1*max_real])
-    plt.ylim([0, max_real+0.1*max_real])
+    # plt.xlim([0, max_real+0.1*max_real])
+    plt.xlim(left=-0.10)
+    plt.ylim(top=max_real+0.1*max_real)
+    # , max_real+0.1*max_real])
 
     if axis_off:
         plt.axis('off')
@@ -123,7 +125,7 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
         filename = str(save_location+filename)
         plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight',
                     transparent=transparent)
-
+        plt.close()
     plt.show()
     return
 
@@ -187,26 +189,26 @@ def log_freq_plot(response, filename=None, axis_off=None, scatter=None,
         if 'Im_Z_noise [ohm]' in list(response) and\
            'Re_Z_noise [ohm]' in list(response):
             plt.semilogx(response['freq [Hz]'], response['Re_Z_noise [ohm]'],
-                         'o--', response['freq [Hz]'],
-                         -response['Im_Z_noise [ohm]'], 'o--', **kwargs)
+                         'bo--', response['freq [Hz]'],
+                         -response['Im_Z_noise [ohm]'], 'ro--', **kwargs)
         elif ('freq_noise [Hz]') in list(response):
             plt.semilogx(response['freq_noise [Hz]'],
-                         response['Re_Z_noise [ohm]'], 'o--',
+                         response['Re_Z_noise [ohm]'], 'bo--',
                          response['freq_noise [Hz]'],
-                         -response['Im_Z_noise [ohm]'], 'o--', **kwargs)
+                         -response['Im_Z_noise [ohm]'], 'ro--', **kwargs)
         elif ('Re_Z_noise [ohm]') in list(response) and 'Im_Z_noise [ohm]' \
                 not in list(response):
             plt.semilogx(response['freq [Hz]'], response['Re_Z_noise [ohm]'],
-                         'o--', response['freq [Hz]'],
-                         -response['Im_Z [ohm]'], 'o--', **kwargs)
+                         'bo--', response['freq [Hz]'],
+                         -response['Im_Z [ohm]'], 'ro--', **kwargs)
         elif ('Im_Z_noise [ohm]') in list(response) and 'Re_Z_noise [ohm]' \
                 not in list(response):
             plt.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'],
-                         'o--', response['freq [Hz]'],
-                         -response['Im_Z_noise [ohm]'], 'o--', **kwargs)
+                         'bo--', response['freq [Hz]'],
+                         -response['Im_Z_noise [ohm]'], 'ro--', **kwargs)
     else:
-        plt.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'], 'o--',
-                     response['freq [Hz]'], -response['Im_Z [ohm]'], 'o--',
+        plt.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'], 'bo--',
+                     response['freq [Hz]'], -response['Im_Z [ohm]'], 'ro--',
                      **kwargs)
 
     if axis_off:
@@ -220,13 +222,14 @@ def log_freq_plot(response, filename=None, axis_off=None, scatter=None,
         filename = str(save_location+filename)
         plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight',
                     transparent=transparent)
-
+        plt.close()
     plot_show = plt.show()
     return plot_show
 
 
-def rgb_plot(red_array, green_array=[0, 0], blue_array=[0, 0], plot=True,
-             save_image=None, filename=None, save_location=None):
+def rgb_plot(red_array=None, green_array=None, blue_array=None,
+             plot=True, save_image=None, filename=None,
+             save_location=None):
     '''Returns a plot which represents the input data as a color gradient of
     one of the three color channels available: red, blue or green.
 
@@ -236,8 +239,7 @@ def rgb_plot(red_array, green_array=[0, 0], blue_array=[0, 0], plot=True,
     the scale of the y-axis do not have a numerical significance. The input
     arrays shoudld be of range zero to one. A minimum of one array should be
     provided. The final representation will be a square plot of the combined
-    arrays. An optional feature to add o the plot is to have three smaller
-    bar plot which represent the individual color arrays.
+    arrays.
 
     Parameters
     ----------
@@ -247,77 +249,67 @@ def rgb_plot(red_array, green_array=[0, 0], blue_array=[0, 0], plot=True,
                   the data array to be plotted in the green channel.
     blue_array : array
                  the data array to be plotted in the blue channel.
-
+    plot : bool
+           if True, the color gradient representation of the data will be
+           displayed
+    filename : str
+               The filename will be the same as the .csv containing the data
+               used to create this plot.
+    save_location : str
+                    String containing the path of the forlder to use when
+                    saving the data and the image.
+    save_image : bool
+                 Option to save the output of the simuation as a plot
+                 in a .png file format.
+                 The filename used for the file will be the same
+                 as the raw data file created in this function.
     Returns
     -------
     rbg_plot :  matplotlib plot
                 Plot representing the data as a color gradient on the x-axis
                 in one of the three basic colors: red, blue or green
     '''
-    r = len(red_array)
-    g = len(green_array)
-    b = len(blue_array)
+    arrays = {'red_array': red_array, 'blue_array': blue_array,
+              'green_array': green_array}
 
-    if r != g:
-        green_array = red_array * 0
-        print("Green Array Failed? (Or none given)")
-    if r != b:
-        blue_array = red_array * 0
-        print("Blue  Array Failed? (Or none given)")
+    given = {k: v is not None for i, (k, v) in enumerate(arrays.items())}
+    given_arrays = [(k, arrays[k]) for i, (k, v) in enumerate(given.items())
+                    if v is True]
+    n = []
+    for i in range(len(given_arrays)):
+        n.append(len(given_arrays[i][1]))
+    assert len(given_arrays) != 0, 'no input array was given.'
+    assert all(x == n[0] for x in n), 'the given arrays have different length.\
+Check that you are using the right inputs'
+
+    not_given = [k for (k, v) in given.items() if v is False]
+    for array in not_given:
+        arrays[array] = np.zeros(n[0])
 
     # Normalize Data from 0 to 1 (aka RGB readable)
-    red_array = normalize(red_array)
-    green_array = normalize(green_array)
-    blue_array = normalize(blue_array)
+    red_array = normalize(arrays['red_array'])
+    green_array = normalize(arrays['green_array'])
+    blue_array = normalize(arrays['blue_array'])
 
-    # Two types of Meshes: One 10 larger than the other
-    # (Smaller used for Individual 1D arrays, Larger for combined)
-    # FOR LATER--> MAKE BIG MATRIX A SQUARE! EASY TO COMBINE
-    arb_big = np.linspace(0, 1, r)
-    arb_small = np.linspace(0, 1, int(r/10))
-    # x_later = np.linspace(0, r, r)
+    arbitrary_axis = np.linspace(0, 1, n[0])
 
-    r_small, a = np.meshgrid(red_array, arb_small)
-    g_small, a = np.meshgrid(green_array, arb_small)
-    b_small, a = np.meshgrid(blue_array, arb_small)
+    r_big, a = np.meshgrid(red_array, arbitrary_axis)
+    g_big, a = np.meshgrid(green_array, arbitrary_axis)
+    b_big, a = np.meshgrid(blue_array, arbitrary_axis)
 
-    r_big, a = np.meshgrid(red_array, arb_big)
-    g_big, a = np.meshgrid(green_array, arb_big)
-    b_big, a = np.meshgrid(blue_array, arb_big)
+    rgb_plot = np.ndarray(shape=(n[0], n[0], 3))
 
-    big_plot = np.ndarray(shape=(r, r, 3))
-    r_plot = np.ndarray(shape=(int(r/10), r, 3))
-    g_plot = np.ndarray(shape=(int(r/10), r, 3))
-    b_plot = np.ndarray(shape=(int(r/10), r, 3))
-
-    big_plot[:, :, 0] = r_big
-    big_plot[:, :, 1] = g_big
-    big_plot[:, :, 2] = b_big
-
-    r_plot[:, :, 0] = r_small
-    g_plot[:, :, 1] = g_small
-    b_plot[:, :, 2] = b_small
-
-    r_plot[:, :, 1] = r_plot[:, :, 2] = r_small*0
-    g_plot[:, :, 0] = g_plot[:, :, 2] = g_small*0
-    b_plot[:, :, 0] = b_plot[:, :, 1] = b_small*0
+    rgb_plot[:, :, 0] = r_big
+    rgb_plot[:, :, 1] = g_big
+    rgb_plot[:, :, 2] = b_big
 
     if plot:
         big, bax = plt.subplots(1, 1, figsize=[6, 6])
-        # fig,ax = plt.subplots(3,1,figsize=[6,2])
-
-        bax.imshow(big_plot)
-        # ax[0].imshow(r_plot)
-        # ax[1].imshow(g_plot)
-        # ax[2].imshow(b_plot)
-        # ax[0].plot(x_later,red_array)
-
+        bax.imshow(rgb_plot)
         bax.axis('off')
-        # for i in [0,1,2]:
-        #    ax[i].axis('off')
-    # big_plot = rgb2hsv(big_plot)
+
     if save_image:
         filename = str(save_location+filename)
         plt.savefig('{}.png'.format(filename), dpi=100, bbox_inches='tight')
-
-    return
+        plt.close()
+    return rgb_plot

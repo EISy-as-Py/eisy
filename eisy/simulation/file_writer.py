@@ -1,4 +1,3 @@
-import glob
 import os
 import time
 
@@ -9,11 +8,11 @@ from .data_simulation import circuit_simulation
 from .plotting import nyquist_plot, log_freq_plot, rgb_plot
 
 
-def file_writer(freq_range, circuit_name, alteration=None, noisescale=None,
-                axis_off=None, save_location='simulation_data/',
-                source='simulation', scatter=None, plot_type='nyquist',
-                transparent=None, save_image=None, scaling=None,
-                **circuit_elements):
+def file_writer(freq_range, circuit_name, alteration=None,
+                noise_amplitude=None, axis_off=None,
+                save_location='simulation_data/', source='simulation',
+                scatter=None, plot_type='nyquist',
+                transparent=None, save_image=None, **circuit_elements):
     ''' Function used to write a .csv file containing the metadata and raw data
      of the simulated impedance response.
 
@@ -39,7 +38,7 @@ def file_writer(freq_range, circuit_name, alteration=None, noisescale=None,
                  add noise or other instrument artifacts. If present, this
                  string will also be added to the file name to help keeping
                  the data correctly labeled.
-    noisescale : float
+    noise_amplitude : float
                  Scale of the noise added to the data. This number should be
                  contained betweed 0 and 1.
     axis_off : bool
@@ -85,16 +84,15 @@ def file_writer(freq_range, circuit_name, alteration=None, noisescale=None,
         os.makedirs(save_location)
     filename, serial_num = simulation_filename(circuit_name,
                                                alteration=alteration,
-                                               noisescale=noisescale,
-                                               save_location=save_location,
-                                               scaling=scaling)
+                                               noise_amplitude=noise_amplitude,
+                                               save_location=save_location)
     with open(save_location + filename + ".csv", mode='a',
               newline='') as data_file:
         write_metadata(data_file, serial_num, circuit_name, source=source,
-                       alteration=alteration, noisescale=noisescale,
+                       alteration=alteration, noise_amplitude=noise_amplitude,
                        **circuit_elements)
         df = write_data(data_file, freq_range, circuit_name,
-                        alteration=alteration, noisescale=noisescale,
+                        alteration=alteration, noise_amplitude=noise_amplitude,
                         **circuit_elements)
         data_file.close()
     if save_image:
@@ -106,8 +104,8 @@ def file_writer(freq_range, circuit_name, alteration=None, noisescale=None,
     return
 
 
-def simulation_filename(circuit_name, alteration=None, noisescale=None,
-                        save_location='simulation_data/', scaling=None):
+def simulation_filename(circuit_name, alteration=None, noise_amplitude=None,
+                        save_location='simulation_data/'):
     """ Functiongenerates the filename of the simulation run and associates it
     with both the .csv and the .png files.
 
@@ -130,7 +128,7 @@ def simulation_filename(circuit_name, alteration=None, noisescale=None,
                  add noise or other instrument artifacts. If present, this
                  string will also be added to the file name to help keeping
                  the data correctly labeled.
-    noisescale : float
+    noise_amplitude : float
                  Scale of the noise added to the data. This number should be
                  contained betweed 0 and 1.
     save_location : str
@@ -182,7 +180,7 @@ integer'
     assert len(number) == 4, 'the serial number should be four\
 characters long'
 
-    if alteration == 'complex_noise' and noisescale/scaling >= 0.16:
+    if alteration and noise_amplitude > 0.2:
         filename = str('{}-{}_sim_{}_{}'.format(date, number,
                                                 name, alteration))
     else:
@@ -193,8 +191,9 @@ characters long'
     return filename, serial_number
 
 
-def write_metadata(data_file, serial_number, circuit_name, noisescale=None,
-                   alteration=None, source='simulation', **circuit_elements):
+def write_metadata(data_file, serial_number, circuit_name, alteration=None,
+                   noise_amplitude=None, source='simulation',
+                   **circuit_elements):
     """ Function used to write the metadata section of the .csv file containing
     impedance spectroscopy data.
 
@@ -234,26 +233,25 @@ def write_metadata(data_file, serial_number, circuit_name, noisescale=None,
                        module for the correct list of arguments that can be
                        added to this input.
     """
-#     units= {'R': 'ohm', 'C': 'F', 'alpha': '[-]', 'Q': '[s^(alpha-1)/ohm]'}
 
     # Serial number and data source:
-    data_file.write('Serial number:, {}'.format(serial_number)+'\n')
-    data_file.write('Data Source:,{}'.format(source)+'\n')
+    data_file.write('Serial number: {}'.format(serial_number)+'\n')
+    data_file.write('Data Source: {}'.format(source)+'\n')
 
     # If simulated data, record the circuit type, the circuit element values
     if source == 'sim' or 'simulation':
-        data_file.write('Circuit type:, -{}-'.format(circuit_name)+'\n')
+        data_file.write('Circuit type: -{}-'.format(circuit_name)+'\n')
 
         if circuit_name.split('_')[0] == 'RC':
             assert len(circuit_elements) == 2, 'the number of circuit\
 elements should be 2'
-            data_file.write('Circuit elements:, [R={} ohm C={} F]'
+            data_file.write('Circuit elements: [R={} ohm C={} F]'
                             .format(circuit_elements['R'],
                                     circuit_elements['C']) + '\n')
         if circuit_name.split('_')[0] == 'RQ':
             assert len(circuit_elements) == 3, 'the number of circuit\
 elements should be 3'
-            data_file.write('Circuit elements:, [R={} ohm Q={} '
+            data_file.write('Circuit elements: [R={} ohm Q={} '
                             '[s^(alpha-1)/ohm] alpha={}]'
                             ''.format(circuit_elements['R'],
                                       circuit_elements['Q'],
@@ -262,14 +260,24 @@ elements should be 3'
         if circuit_name == 'RsRC':
             assert len(circuit_elements) == 3, 'the number of circuit\
 elements should be 3'
-            data_file.write('Circuit elements:, [Rs={} ohm Rp={} ohm C={} F]'
+            data_file.write('Circuit elements: [Rs={} ohm Rp={} ohm C={} F]'
                             .format(circuit_elements['Rs'],
                                     circuit_elements['Rp'],
                                     circuit_elements['C']) + '\n')
+        if circuit_name.split('_')[0] == 'RsRQ':
+            assert len(circuit_elements) == 4, 'the number of circuit\
+elements should be 3'
+            data_file.write('Circuit elements: [Rs={} ohm Rp={} Q={} '
+                            '[s^(alpha-1)/ohm] alpha={}]'
+                            ''.format(circuit_elements['Rs'],
+                                      circuit_elements['Rp'],
+                                      circuit_elements['Q'],
+                                      circuit_elements['alpha']
+                                      ) + '\n')
         if circuit_name == 'RsRCRC':
             assert len(circuit_elements) == 5, 'the number of circuit\
 elements should be 5'
-            data_file.write('Circuit elements: , [Rs={} ohm Rp1={} ohm C1={}'
+            data_file.write('Circuit elements: [Rs={} ohm Rp1={} ohm C1={}'
                             'F Rp2={} ohm C2={} F]'
                             ''.format(circuit_elements['Rs'],
                                       circuit_elements['Rp1'],
@@ -279,7 +287,7 @@ elements should be 5'
         if circuit_name == 'RsRQRQ':
             assert len(circuit_elements) == 7, 'the number of circuit\
 elements should be 7'
-            data_file.write('Circuit elements: , [Rs={} ohm Rp1={} ohm Q1={}'
+            data_file.write('Circuit elements: [Rs={} ohm Rp1={} ohm Q1={}'
                             '[s^(alpha-1)/ohm] alpha_1={} Rp2={} ohm Q2={}'
                             ' [s^(alpha-1)/ohm] alpha_2={}]'
                             ''.format(circuit_elements['Rs'],
@@ -292,7 +300,7 @@ elements should be 7'
         if circuit_name == 'Randles':
             assert len(circuit_elements) == 5, 'the number of circuit\
 elements should be 5'
-            data_file.write('Circuit elements:, [Rs={} ohm Rp={} ohm Q={}'
+            data_file.write('Circuit elements: [Rs={} ohm Rp={} ohm Q={}'
                             '[s^(alpha-1)/ohm] alpha={} sigma={}]'
                             ''.format(circuit_elements['Rs'],
                                       circuit_elements['Rp'],
@@ -300,10 +308,9 @@ elements should be 5'
                                       circuit_elements['alpha'],
                                       circuit_elements['sigma']) + '\n')
     # Indication of alteration
-    if alteration == 'complex_noise' and noisescale >= 16:
-        data_file.write('Alteration :, {}'.format(alteration))
-    else:
-        data_file.write('Alteration :, None')
+    if alteration:
+        data_file.write('Alteration : {} ; noise_amplitude : {}'.
+                        format(alteration, noise_amplitude))
 
     data_file.write('\n'+'---'+'\n')
 
@@ -311,7 +318,7 @@ elements should be 5'
 
 
 def write_data(data_file, freq_range, circuit_name, alteration=None,
-               noisescale=None, **circuit_elements):
+               noise_amplitude=None, **circuit_elements):
     '''Function ued to save the raw data into a .csv file.
 
     The simulated raw data will be generated and saved into the file by
@@ -331,7 +338,7 @@ def write_data(data_file, freq_range, circuit_name, alteration=None,
     alteration : str
                  string indicating if the data simulated has been modified to
                  add noise or other instrument artifacts.
-    noisescale : float
+    noise_amplitude : float
                  Scale of the noise added to the data. This number should be
                  contained betweed 0 and 1.
     circuit_elements : dictionary or keyword arguments
@@ -346,13 +353,13 @@ def write_data(data_file, freq_range, circuit_name, alteration=None,
                pandas dataframe containing frequency and imepedance data
     '''
     dataframe = circuit_simulation(freq_range, circuit_name,
-                                   noisescale=noisescale,
+                                   noise_amplitude=noise_amplitude,
                                    alteration=alteration,
                                    **circuit_elements)
 
     if alteration:
         noise_function = getattr(alterations, alteration)
-        dataframe = noise_function(dataframe, noisescale)
+        dataframe = noise_function(dataframe, noise_amplitude)
     else:
         dataframe = dataframe
     dataframe.to_csv(data_file, mode='a')
@@ -493,7 +500,7 @@ def save_plots(response, filename, save_location='simuation_data/',
         if not os.path.exists(save_location):
             os.makedirs(save_location)
 
-        rgb_plot(np.log10(response['freq [Hz]']), response['Re_Z_noise [ohm]'],
-                 response['Im_Z [ohm]'], save_image=save_image,
-                 save_location=save_location, filename=filename_rgb)
+        rgb_plot(response['Re_Z_noise [ohm]'], response['Im_Z_noise [ohm]'],
+                 save_image=save_image, save_location=save_location,
+                 filename=filename_rgb)
     return

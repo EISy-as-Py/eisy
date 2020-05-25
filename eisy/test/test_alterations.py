@@ -23,38 +23,13 @@ circuit_response = data_simulation.circuit_simulation(freq_range,
 
 class TestSimulationTools(unittest.TestCase):
 
-    def test_imag_noise(self):
-        noisescale = 0.5
-        noisy_dataframe = alterations.imag_noise(circuit_response, noisescale)
-
-        assert isinstance(noisescale, (int, float, np.int32, np.float64)), \
-            'the noiscale should be a number'
-        assert isinstance(circuit_response, pd.DataFrame), \
-            'the input data should be contained in a pandas dataframe'
-        assert isinstance(noisy_dataframe, pd.DataFrame), \
-            'the output should be a pandas dataframe'
-        assert 'Im_Z_noise [ohm]' in list(noisy_dataframe), \
-            'the computed noisy data was not saved in the dataframe'
-
-    def test_real_noise(self):
-        noisescale = 0.5
-        noisy_dataframe = alterations.real_noise(circuit_response, noisescale)
-
-        assert isinstance(noisescale, (int, float, np.int32, np.float64)), \
-            'the noiscale should be a number'
-        assert isinstance(circuit_response, pd.DataFrame), \
-            'the input data should be contained in a pandas dataframe'
-        assert isinstance(noisy_dataframe, pd.DataFrame), \
-            'the output should be a pandas dataframe'
-        assert 'Re_Z_noise [ohm]' in list(noisy_dataframe), \
-            'the computed noisy data was not saved in the dataframe'
-
     def test_freq_noise(self):
-        noisescale = 0.5
-        noisy_dataframe = alterations.freq_noise(circuit_response, noisescale)
+        noise_amplitude = 0.5
+        noisy_dataframe = alterations.freq_noise(circuit_response,
+                                                 noise_amplitude)
 
-        assert isinstance(noisescale, (int, float, np.int32, np.float64)), \
-            'the noiscale should be a number'
+        assert isinstance(noise_amplitude, (int, float, np.int32, np.float64)),
+        \ 'the noiscale should be a number'
         assert isinstance(circuit_response, pd.DataFrame), \
             'the input data should be contained in a pandas dataframe'
         assert isinstance(noisy_dataframe, pd.DataFrame), \
@@ -65,11 +40,11 @@ class TestSimulationTools(unittest.TestCase):
             'the computed noisy data was not saved in the dataframe'
 
     def test_complex_noise(self):
-        noisescale = 0.5
+        noise_amplitude = 0.5
         noisy_dataframe = alterations.complex_noise(circuit_response,
-                                                    noisescale)
+                                                    noise_amplitude)
 
-        assert isinstance(noisescale, (int, float, np.int32, np.float64)), \
+        assert isinstance(noise_amplitude, (int, float, np.int32, np.float64)), \
             'the noiscale should be a number'
         assert isinstance(circuit_response, pd.DataFrame), \
             'the input data should be contained in a pandas dataframe'
@@ -81,14 +56,14 @@ class TestSimulationTools(unittest.TestCase):
             'the computed noisy data was not saved in the dataframe'
 
     def test_current_noise(self):
-        noisescale = 0.5
+        noise_amplitude = 0.5
         voltage_amplitude = 0.02  # V
         noisy_dataframe = alterations.current_noise(circuit_response,
-                                                    noisescale,
+                                                    noise_amplitude,
                                                     voltage_amplitude)
 
-        assert isinstance(noisescale, (int, float, np.int32, np.float64)), \
-            'the noiscale should be a number'
+        assert isinstance(noise_amplitude, (int, float, np.int32,
+                          np.float64)), 'the noiscale should be a number'
         assert isinstance(voltage_amplitude, (int, float, np.int32, np.float64)
                           ), 'the voltage amplitude should be a number'
         assert isinstance(circuit_response, pd.DataFrame), \
@@ -101,16 +76,16 @@ class TestSimulationTools(unittest.TestCase):
             'the computed noisy data was not saved in the dataframe'
 
     def test_voltage_noise(self):
-        noisescale = 0.5
+        noise_amplitude = 0.5
         voltage_amplitude = 0.02  # V
         noisy_dataframe = alterations.voltage_noise(circuit_response,
-                                                    noisescale,
-                                                    voltage_amplitude)
+                                                    noise_amplitude,
+                                                    current_amplitude)
 
-        assert isinstance(noisescale, (int, float, np.int32, np.float64)), \
-            'the noiscale should be a number'
-        assert isinstance(voltage_amplitude, (int, float, np.int32, np.float64)
-                          ), 'the voltage amplitude should be a number'
+        assert isinstance(noise_amplitude, (int, float, np.int32,
+                          np.float64)), 'the noiscale should be a number'
+        assert isinstance(current_amplitude, (int, float, np.int32, np.float64)
+                          ), 'the current amplitude should be a number'
         assert isinstance(circuit_response, pd.DataFrame), \
             'the input data should be contained in a pandas dataframe'
         assert isinstance(noisy_dataframe, pd.DataFrame), \
@@ -120,17 +95,18 @@ class TestSimulationTools(unittest.TestCase):
         assert 'Im_Z_noise [ohm]' in list(noisy_dataframe), \
             'the computed noisy data was not saved in the dataframe'
 
-    def test_iv_noise(self):
-        noisescale = 0.5
-        voltage_amplitude = 0.02  # V
-        noisy_dataframe = alterations.iv_noise(circuit_response,
-                                               noisescale,
-                                               voltage_amplitude)
-
-        assert isinstance(noisescale, (int, float, np.int32, np.float64)), \
-            'the noiscale should be a number'
-        assert isinstance(voltage_amplitude, (int, float, np.int32, np.float64)
-                          ), 'the voltage amplitude should be a number'
+    def test_outliers(self):
+        percent_outliers = 0.10
+        outliers_amplitude = 2
+        noisy_dataframe = alterations.outliers(circuit_response,
+                                               percent_outliers,
+                                               outliers_amplitude)
+        assert isinstance(percent_outliers, (int, float, np.int32,
+                          np.float64)), \
+            'the percentrage of outliers points should be a number'
+        assert isinstance(outliers_amplitude, (int, float, np.int32,
+                          np.float64)), \
+            'the outliers amplitude should be a number'
         assert isinstance(circuit_response, pd.DataFrame), \
             'the input data should be contained in a pandas dataframe'
         assert isinstance(noisy_dataframe, pd.DataFrame), \
