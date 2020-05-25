@@ -31,6 +31,7 @@ dependencies:
   - sqlite
   - sqlalchemy
   - testpath
+  - tensorflow
   - tk
   - torchvision
   - pip:
