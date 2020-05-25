@@ -130,3 +130,9 @@ dmypy.json
 
 #ignoring notebook for time being
 *.ipynb
+
+#ignoring images and pickled models
+.png
+.sav
+.csv
+
