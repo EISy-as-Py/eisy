@@ -1,23 +1,14 @@
-# import os
 import pickle
-# import random
-# import shutil
-# import sys
-
 
 import matplotlib.pyplot as plt
 import numpy as np
-# import pandas as pd
-
 
 from keras.layers import (Dense, Conv2D, MaxPool2D,
                           Flatten)
 from keras.models import Sequential
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
-# from keras.utils import np_utils
 from sklearn.metrics import classification_report, confusion_matrix
-# from tensorflow.keras import metrics
 from tensorflow.keras import callbacks
 
 
