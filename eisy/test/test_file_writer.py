@@ -26,7 +26,7 @@ be a string'
         filename, serail_number = simulation_filename(circuit_name,
                                                       alteration=alteration,
                                                       save_location=save_loc,
-                                                      noisescale=0)
+                                                      noise_amplitude=0)
         with open(save_loc + filename + '.csv', mode='r',
                   newline='') as data_file:
             reader = csv.reader(data_file, delimiter=',')
@@ -55,7 +55,7 @@ be a string'
         filename, serial_number = simulation_filename(circuit_name,
                                                       alteration=alteration,
                                                       save_location=save_loc,
-                                                      noisescale=0)
+                                                      noise_amplitude=0)
         assert isinstance(filename, str), 'The filename should be a string'
         assert isinstance(serial_number, str), 'The serial_number should be \
 a string'
@@ -73,13 +73,13 @@ a string'
         with open('test'+filename + ".csv", mode='r', newline='') as data_file:
             reader = csv.reader(data_file, delimiter=',')
             rows = [row for row in reader]
-            assert serial_number in rows[0][1], 'the first row of the \
+            assert serial_number in rows[0][0], 'the first row of the \
 metadata part of the file should containg the serial_number'
-            assert source in rows[1][1], 'the data source should be \
+            assert source in rows[1][0], 'the data source should be \
 part of the metadata of the file'
-            assert 'R={}'.format(R) in rows[3][1], 'the circuit elements \
+            assert 'R={}'.format(R) in rows[3][0], 'the circuit elements \
 values should be indicated'
-            assert 'C={}'.format(C) in rows[3][1], 'the circuit elements \
+            assert 'C={}'.format(C) in rows[3][0], 'the circuit elements \
 values should be indicated'
             assert '---' in rows[5][0], 'the three hyphens indicating the \
 break of the metadata part of the files need to be present '

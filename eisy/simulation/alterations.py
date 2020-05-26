@@ -189,7 +189,7 @@ def outliers(dataframe, percentage_outliers, outliers_amplitude):
         complex_response[i] = complex_response[i] + \
             (random.choice([-1, 1]) * dataframe['Re_Z [ohm]'].iloc[-1] *
              outliers_amplitude * (2*rdm-1) * np.exp(1j*rdm*2*np.pi) *
-             (1 if rdm < outliers else 0))
+             (1 if rdm < outliers_amplitude else 0))
 
     dataframe['Re_Z_noise [ohm]'] = complex_response.to_numpy().real
     dataframe['Im_Z_noise [ohm]'] = complex_response.to_numpy().imag
