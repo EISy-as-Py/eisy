@@ -187,7 +187,6 @@ def cir_RsRC(angular_freq, **circuit_elements):
     ''''
     Function that simulates the impedance response of a solution resistor in
     series with a resistor in parallel with a capacitor.
-
     String representation for this circuit: -Rs-(RC)-
 
     Parameters

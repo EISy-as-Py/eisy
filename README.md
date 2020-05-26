@@ -9,6 +9,8 @@
 # eisy
 UW DIRECT DataScience Project, to Import/Process/Store/Report Data related to electrochemical impedance measurements.
 
+Feel free to [READ THE DOCS](https://eisy-as-py.readthedocs.io/en/latest/) to learn more, or [Visit the Wiki](https://github.com/EISy-as-Py/eisy/wiki) to learn more about the project!
+
 `eisy` is a Python module for simulating and classifying impedance data.
 
 <img src=https://github.com/EISy-as-Py/eisy/blob/master/doc/project_management/misc_design/Logo3_square.PNG width=400 p align="right">
@@ -18,7 +20,7 @@ The `data_simulation.py` module allows to simulate the impedance response  in th
 
 An SQL database was created to preserve the simulation files produced and to allow for long term storage of electrochemical impedance spectroscopy data, as well as any data generate from future features added to the package. There is a SQL-generating function which opens up a standardized schema. Once this database is set up, users should be able to query and add new experiments (either simulated or real life data sets) to the database. In the future, this schema should be declared in a YAML configuration file, so it can be set up exactly how a user wants it to be. (For now, it is a hard-coded schema designed for our uses). Furthermore, we don't yet have the database entries automated from after classification and processing, which should be a logical future feature to implement. In the mean time, standardized SQL query language can be used to add and inspect data.
 
-Deep learning is implemented in the project to identify the raw graph images in .png format whether the raw data is bad or worth taking a second look, then further classified into four different graph types: single semicircle, double semicircle, with a tail-end, and noisy. The classification infers important information for types and the nature of circuits the raw data is obtained.
+Deep learning is implemented in the project to identify the raw graph images in .png format whether the raw data is bad or worth taking a second look. 
 
 
 Sample of Testing Data: [Data](https://drive.google.com/drive/u/0/folders/1pF7InGuDUZq4YwPFVXbHN07rwqbvfREP)
@@ -54,22 +56,13 @@ Some notebooks are available in the `examples/` directory. In order to make use 
 
 More requirements can be found in the *requirements.txt* file.
 
+
 Deep Learning - Convoluted Neural Network
 ---------------------------------------------------
 
-Deep learning is implemented in the project to identify the raw graph images in .png format whether the raw data is bad or worth taking a second look, then further classified into four different graph types: single hump, double humps, with tail, and noisy. The classification infers important information for types and the nature of circuits the raw data is obtained.  
-Convoluted Neural Network technology allows users to simply upload their raw Nyquist plots in .png format to determine whether or not the experiment has been performed considerably. Currently, the size of the image training data library for classification is very limited and our group has been aiming to enlarge the library to give users highly accurate results in sorting the raw data.
-At the current stage of development, the Nyquist plot images used for training the system is uploaded on google drive and is accessible by the URL below. After git-clone, it is required of our users to manually download the files on the google drive and make sure it is saved to a directory parallel to the jupyter notebook.
-
-Google Drive for images :
-Categorized Images for training: [training set](https://drive.google.com/drive/u/0/folders/1M4Q3K28A6JYoJ1LlvSKRh9UA5OhTtrt4)
-Random Images for testing:[testing set](https://drive.google.com/drive/u/0/folders/1pF7InGuDUZq4YwPFVXbHN07rwqbvfREP)
-
-Two python functions are available. Examples of how to use the functions are located as following:
-1) Raw image data sorting - bad or passing [examples notebook](https://github.com/EISy-as-Py/eisy/blob/master/examples/CNN_sorting_tutorial.ipynb)
-2) Sorted image data classification [example notebook](https://github.com/EISy-as-Py/eisy/blob/master/examples/CNN_Model_tutorial.ipynb)
-
-Important: If CNN_Model_Raw.py is used for processing, processed.npy should be created with data that has passed the cnn testing. Skip the pre-processing in CNN_Model.py. (def Build_Data).
+Deep learning is implemented in the project to identify the raw graph images in .png format whether the raw data is bad or worth taking a second look .
+Convoluted Neural Network technology allows users to simply upload their raw impedance plots, Nyquist or real and imaginary components of hte impedance versus the frequency, in .png format to determine whether or not the experiment has been performed considerably.
+At the current stage of development, the images used for training can be generated using teh simulation modules found in the package.
 
 
 Future features
@@ -78,10 +71,8 @@ Future features
 The following are implementations that are planned for the `eisy` package:
 
 * Expand the `plotting.py` module to include *bode plots*, as well as *DRT*
-* Expand the `alterations.py` module to allow the simulation of *missing data points* and *interrupted data collection*.
 * Train the Neural Network to being able to categorize the above mentioned features.
 * Add a model fitting module to allow to predict the equivalent electrical circuit for experimental data
-* Rewrite some of the modules to broaden their scope and be more inclusive in functionalities
 * Complete the SQL database set up and start importing files in it
 
 Suggestions of modifications or additions are welcomed and encouraged. File an issue [here](https://github.com/EISy-as-Py/eisy/issues)
