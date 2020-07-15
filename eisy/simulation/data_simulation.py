@@ -60,7 +60,8 @@ the impedance response should be populated by complex numberes'
                       'Re_Z [ohm]': impedance_array[1],
                       'Im_Z [ohm]': impedance_array[2],
                       '|Z| [ohm]': impedance_array[3],
-                      'phase_angle [rad]': impedance_array[4]}
+                      'phase_angle [rad]': impedance_array[4]
+                      }
     if kwargs:
         for key, value in kwargs.items():
             if key not in impedance_dict:

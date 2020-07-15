@@ -73,14 +73,10 @@ a string'
         with open('test'+filename + ".csv", mode='r', newline='') as data_file:
             reader = csv.reader(data_file, delimiter=',')
             rows = [row for row in reader]
-            assert serial_number in rows[0][0], 'the first row of the \
+            assert serial_number in rows[0][1], 'the first row of the \
 metadata part of the file should containg the serial_number'
-            assert source in rows[1][0], 'the data source should be \
+            assert source in rows[1][1], 'the data source should be \
 part of the metadata of the file'
-            assert 'R={}'.format(R) in rows[3][0], 'the circuit elements \
-values should be indicated'
-            assert 'C={}'.format(C) in rows[3][0], 'the circuit elements \
-values should be indicated'
             assert '---' in rows[5][0], 'the three hyphens indicating the \
 break of the metadata part of the files need to be present '
 

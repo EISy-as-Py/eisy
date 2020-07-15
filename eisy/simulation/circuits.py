@@ -60,7 +60,7 @@ def cir_RC_parallel(angular_freq, **circuit_elements):
     resistance = circuit_elements['R']
     capacitance = circuit_elements['C']
     # compute the impedance response as a complex array
-    Z_complex = (resistance/(1+resistance*capacitance*(angular_freq*1j)))
+    Z_complex = resistance/(1+resistance*capacitance*(angular_freq*1j))
     return Z_complex
 
 
@@ -136,8 +136,8 @@ def cir_RQ_parallel(angular_freq, **circuit_elements):
     alpha = circuit_elements['alpha']
 
     # compute the impedance response as a complex array
-    Z_complex = (resistance/(1+resistance*constant_phase_element*(
-                 angular_freq*1j)**alpha))
+    Z_complex = resistance/(1+resistance*constant_phase_element*(
+                 angular_freq*1j)**alpha)
     return Z_complex
 
 
@@ -219,8 +219,8 @@ def cir_RsRC(angular_freq, **circuit_elements):
     capacitance = circuit_elements['C']
 
     # compute the impedance response as a complex array
-    Z_parallel = (parallel_resistance/(1 + parallel_resistance *
-                                       capacitance * (angular_freq*1j)))
+    Z_parallel = parallel_resistance/(1 + parallel_resistance *
+                                      capacitance * (angular_freq*1j))
     Z_complex = solution_resistance + Z_parallel
     return Z_complex
 
@@ -266,9 +266,9 @@ def cir_RsRQ(angular_freq, **circuit_elements):
     alpha = circuit_elements['alpha']
 
     # compute the impedance response as a complex array
-    Z_parallel = (parallel_resistance/(1 + parallel_resistance *
-                                       constant_phase_element*(
-                                        angular_freq*1j)**alpha))
+    Z_parallel = parallel_resistance/(1 + parallel_resistance *
+                                      constant_phase_element*(
+                                        angular_freq*1j)**alpha)
     Z_complex = solution_resistance + Z_parallel
     return Z_complex
 

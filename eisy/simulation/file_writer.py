@@ -95,6 +95,7 @@ def file_writer(freq_range, circuit_name, alteration=None,
                         alteration=alteration, noise_amplitude=noise_amplitude,
                         **circuit_elements)
         data_file.close()
+
     if save_image:
         save_plots(df, filename, plot_type=plot_type, alteration=alteration,
                    save_location=save_location,
@@ -152,7 +153,7 @@ def simulation_filename(circuit_name, alteration=None, noise_amplitude=None,
     """
     circuit_file_name = {'RC_series': 'none', 'RQ_series': 'none',
                          'RC_parallel': 'one', 'RQ_parallel': 'one',
-                         'RsRC': 'one', 'RsRCRC': 'spread',
+                         'RsRC': 'one', 'RsRQ': 'one', 'RsRCRC': 'two',
                          'RsRQRQ': 'two', 'Randles': 'tail'}
     if circuit_name in circuit_file_name:
         name = circuit_file_name[circuit_name]
@@ -176,15 +177,15 @@ integer'
         if latest_file.split('-')[0] == date:
             i = int(latest_file.split('_')[0].split('-')[1]) + 1
 
-    number = str(i).zfill(4)
-    assert len(number) == 4, 'the serial number should be four\
+    number = str(i).zfill(5)
+    assert len(number) == 5, 'the serial number should be four\
 characters long'
 
-    if alteration and noise_amplitude > 0.2:
+    if alteration and noise_amplitude > 0.08:
         filename = str('{}-{}_sim_{}_{}'.format(date, number,
                                                 name, alteration))
     else:
-        filename = str('{}-{}_sim_{}'.format(date, number, name))
+        filename = str('{}-{}_sim_{}_ideal'.format(date, number, name))
 
     serial_number, *rest = filename.split('_')
 
@@ -235,40 +236,41 @@ def write_metadata(data_file, serial_number, circuit_name, alteration=None,
     """
 
     # Serial number and data source:
-    data_file.write('Serial number: {}'.format(serial_number)+'\n')
-    data_file.write('Data Source: {}'.format(source)+'\n')
+    data_file.write('Serial number:, {}'.format(serial_number)+'\n')
+    data_file.write('Data Source:, {}'.format(source)+'\n')
 
     # If simulated data, record the circuit type, the circuit element values
     if source == 'sim' or 'simulation':
-        data_file.write('Circuit type: -{}-'.format(circuit_name)+'\n')
+        data_file.write('Circuit type: , -{}-'.format(circuit_name)+'\n')
 
         if circuit_name.split('_')[0] == 'RC':
             assert len(circuit_elements) == 2, 'the number of circuit\
 elements should be 2'
-            data_file.write('Circuit elements: [R={} ohm C={} F]'
+            data_file.write('Circuit elements:,R = {} ohm;C = {} F'
                             .format(circuit_elements['R'],
                                     circuit_elements['C']) + '\n')
         if circuit_name.split('_')[0] == 'RQ':
             assert len(circuit_elements) == 3, 'the number of circuit\
 elements should be 3'
-            data_file.write('Circuit elements: [R={} ohm Q={} '
-                            '[s^(alpha-1)/ohm] alpha={}]'
-                            ''.format(circuit_elements['R'],
-                                      circuit_elements['Q'],
-                                      circuit_elements['alpha']
-                                      ) + '\n')
+            data_file.write('Circuit elements:,R = {} ohm;Q = {} '
+                            '[s^(alpha-1)/ohm];alpha = {} -'
+                            .format(circuit_elements['R'],
+                                    circuit_elements['Q'],
+                                    circuit_elements['alpha']
+                                    ) + '\n')
         if circuit_name == 'RsRC':
             assert len(circuit_elements) == 3, 'the number of circuit\
 elements should be 3'
-            data_file.write('Circuit elements: [Rs={} ohm Rp={} ohm C={} F]'
+            data_file.write('Circuit elements:,Rs = {} ohm;Rp = {} ohm'
+                            ';C = {} F'
                             .format(circuit_elements['Rs'],
                                     circuit_elements['Rp'],
                                     circuit_elements['C']) + '\n')
         if circuit_name.split('_')[0] == 'RsRQ':
             assert len(circuit_elements) == 4, 'the number of circuit\
 elements should be 3'
-            data_file.write('Circuit elements: [Rs={} ohm Rp={} Q={} '
-                            '[s^(alpha-1)/ohm] alpha={}]'
+            data_file.write('Circuit elements:,Rs = {} ohm;Rp = {} ohm;Q = {} '
+                            '[s^(alpha-1)/ohm];alpha = {} -'
                             ''.format(circuit_elements['Rs'],
                                       circuit_elements['Rp'],
                                       circuit_elements['Q'],
@@ -277,8 +279,8 @@ elements should be 3'
         if circuit_name == 'RsRCRC':
             assert len(circuit_elements) == 5, 'the number of circuit\
 elements should be 5'
-            data_file.write('Circuit elements: [Rs={} ohm Rp1={} ohm C1={}'
-                            'F Rp2={} ohm C2={} F]'
+            data_file.write('Circuit elements:,Rs = {} ohm;Rp1 = {} ohm; '
+                            'C1 = {} F;Rp2 = {} ohm;C2 = {} F'
                             ''.format(circuit_elements['Rs'],
                                       circuit_elements['Rp1'],
                                       circuit_elements['C1'],
@@ -287,9 +289,9 @@ elements should be 5'
         if circuit_name == 'RsRQRQ':
             assert len(circuit_elements) == 7, 'the number of circuit\
 elements should be 7'
-            data_file.write('Circuit elements: [Rs={} ohm Rp1={} ohm Q1={}'
-                            '[s^(alpha-1)/ohm] alpha_1={} Rp2={} ohm Q2={}'
-                            ' [s^(alpha-1)/ohm] alpha_2={}]'
+            data_file.write('Circuit elements:,Rs = {} ohm;Rp1 = {} ohm;'
+                            'Q1 = {} [s^(alpha-1)/ohm];alpha_1 = {} -;Rp2 = {}'
+                            ' ohm;Q2 = {} [s^(alpha-1)/ohm];alpha_2 = {} -'
                             ''.format(circuit_elements['Rs'],
                                       circuit_elements['Rp1'],
                                       circuit_elements['Q1'],
@@ -300,8 +302,8 @@ elements should be 7'
         if circuit_name == 'Randles':
             assert len(circuit_elements) == 5, 'the number of circuit\
 elements should be 5'
-            data_file.write('Circuit elements: [Rs={} ohm Rp={} ohm Q={}'
-                            '[s^(alpha-1)/ohm] alpha={} sigma={}]'
+            data_file.write('Circuit elements:,Rs = {} ohm;Rp = {} ohm;Q = '
+                            '{} [s^(alpha-1)/ohm];alpha = {} -;sigma = {} -'
                             ''.format(circuit_elements['Rs'],
                                       circuit_elements['Rp'],
                                       circuit_elements['Q'],
@@ -309,8 +311,9 @@ elements should be 5'
                                       circuit_elements['sigma']) + '\n')
     # Indication of alteration
     if alteration:
-        data_file.write('Alteration : {} ; noise_amplitude : {}'.
-                        format(alteration, noise_amplitude))
+        data_file.write('Alteration:, {}'.format(alteration) + '\n' +
+                        'noise_amplitude:, {}'.format(
+                        np.round(noise_amplitude, 3)))
 
     data_file.write('\n'+'---'+'\n')
 

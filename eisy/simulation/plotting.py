@@ -78,31 +78,15 @@ def nyquist_plot(response, filename=None, save_location=None, alteration=None,
     plt.figure(figsize=(6, 6))
     if scatter:
         if alteration:
-            if 'Im_Z_noise [ohm]' in list(response) and\
-                 'Re_Z_noise [ohm]' in list(response):
-                plt.scatter(response['Re_Z_noise [ohm]'],
-                            -response['Im_Z_noise [ohm]'], c='b', **kwargs)
-            elif ('Im_Z_noise [ohm]') in list(response):
-                plt.scatter(response['Re_Z [ohm]'],
-                            -response['Im_Z_noise [ohm]'], c='b', **kwargs)
-            elif ('Re_Z_noise [ohm]') in list(response):
-                plt.scatter(response['Re_Z_noise [ohm]'],
-                            -response['Im_Z [ohm]'], c='b', **kwargs)
+            plt.scatter(response['Re_Z_noise [ohm]'],
+                        -response['Im_Z_noise [ohm]'], c='b', **kwargs)
         else:
             plt.scatter(response['Re_Z [ohm]'], -response['Im_Z [ohm]'], c='b',
                         **kwargs)
     else:
         if alteration:
-            if 'Im_Z_noise [ohm]' in list(response) and\
-                 'Re_Z_noise [ohm]' in list(response):
-                plt.plot(response['Re_Z_noise [ohm]'],
-                         -response['Im_Z_noise [ohm]'], 'bo--', **kwargs)
-            elif ('Im_Z_noise [ohm]') in list(response):
-                plt.plot(response['Re_Z [ohm]'],
-                         -response['Im_Z_noise [ohm]'], 'bo--',  **kwargs)
-            elif ('Re_Z_noise [ohm]') in list(response):
-                plt.plot(response['Re_Z_noise [ohm]'],
-                         -response['Im_Z [ohm]'], 'bo--', **kwargs)
+            plt.plot(response['Re_Z_noise [ohm]'],
+                     -response['Im_Z_noise [ohm]'], 'bo--', **kwargs)
         else:
             plt.plot(response['Re_Z [ohm]'], -response['Im_Z [ohm]'],
                      'o--', **kwargs)
@@ -186,26 +170,9 @@ def log_freq_plot(response, filename=None, axis_off=None, scatter=None,
     '''
     plt.figure(figsize=(6, 5))
     if alteration:
-        if 'Im_Z_noise [ohm]' in list(response) and\
-           'Re_Z_noise [ohm]' in list(response):
-            plt.semilogx(response['freq [Hz]'], response['Re_Z_noise [ohm]'],
-                         'bo--', response['freq [Hz]'],
-                         -response['Im_Z_noise [ohm]'], 'ro--', **kwargs)
-        elif ('freq_noise [Hz]') in list(response):
-            plt.semilogx(response['freq_noise [Hz]'],
-                         response['Re_Z_noise [ohm]'], 'bo--',
-                         response['freq_noise [Hz]'],
-                         -response['Im_Z_noise [ohm]'], 'ro--', **kwargs)
-        elif ('Re_Z_noise [ohm]') in list(response) and 'Im_Z_noise [ohm]' \
-                not in list(response):
-            plt.semilogx(response['freq [Hz]'], response['Re_Z_noise [ohm]'],
-                         'bo--', response['freq [Hz]'],
-                         -response['Im_Z [ohm]'], 'ro--', **kwargs)
-        elif ('Im_Z_noise [ohm]') in list(response) and 'Re_Z_noise [ohm]' \
-                not in list(response):
-            plt.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'],
-                         'bo--', response['freq [Hz]'],
-                         -response['Im_Z_noise [ohm]'], 'ro--', **kwargs)
+        plt.semilogx(response['freq [Hz]'], response['Re_Z_noise [ohm]'],
+                     'bo--', response['freq [Hz]'],
+                     -response['Im_Z_noise [ohm]'], 'ro--', **kwargs)
     else:
         plt.semilogx(response['freq [Hz]'], response['Re_Z [ohm]'], 'bo--',
                      response['freq [Hz]'], -response['Im_Z [ohm]'], 'ro--',
